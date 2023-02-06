@@ -1,0 +1,16 @@
+import { Route, Routes } from "react-router-dom"
+import pagesData from "../pages/pagesData"
+
+const Router = () => {
+  const pageRoutes = pagesData.map(({ path, element, title}) => (
+    <Route key={title} path={`${path}`} element={ element } />
+  ));
+
+  return (
+    <Routes>
+      {pageRoutes}
+    </Routes>
+  );
+}
+
+export default Router
