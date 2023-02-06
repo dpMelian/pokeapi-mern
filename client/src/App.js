@@ -1,15 +1,18 @@
 import './App.css';
+import Header from './components/Header.tsx';
 import { useGetPokemonByName } from './hooks/useGetPokemonByName.ts';
 
 const App = () => {
-  const { data } = useGetPokemonByName('ditto')
+  const { data } = useGetPokemonByName('pikachu')
   console.log(data)
 
   return (
     <>
-      <h1 className="text-3xl font-bold underline">
-        PokéAPI using MERN stack + TailwindCSS
-      </h1>
+      <Header />
+      <p>
+        Sprite:
+        <img src={data?.sprites.front_default} alt="pokemon sprite"/>
+      </p>
 
       <p>
         Abilities:
