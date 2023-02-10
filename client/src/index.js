@@ -5,6 +5,7 @@ import reportWebVitals from './reportWebVitals';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import './index.css';
 import { QueryClient, QueryClientProvider } from 'react-query';
+import { ThemeProvider } from 'styled-components';
 
 const router = createBrowserRouter([
   {
@@ -13,14 +14,23 @@ const router = createBrowserRouter([
   },
 ]);
 
+const theme = {
+  primary: "#FFF8EA",
+  secondary: "#9E7676",
+  "secondary--dark": "#815B5B",
+  "secondary--darker": "#594545",
+}
+
 const queryClient = new QueryClient()
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <QueryClientProvider client={queryClient}>
-    <React.StrictMode>
-      <RouterProvider router={router} />
-    </React.StrictMode>
+    <ThemeProvider theme={theme}>
+      <React.StrictMode>
+        <RouterProvider router={router} />
+      </React.StrictMode>
+    </ThemeProvider>
   </QueryClientProvider>
 );
 

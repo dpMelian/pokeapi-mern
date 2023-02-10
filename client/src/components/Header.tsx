@@ -1,19 +1,21 @@
 import React from "react"
+import styled from "styled-components"
+
+const Nav = styled.nav`
+  display: "flex";
+  background-color: ${props => props.theme.secondary};
+`;
 
 const Header = () => {
   return (
-    <nav className="bg-poke-red border-gray-200 py-5">
-      <div className="container flex flex-wrap items-center justify-between mx-auto">
-        <h1>
-          PokéAPI MERN project
-        </h1>
-        <div>
-          <ul>
-            <li>Sign Up</li>
-          </ul>
-        </div>
-      </div>
-    </nav>
+    <Nav>
+      <h1>
+        PokéAPI MERN project
+      </h1>
+      <h1>
+        Sign Up
+      </h1>
+    </Nav>
   )
 }
 
