@@ -35,6 +35,7 @@ const SearchInput = ({ handleOnSubmit }: Props) => {
 
     return (
         <form onSubmit={e => {
+            if (inputValue === "") return;
             e.preventDefault();
             handleOnSubmit(inputValue)
         }}>
