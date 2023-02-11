@@ -15,10 +15,10 @@ const router = createBrowserRouter([
 ]);
 
 const theme = {
-  primary: "#FFF8EA",
-  secondary: "#9E7676",
-  "secondary--dark": "#815B5B",
-  "secondary--darker": "#594545",
+  primary: "#FFFAD7",
+  secondary: "#E97777",
+  "primary--darker": "#FCDDB0",
+  "secondary--lighter": "#FF9F9F",
 }
 
 const queryClient = new QueryClient()
