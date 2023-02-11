@@ -11,6 +11,9 @@ const Badge = styled.span<BadgeProps>`
     border-radius: 5px;
     background-color: ${props => TYPES[props.type]};
     padding: 0 1rem;
+    display:inline-block;
+    text-align: center;
+    width: 120px;
 `;
 
 interface Props {
