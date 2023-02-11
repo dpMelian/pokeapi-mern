@@ -51,7 +51,7 @@ const Main = () => {
   };
 
   const handleOnSubmit = (searchInputValue: string) => {
-    setSearchValue(searchInputValue);
+    setSearchValue(searchInputValue.toLowerCase());
   };
 
   useEffect(() => {
