@@ -10,6 +10,7 @@ const InputGroup = styled.div`
 
 const Input = styled.input`
     border-radius: 5px 0 0 5px;
+    border-right: none;
     height: 2rem;
     line-height: 2rem;
 `;
@@ -21,11 +22,11 @@ const Button = styled.button`
     box-sizing: content-box;
 `;
 
-interface props {
+interface Props {
     handleOnSubmit: (value: string) => React.FormEventHandler<HTMLFormElement>;
 }
 
-const SearchInput = ({ handleOnSubmit }: props) => {
+const SearchInput = ({ handleOnSubmit }: Props) => {
     const [inputValue, setInputValue] = useState("");
 
     const handleOnInput = (e: React.ChangeEvent<HTMLInputElement>) => {
