@@ -3,9 +3,9 @@ import ReactDOM from 'react-dom/client';
 import Main from './Main.tsx';
 import reportWebVitals from './reportWebVitals';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import './index.css';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { ThemeProvider } from 'styled-components';
+import './index.css';
 
 const router = createBrowserRouter([
   {
