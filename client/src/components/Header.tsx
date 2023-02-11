@@ -6,15 +6,19 @@ const Nav = styled.nav`
   background-color: ${props => props.theme.secondary};
 `;
 
+const H1 = styled.h1`
+  margin: 0px;
+`;
+
 const Header = () => {
   return (
     <Nav>
-      <h1>
+      <H1>
         PokéAPI MERN project
-      </h1>
-      <h1>
+      </H1>
+      <H1>
         Sign Up
-      </h1>
+      </H1>
     </Nav>
   )
 }
