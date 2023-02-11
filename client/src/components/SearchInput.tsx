@@ -1,7 +1,6 @@
 import React, { useState } from "react"
 import styled from "styled-components";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSearch } from "@fortawesome/free-solid-svg-icons";
+import { IconSearch } from "@tabler/icons-react";
 
 const InputGroup = styled.div`
     display: flex;
@@ -37,7 +36,7 @@ const SearchInput = ({ handleOnSubmit }: Props) => {
         <form onSubmit={e => {
             if (inputValue === "") return;
             e.preventDefault();
-            handleOnSubmit(inputValue)
+            handleOnSubmit(inputValue);
         }}>
             <InputGroup>
                 <Input
@@ -48,7 +47,7 @@ const SearchInput = ({ handleOnSubmit }: Props) => {
                     onInput={handleOnInput}
                 />
                 <Button onClick={() => handleOnSubmit}>
-                    <FontAwesomeIcon icon={faSearch} />
+                    <IconSearch />
                 </Button>
             </InputGroup>
         </form>
