@@ -8,6 +8,7 @@ interface BadgeProps {
 };
 
 const Badge = styled.span<BadgeProps>`
+    border: 2px solid;
     border-radius: 5px;
     background-color: ${props => TYPES[props.type]};
     padding: 0 1rem;
@@ -21,7 +22,7 @@ interface Props {
 }
 
 const TypeBadge = ({ type }: Props) => (
-    <Badge type={type}>
+    <Badge key={type} type={type}>
         {firstLetterToUpperCase(type)}
     </Badge>
 )
