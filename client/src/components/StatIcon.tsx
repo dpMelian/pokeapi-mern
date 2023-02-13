@@ -1,5 +1,5 @@
 import React from "react";
-import { STAT_ICONS } from "../constants/statIcons.ts";
+import { STAT_ICONS } from "../constants/statIcons";
 
 interface Props {
     name: string;

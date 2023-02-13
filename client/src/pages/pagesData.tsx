@@ -1,11 +1,11 @@
 import React from "react";
-import App from "../App";
+import Main from "../Main";
 import { routeType } from "../types/routes.types";
 
 const pagesData: routeType[] = [
   {
     path: "",
-    element: <App />,
+    element: <Main />,
     title: "app"
   }
 ]
