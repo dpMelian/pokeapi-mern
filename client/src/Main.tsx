@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react"
 import styled from "styled-components"
-import Select from "react-select"
+import Select, { type SingleValue } from "react-select"
 import { IconRuler2, IconSearch, IconWeight } from "@tabler/icons-react"
 import Header from "./components/Header"
 import StatIcon from "./components/StatIcon"
@@ -11,6 +11,7 @@ import { firstLetterToUpperCase } from "./helpers/firstLetterToUpperCase"
 import { getColorRange } from "./helpers/getColorRange"
 import { POKEMON_GENERATION_RANGES } from "./constants/pokemonGenerations"
 import { useGetPokemonByName } from "./hooks/useGetPokemonByName"
+import { type Pokemon } from "./interfaces/pokemon"
 
 const Container = styled.main`
   width: 80%;
@@ -28,31 +29,22 @@ const LargeImage = styled.img`
   padding: 0 2rem;
 `
 
-interface Pokemon {
-  abilities: { ability: { name: string }; is_hidden: boolean }[]
-  height: number
-  id: number
-  sprites: { versions: {}; front_default: string }
-  stats: { base_stat: number; stat: { name: string } }[]
-  types: { type: { name: string } }[]
-  version: {}
-  weight: number
-}
-
-const Main = () => {
+const Main = (): JSX.Element => {
   const [searchValue, setSearchValue] = useState("pikachu")
   const [spriteOptions, setSpriteOptions] = useState(
-    [] as { value: string; label: string }[]
+    [] as Array<{ value: string; label: string }>
   )
   const [selectedSprite, setSelectedSprite] = useState("")
 
-  const { data, isLoading, isError } = useGetPokemonByName(searchValue) as {
-    data: Pokemon | null
+  const { data, isLoading, isError } = useGetPokemonByName(
+    searchValue
+  ) as unknown as {
+    data: Pokemon
     isLoading: boolean
     isError: boolean
   }
 
-  const handleOnSubmit = (searchInputValue: string) => {
+  const handleOnSubmit = (searchInputValue: string): void => {
     setSearchValue(searchInputValue.toLowerCase())
   }
 
@@ -60,7 +52,7 @@ const Main = () => {
     if (data == null) return
 
     let selectedGeneration = ""
-    const spriteOptions: { value: string; label: string }[] = []
+    const spriteOptions: Array<{ value: string; label: string }> = []
 
     for (const [generation, versions] of Object.entries(
       data.sprites.versions
@@ -68,11 +60,11 @@ const Main = () => {
       const { front_default: frontDefault } =
         versions[POKEMON_GENERATION_RANGES[generation].version]
 
-      if (!selectedGeneration && frontDefault) {
-        selectedGeneration = generation
-      }
+      if (frontDefault !== null) {
+        if (selectedGeneration.length === 0) {
+          selectedGeneration = generation
+        }
 
-      if (frontDefault) {
         spriteOptions.push({
           value: generation,
           label: firstLetterToUpperCase(generation),
@@ -80,7 +72,7 @@ const Main = () => {
       }
     }
 
-    if (!selectedGeneration) {
+    if (selectedGeneration.length === 0) {
       return
     }
 
@@ -93,7 +85,12 @@ const Main = () => {
     setSpriteOptions(spriteOptions)
   }, [data])
 
-  const updateSelectedSprite = (event) => {
+  const updateSelectedSprite = (
+    event: SingleValue<{ value: string; label: string }>
+  ): void => {
+    if (event === null) {
+      return
+    }
     const version = POKEMON_GENERATION_RANGES[event.value].version
 
     setSelectedSprite(
@@ -105,10 +102,7 @@ const Main = () => {
     <>
       <Header />
       <Container>
-        <SearchInput
-          handleOnSubmit={handleOnSubmit}
-          handleOnInput={setSearchValue}
-        />
+        <SearchInput handleOnSubmit={handleOnSubmit} />
 
         {isError && <p>Pokémon {searchValue} not found</p>}
         {!isError && !isLoading && (
@@ -135,10 +129,10 @@ const Main = () => {
             <h2>
               Abilities:
               <ul>
-                {data?.abilities.map(({ ability, is_hidden }) => (
+                {data?.abilities.map(({ ability, is_hidden: isHidden }) => (
                   <li key={ability.name}>
                     {firstLetterToUpperCase(ability.name)}
-                    {is_hidden && " (hidden ability)"}
+                    {isHidden && " (hidden ability)"}
                   </li>
                 ))}
               </ul>
@@ -148,7 +142,7 @@ const Main = () => {
               Types:
               <p>
                 {data?.types.map(({ type }) => (
-                  <TypeBadge type={type.name} />
+                  <TypeBadge key={type.name} type={type.name} />
                 ))}
               </p>
             </h2>
