@@ -21,7 +21,7 @@ interface Props {
   type: string
 }
 
-const TypeBadge = ({ type }: Props) => (
+const TypeBadge = ({ type }: Props): JSX.Element => (
   <Badge key={type} type={type}>
     {firstLetterToUpperCase(type)}
   </Badge>

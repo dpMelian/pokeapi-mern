@@ -1,57 +1,59 @@
 import React, { useState } from "react"
-import styled from "styled-components";
-import { IconSearch } from "@tabler/icons-react";
+import styled from "styled-components"
+import { IconSearch } from "@tabler/icons-react"
 
 const InputGroup = styled.div`
-    display: flex;
-    align-items: center;
-`;
+  display: flex;
+  align-items: center;
+`
 
 const Input = styled.input`
-    border-radius: 5px 0 0 5px;
-    border-right: none;
-    height: 2rem;
-    line-height: 2rem;
-`;
+  border-radius: 5px 0 0 5px;
+  border-right: none;
+  height: 2rem;
+  line-height: 2rem;
+`
 
 const Button = styled.button`
-    border-radius: 0 5px 5px 0;
-    height: 2rem;
-    line-height: 2rem;
-    box-sizing: content-box;
-`;
+  border-radius: 0 5px 5px 0;
+  height: 2rem;
+  line-height: 2rem;
+  box-sizing: content-box;
+`
 
 interface Props {
-    handleOnSubmit: (value: string) => React.FormEventHandler<HTMLFormElement>;
+  handleOnSubmit: (searchInputValue: string) => void
 }
 
-const SearchInput = ({ handleOnSubmit }: Props) => {
-    const [inputValue, setInputValue] = useState("");
+const SearchInput = ({ handleOnSubmit }: Props): JSX.Element => {
+  const [inputValue, setInputValue] = useState("")
 
-    const handleOnInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setInputValue(e.target.value);
-    }
+  const handleOnInput = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    setInputValue(e.target.value)
+  }
 
-    return (
-        <form onSubmit={e => {
-            if (inputValue === "") return;
-            e.preventDefault();
-            handleOnSubmit(inputValue);
-        }}>
-            <InputGroup>
-                <Input
-                    type="text"
-                    name="search"
-                    id="search"
-                    placeholder="Pikachu"
-                    onInput={handleOnInput}
-                />
-                <Button onClick={() => handleOnSubmit}>
-                    <IconSearch />
-                </Button>
-            </InputGroup>
-        </form>
-    )
+  return (
+    <form
+      onSubmit={(e) => {
+        if (inputValue === "") return
+        e.preventDefault()
+        handleOnSubmit(inputValue)
+      }}
+    >
+      <InputGroup>
+        <Input
+          type="text"
+          name="search"
+          id="search"
+          placeholder="Pikachu"
+          onInput={handleOnInput}
+        />
+        <Button onClick={() => handleOnSubmit}>
+          <IconSearch />
+        </Button>
+      </InputGroup>
+    </form>
+  )
 }
 
 export default SearchInput
