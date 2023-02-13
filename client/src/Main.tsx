@@ -55,27 +55,31 @@ const Main = () => {
   };
 
   useEffect(() => {
-    if(data){
-      const tempSpriteOptions = [] as {value: string, label: string}[];
-      let isFirstIteration = true;
-      let isFirstSpriteSelected = false;
-      for(const [generation] of Object.entries(data.sprites.versions)) {
-        const version = POKEMON_GENERATION_RANGES[generation].version;
-        if(isFirstIteration && selectedSprite.length === 0) {
-          setSelectedSprite(data.sprites.versions[generation][version].front_default);
-        };
+    if (data == null) return;
 
-        if(data.sprites.versions[generation][version].front_default){
-          tempSpriteOptions.push({value: generation, label: firstLetterToUpperCase(generation)});
-          if(!isFirstSpriteSelected) {
-            setSelectedSprite(data.sprites.versions[generation][version].front_default);
-          }
-          isFirstSpriteSelected = true;
-        };
-        isFirstIteration = false;
-      }
-      setSpriteOptions(tempSpriteOptions);
+    let selectedGeneration = "";
+    const spriteOptions: { value: string, label: string }[] = [];
+
+    for (const [generation, versions] of Object.entries(data.sprites.versions)) {
+      const { front_default: frontDefault } = versions[POKEMON_GENERATION_RANGES[generation].version];
+
+      if(!selectedGeneration && frontDefault) {
+        selectedGeneration = generation;
+      };
+
+      if(frontDefault){
+        spriteOptions.push({value: generation, label: firstLetterToUpperCase(generation)});
+      };
     }
+
+    if (!selectedGeneration) {
+      return;
+    }
+
+    const selectedVersion = POKEMON_GENERATION_RANGES[selectedGeneration].version;
+
+    setSelectedSprite(data.sprites.versions[selectedGeneration][selectedVersion].front_default);
+    setSpriteOptions(spriteOptions);
   }, [data]);
 
   const updateSelectedSprite = event => {
