@@ -11,7 +11,7 @@ export const connectToServer = (callback) => {
   client.connect(function (err, db) {
     // Verify we got a good "db" object
     if (db) {
-      _db = db.db("user");
+      _db = db.db("trainer");
       console.log("Successfully connected to MongoDB.");
     }
     return callback(err);
