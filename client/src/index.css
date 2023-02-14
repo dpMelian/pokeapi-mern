@@ -1,14 +1,14 @@
-@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+Khojki&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Kadwa:wght@700&display=swap");
 
 body {
   margin: 0;
-  font-family: 'Noto Serif Khojki';
+  font-family: "Kadwa";
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #FFFAD7;
+  background-color: #fffad7;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
