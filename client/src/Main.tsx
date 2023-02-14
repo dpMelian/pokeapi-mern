@@ -29,6 +29,11 @@ const LargeImage = styled.img`
   padding: 0 2rem;
 `
 
+const TypeBadgeContainer = styled.div`
+  display: grid;
+  grid-gap: 5px;
+`
+
 const Main = (): JSX.Element => {
   const [searchValue, setSearchValue] = useState("pikachu")
   const [spriteOptions, setSpriteOptions] = useState(
@@ -105,6 +110,15 @@ const Main = (): JSX.Element => {
         <SearchInput handleOnSubmit={handleOnSubmit} />
 
         {isError && <p>Pokémon {searchValue} not found</p>}
+        {!isError && isLoading && (
+          <Loading>
+            <IconSearch />
+            <span>
+              Searching Pokémon{" "}
+              <strong>{firstLetterToUpperCase(searchValue)}</strong>...
+            </span>
+          </Loading>
+        )}
         {!isError && !isLoading && (
           <>
             <h2>You have searched for {firstLetterToUpperCase(searchValue)}</h2>
@@ -141,9 +155,11 @@ const Main = (): JSX.Element => {
             <h2>
               Types:
               <p>
-                {data?.types.map(({ type }) => (
-                  <TypeBadge key={type.name} type={type.name} />
-                ))}
+                <TypeBadgeContainer>
+                  {data?.types.map(({ type }) => (
+                    <TypeBadge key={type.name} type={type.name} />
+                  ))}
+                </TypeBadgeContainer>
               </p>
             </h2>
 
@@ -170,15 +186,6 @@ const Main = (): JSX.Element => {
               Height: {data?.height}
             </h2>
           </>
-        )}
-        {!isError && isLoading && (
-          <Loading>
-            <IconSearch />
-            <span>
-              Searching Pokémon{" "}
-              <strong>{firstLetterToUpperCase(searchValue)}</strong>...
-            </span>
-          </Loading>
         )}
       </Container>
     </>
