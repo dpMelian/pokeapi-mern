@@ -12,6 +12,7 @@ import { getColorRange } from "./helpers/getColorRange"
 import { POKEMON_GENERATION_RANGES } from "./constants/pokemonGenerations"
 import { useGetPokemonByName } from "./hooks/useGetPokemonByName"
 import { type Pokemon } from "./interfaces/pokemon"
+import useCreateTrainer from "./hooks/useCreateTrainer"
 
 const Container = styled.main`
   width: 80%;
@@ -52,6 +53,8 @@ const Main = (): JSX.Element => {
   const handleOnSubmit = (searchInputValue: string): void => {
     setSearchValue(searchInputValue.toLowerCase())
   }
+
+  const createTrainer = useCreateTrainer()
 
   useEffect(() => {
     if (data == null) return
@@ -185,6 +188,18 @@ const Main = (): JSX.Element => {
               <IconRuler2 />
               Height: {data?.height}
             </h2>
+
+            <button
+              onClick={() => {
+                createTrainer.mutate({
+                  name: "Ash",
+                  email: "ash@domain.com",
+                  password: "pikachu",
+                })
+              }}
+            >
+              Add trainer
+            </button>
           </>
         )}
       </Container>
