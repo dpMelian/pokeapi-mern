@@ -19,15 +19,20 @@ const H1 = styled.h1`
   margin: 0px;
 `
 
+const LinkNoStyle = styled(Link)`
+  text-decoration: none;
+  color: ${(props) => props.theme["primary--darker"]};
+`
+
 const Header = (): JSX.Element => (
   <Nav>
     <Container>
-      <Link to="/">
+      <LinkNoStyle to="/">
         <H1>PokéAPI MERN project</H1>
-      </Link>
-      <Link to="/sign-up">
+      </LinkNoStyle>
+      <LinkNoStyle to="/sign-up">
         <H1>Sign Up</H1>
-      </Link>
+      </LinkNoStyle>
     </Container>
   </Nav>
 )
