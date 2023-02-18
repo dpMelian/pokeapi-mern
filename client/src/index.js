@@ -2,6 +2,7 @@ import React from "react"
 import ReactDOM from "react-dom/client"
 import Main from "./Main"
 import reportWebVitals from "./reportWebVitals"
+import SignUp from "./pages/SignUp"
 import { createBrowserRouter, RouterProvider } from "react-router-dom"
 import { QueryClient, QueryClientProvider } from "react-query"
 import { ThemeProvider } from "styled-components"
@@ -11,6 +12,10 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <Main />,
+  },
+  {
+    path: "sign-up",
+    element: <SignUp />,
   },
 ])
 

@@ -1,4 +1,5 @@
 import React from "react"
+import { Link } from "react-router-dom"
 import styled from "styled-components"
 
 const Nav = styled.nav`
@@ -21,8 +22,12 @@ const H1 = styled.h1`
 const Header = (): JSX.Element => (
   <Nav>
     <Container>
-      <H1>PokéAPI MERN project</H1>
-      <H1>Sign Up</H1>
+      <Link to="/">
+        <H1>PokéAPI MERN project</H1>
+      </Link>
+      <Link to="/sign-up">
+        <H1>Sign Up</H1>
+      </Link>
     </Container>
   </Nav>
 )
