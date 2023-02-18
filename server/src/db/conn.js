@@ -1,21 +1,16 @@
-import { MongoClient } from "mongodb"
-const database = "mongodb://localhost:27017/pokeapi-db"
-const client = new MongoClient(database, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-})
+import mongoose from "mongoose"
+const database = "mongodb://127.0.0.1:27017/pokeapi-db"
 
 var _db
 
-export const connectToServer = (callback) => {
-  client.connect(function (err, db) {
-    // Verify we got a good "db" object
-    if (db) {
-      _db = db.db("pokeapi-db")
-      console.log("Successfully connected to MongoDB.")
-    }
-    return callback(err)
-  })
+export const connectToServer = () => {
+  mongoose
+    .connect(database, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    })
+    .then(() => console.log("MongoDB connected"))
+    .catch((err) => console.error(err))
 }
 
 export const getDb = () => {
