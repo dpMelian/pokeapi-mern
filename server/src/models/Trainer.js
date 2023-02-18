@@ -20,6 +20,16 @@ schema.pre("save", async function () {
   trainer.password = hashedPassword
 })
 
+schema.methods.comparePassword = function (candidatePassword, cb) {
+  bcrypt.compare(candidatePassword, this.password, function (err, isMatch) {
+    if (err) {
+      return cb(err)
+    }
+
+    cb(null, isMatch)
+  })
+}
+
 const Trainer = model("Trainer", schema)
 
 export default Trainer

@@ -3,6 +3,7 @@ import ReactDOM from "react-dom/client"
 import Main from "./Main"
 import reportWebVitals from "./reportWebVitals"
 import SignUp from "./pages/SignUp"
+import Login from "./pages/Login"
 import { createBrowserRouter, RouterProvider } from "react-router-dom"
 import { QueryClient, QueryClientProvider } from "react-query"
 import { ThemeProvider } from "styled-components"
@@ -17,6 +18,10 @@ const router = createBrowserRouter([
     path: "sign-up",
     element: <SignUp />,
   },
+  {
+    path: "login",
+    element: <Login />,
+  },
 ])
 
 const theme = {
@@ -24,6 +29,7 @@ const theme = {
   secondary: "#E97777",
   "primary--darker": "#FCDDB0",
   "secondary--lighter": "#FF9F9F",
+  brown: "#AC8141",
 }
 
 const queryClient = new QueryClient()
