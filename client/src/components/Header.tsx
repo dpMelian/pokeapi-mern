@@ -1,10 +1,13 @@
 import React from "react"
 import { Link } from "react-router-dom"
 import styled from "styled-components"
+import useGetLoggedTrainerName from "../hooks/useGetLoggedTrainerName"
+import useLogout from "../hooks/useLogout"
 
 const Nav = styled.nav`
   display: "flex";
-  background-color: ${(props) => props.theme.secondary};
+  background-color: ${(props) => props.theme.primary};
+  border-bottom: 2px solid ${(props) => props.theme["primary--darker"]};
 `
 
 const Container = styled.div`
@@ -24,17 +27,49 @@ const LinkNoStyle = styled(Link)`
   color: ${(props) => props.theme["primary--darker"]};
 `
 
-const Header = (): JSX.Element => (
-  <Nav>
-    <Container>
-      <LinkNoStyle to="/">
-        <H1>PokéAPI MERN project</H1>
-      </LinkNoStyle>
-      <LinkNoStyle to="/sign-up">
-        <H1>Sign Up</H1>
-      </LinkNoStyle>
-    </Container>
-  </Nav>
-)
+const RightBox = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 2rem;
+`
+
+const Header = (): JSX.Element => {
+  const { data } = useGetLoggedTrainerName()
+  const logout = useLogout()
+
+  return (
+    <Nav>
+      <Container>
+        <LinkNoStyle to="/">
+          <H1>PokéAPI MERN project</H1>
+        </LinkNoStyle>
+        {data != null && (
+          <>
+            <H1>{`Hello ${JSON.stringify(data)}!`}</H1>
+            <H1
+              onClick={() => {
+                logout.mutate(localStorage.getItem("token"), {
+                  onSuccess: () => {
+                    localStorage.removeItem("token")
+                  },
+                })
+              }}
+            >
+              Log Out
+            </H1>
+          </>
+        )}
+        <RightBox>
+          <LinkNoStyle to="/login">
+            <H1>Log In</H1>
+          </LinkNoStyle>
+          <LinkNoStyle to="/sign-up">
+            <H1>Sign Up</H1>
+          </LinkNoStyle>
+        </RightBox>
+      </Container>
+    </Nav>
+  )
+}
 
 export default Header
