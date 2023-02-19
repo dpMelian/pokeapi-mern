@@ -6,9 +6,18 @@ import {
   IconLock,
   IconEye,
   IconEyeOff,
+  IconLoader2,
 } from "@tabler/icons-react"
 import Header from "../components/Header"
 import useCreateTrainer from "../hooks/useCreateTrainer"
+
+interface InputProps {
+  isError?: boolean
+}
+
+interface MessageProps {
+  type: string
+}
 
 const Container = styled.main`
   display: flex;
@@ -35,11 +44,14 @@ const InputContainer = styled.div`
   position: relative;
 `
 
-const Input = styled.input`
-  background-color: ${(props) => props.theme.primary};
+const Input = styled.input<InputProps>`
+  background-color: ${(props) => props.theme.secondary};
   border-radius: 4px;
-  border: 2px solid ${(props) => props.theme.brown};
+  border: 2px solid
+    ${(props) =>
+      props.isError ?? false ? "red" : props.theme["primary--darker"]};
   box-sizing: border-box;
+  font-family: ${(props) => props.theme.secondaryFontFamily};
   height: 3rem;
   padding-left: 40px;
   width: 100%;
@@ -67,22 +79,29 @@ const InputIconLock = styled(IconLock)`
 `
 
 const InputIconEyeOff = styled(IconEyeOff)`
+  cursor: pointer;
   right: 10px;
   position: absolute;
   transform: translateY(50%);
 `
 
 const InputIconEye = styled(IconEye)`
+  cursor: pointer;
   right: 10px;
   position: absolute;
   transform: translateY(50%);
 `
 
+const InputDescription = styled.span`
+  font-family: ${(props) => props.theme.secondaryFontFamily};
+`
+
 const Button = styled.button`
-  background-color: ${(props) => props.theme.brown};
+  background-color: ${(props) => props.theme.primary};
   border-radius: 4px;
-  border: 2px solid ${(props) => props.theme.brown};
+  border: 2px solid ${(props) => props.theme["primary--darker"]};
   box-sizing: border-box;
+  cursor: pointer;
   font-family: "Kadwa";
   height: 3rem;
   margin-top: 2rem;
@@ -90,14 +109,49 @@ const Button = styled.button`
 `
 
 const TextColor = styled.span`
-  color: white;
+  color: ${(props) => props.theme["primary--darker"]};
   font-size: large;
 `
 
-const Message = styled.p`
+const Message = styled.p<MessageProps>`
   border-radius: 5px;
-  border: 2px solid;
+  border: 2px solid ${(props) => (props.type === "error" ? "red" : "green")};
+  margin: 0 auto;
+  height: 2.5rem;
   width: 30%;
+  text-align: center;
+  box-sizing: border-box;
+`
+
+const Spinner = styled(IconLoader2)`
+  margin: 0 auto;
+  -webkit-animation-name: spin;
+  -webkit-animation-duration: 2000ms;
+  -webkit-animation-iteration-count: infinite;
+  -webkit-animation-timing-function: linear;
+
+  animation-name: spin;
+  animation-duration: 2000ms;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+
+  @-webkit-keyframes spin {
+    from {
+      -webkit-transform: rotate(0deg);
+    }
+    to {
+      -webkit-transform: rotate(360deg);
+    }
+  }
+
+  @keyframes spin {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
 `
 
 const SignUp = (): JSX.Element => {
@@ -109,8 +163,33 @@ const SignUp = (): JSX.Element => {
   }
 
   const [values, setValues] = useState(initialValues)
-  const [messageText, setMessageText] = useState("")
+  const [messageText, setMessageText] = useState({ type: "", message: "" })
+  const [emailInputErrorMessage, setEmailInputErrorMessage] = useState("")
+  const [passwordInputErrorMessage, setPasswordInputErrorMessage] = useState("")
   const [showPassword, setShowPassword] = useState(false)
+
+  const handleOnEmailBlur = (): void => {
+    const emailRegexp = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    console.log(values.email)
+    console.log(emailRegexp.test(values.email))
+    if (values.email.length === 0) {
+      setEmailInputErrorMessage("Email is required")
+    } else if (!emailRegexp.test(values.email)) {
+      setEmailInputErrorMessage("This email address looks wrong")
+    } else {
+      setEmailInputErrorMessage("")
+    }
+  }
+
+  const handleOnPasswordBlur = (): void => {
+    if (values.password.length === 0) {
+      setPasswordInputErrorMessage("Password is required")
+    } else if (values.password.length < 8) {
+      setPasswordInputErrorMessage("Password must be 8 or more characters")
+    } else {
+      setPasswordInputErrorMessage("")
+    }
+  }
 
   const handleOnInput = (e: React.ChangeEvent<HTMLInputElement>): void => {
     const { name, value } = e.target
@@ -124,13 +203,16 @@ const SignUp = (): JSX.Element => {
     e.preventDefault()
     createTrainer.mutate(values, {
       onSuccess: () => {
-        setMessageText("Registered!")
+        setMessageText({ type: "success", message: "Successfully registered!" })
       },
       onError: (error) => {
         if (error instanceof Error) {
-          setMessageText(error.message)
+          setMessageText({ type: "error", message: error.message })
         } else {
-          setMessageText("There has been an error processing your request")
+          setMessageText({
+            type: "error",
+            message: "There has been an error processing your request",
+          })
         }
       },
     })
@@ -158,7 +240,9 @@ const SignUp = (): JSX.Element => {
           <label htmlFor="email">Email</label>
           <InputContainer>
             <Input
+              isError={emailInputErrorMessage.length > 0}
               name="email"
+              onBlur={handleOnEmailBlur}
               onInput={handleOnInput}
               placeholder="Type an email"
               required
@@ -167,10 +251,16 @@ const SignUp = (): JSX.Element => {
             />
             <InputIconMail />
           </InputContainer>
+          {emailInputErrorMessage.length > 0 && (
+            <InputDescription>{emailInputErrorMessage}</InputDescription>
+          )}
           <label htmlFor="password">Password</label>
           <InputContainer>
             <Input
+              isError={passwordInputErrorMessage.length > 0}
+              minLength={8}
               name="password"
+              onBlur={handleOnPasswordBlur}
               onInput={handleOnInput}
               placeholder="Type a password"
               required
@@ -192,11 +282,17 @@ const SignUp = (): JSX.Element => {
               />
             )}
           </InputContainer>
+          {passwordInputErrorMessage.length > 0 && (
+            <InputDescription>{passwordInputErrorMessage}</InputDescription>
+          )}
           <Button type="submit">
             <TextColor>Create account</TextColor>
           </Button>
         </Form>
-        {messageText.length > 0 && <Message>{messageText}</Message>}
+        {createTrainer.isLoading && <Spinner />}
+        {messageText.message.length > 0 && (
+          <Message type={messageText.type}>{messageText.message}</Message>
+        )}
       </Container>
     </>
   )
