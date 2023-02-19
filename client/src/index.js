@@ -25,11 +25,12 @@ const router = createBrowserRouter([
 ])
 
 const theme = {
-  primary: "#FFFAD7",
-  secondary: "#E97777",
-  "primary--darker": "#FCDDB0",
-  "secondary--lighter": "#FF9F9F",
-  brown: "#AC8141",
+  primary: "#FE6D7A",
+  secondary: "#F1F0CC",
+  "primary--darker": "#3F0D12",
+  "secondary--darker": "#75624E",
+  brown: "#D5BF86",
+  secondaryFontFamily: "Roboto",
 }
 
 const queryClient = new QueryClient()
