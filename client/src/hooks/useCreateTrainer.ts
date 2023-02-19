@@ -13,12 +13,7 @@ const useCreateTrainer = (): UseMutationResult<
 > =>
   useMutation(
     async (data: { name: string; email: string; password: string }) =>
-      await api.post("/trainer/add", data),
-    {
-      onSuccess: (response) => {
-        console.log(response)
-      },
-    }
+      await api.post("/trainer/add", data)
   )
 
 export default useCreateTrainer
