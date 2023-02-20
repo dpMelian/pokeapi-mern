@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
 import styled from "styled-components"
 import useGetLoggedTrainerName from "../hooks/useGetLoggedTrainerName"
@@ -22,6 +22,11 @@ const H1 = styled.h1`
   margin: 0px;
 `
 
+const LogOutH1 = styled.h1`
+  cursor: pointer;
+  margin: 0px;
+`
+
 const LinkNoStyle = styled(Link)`
   text-decoration: none;
   color: ${(props) => props.theme["primary--darker"]};
@@ -36,6 +41,13 @@ const RightBox = styled.div`
 const Header = (): JSX.Element => {
   const { data } = useGetLoggedTrainerName()
   const logout = useLogout()
+  const token = localStorage.getItem("token")
+
+  const [showHelloMessage, setShowHelloMessage] = useState(false)
+
+  useEffect(() => {
+    setShowHelloMessage(data != null)
+  }, [data])
 
   return (
     <Nav>
@@ -43,26 +55,30 @@ const Header = (): JSX.Element => {
         <LinkNoStyle to="/">
           <H1>PokéAPI MERN project</H1>
         </LinkNoStyle>
-        {data != null && (
+        {showHelloMessage && data != null && (
           <>
             <H1>{`Hello ${JSON.stringify(data)}!`}</H1>
-            <H1
+          </>
+        )}
+        <RightBox>
+          {token != null ? (
+            <LogOutH1
               onClick={() => {
                 logout.mutate(localStorage.getItem("token"), {
-                  onSuccess: () => {
+                  onSuccess: async () => {
                     localStorage.removeItem("token")
+                    setShowHelloMessage(false)
                   },
                 })
               }}
             >
               Log Out
-            </H1>
-          </>
-        )}
-        <RightBox>
-          <LinkNoStyle to="/login">
-            <H1>Log In</H1>
-          </LinkNoStyle>
+            </LogOutH1>
+          ) : (
+            <LinkNoStyle to="/login">
+              <H1>Log In</H1>
+            </LinkNoStyle>
+          )}
           <LinkNoStyle to="/sign-up">
             <H1>Sign Up</H1>
           </LinkNoStyle>
