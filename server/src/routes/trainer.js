@@ -1,5 +1,6 @@
 import express from "express"
 import jsonwebtoken from "jsonwebtoken"
+import addFavorite from "../models/Favorite.js"
 import Trainer from "../models/Trainer.js"
 
 const trainerRoutes = express.Router()
@@ -79,6 +80,31 @@ trainerRoutes.delete("/trainer/logout", function (req, res) {
   blacklistedTokens.add(token)
 
   return res.json({ success: true })
+})
+
+trainerRoutes.post("/trainer/favorite", function (req, res) {
+  const token = req.headers.authorization?.split(" ")[1]
+  if (!token) {
+    return res.status(401).json({ message: "No token provided" })
+  }
+
+  const { pokemonId } = req.body
+  jsonwebtoken.verify(token, SECRET_JWT_CODE, async (err, decodedToken) => {
+    if (err) {
+      return res.status(403).json({ message: "Invalid token" })
+    }
+
+    try {
+      const trainer = await Trainer.findById(decodedToken.id)
+
+      const favorite = await addFavorite(trainer, pokemonId)
+
+      res.json(favorite)
+    } catch (err) {
+      console.error(err)
+      res.status(500).send("Server Error")
+    }
+  })
 })
 
 function checkTokenBlacklist(req, res, next) {

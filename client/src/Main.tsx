@@ -1,7 +1,13 @@
 import React, { useEffect, useState } from "react"
 import styled from "styled-components"
 import Select, { type SingleValue } from "react-select"
-import { IconRuler2, IconSearch, IconWeight } from "@tabler/icons-react"
+import {
+  IconRuler2,
+  IconSearch,
+  IconWeight,
+  IconStar,
+  IconStarFilled,
+} from "@tabler/icons-react"
 import Header from "./components/Header"
 import StatIcon from "./components/StatIcon"
 import SearchInput from "./components/SearchInput"
@@ -12,6 +18,7 @@ import { getColorRange } from "./helpers/getColorRange"
 import { POKEMON_GENERATION_RANGES } from "./constants/pokemonGenerations"
 import { useGetPokemonByName } from "./hooks/useGetPokemonByName"
 import { type Pokemon } from "./interfaces/pokemon"
+import useAddFavoritePokemon from "./hooks/useAddFavoritePokemon"
 
 const Container = styled.main`
   width: 80%;
@@ -48,6 +55,8 @@ const Main = (): JSX.Element => {
     isLoading: boolean
     isError: boolean
   }
+
+  const addFavoritePokemon = useAddFavoritePokemon()
 
   const handleOnSubmit = (searchInputValue: string): void => {
     setSearchValue(searchInputValue.toLowerCase())
@@ -121,7 +130,14 @@ const Main = (): JSX.Element => {
         )}
         {!isError && !isLoading && (
           <>
-            <h2>You have searched for {firstLetterToUpperCase(searchValue)}</h2>
+            <h2>
+              You have searched for {firstLetterToUpperCase(searchValue)}
+              <IconStar
+                onClick={() => {
+                  addFavoritePokemon.mutate(data.id)
+                }}
+              />
+            </h2>
             <h2>
               Sprite:
               <LargeImage src={selectedSprite ?? ""} alt="pokemon sprite" />
