@@ -154,25 +154,23 @@ const Main = (): JSX.Element => {
 
             <h2>
               Types:
-              <p>
-                <TypeBadgeContainer>
-                  {data?.types.map(({ type }) => (
-                    <TypeBadge key={type.name} type={type.name} />
-                  ))}
-                </TypeBadgeContainer>
-              </p>
+              <TypeBadgeContainer>
+                {data?.types.map(({ type }) => (
+                  <TypeBadge key={type.name} type={type.name} />
+                ))}
+              </TypeBadgeContainer>
             </h2>
 
             <h2>
               <p>Stats:</p>
               {data?.stats.map((stat) => (
-                <>
+                <div key={stat.stat.name}>
                   <StatIcon name={stat.stat.name} icon={stat.stat.name} />
                   <StatBar
                     value={stat.base_stat}
                     rangeColor={getColorRange(stat.base_stat)}
                   />
-                </>
+                </div>
               ))}
             </h2>
 
