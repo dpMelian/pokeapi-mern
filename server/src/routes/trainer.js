@@ -77,7 +77,6 @@ trainerRoutes.delete("/trainer/logout", function (req, res) {
   }
 
   blacklistedTokens.add(token)
-  console.log(blacklistedTokens)
 
   return res.json({ success: true })
 })

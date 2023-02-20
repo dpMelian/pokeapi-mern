@@ -124,8 +124,6 @@ const Login = (): JSX.Element => {
 
   const handleOnEmailBlur = (): void => {
     const emailRegexp = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-    console.log(values.email)
-    console.log(emailRegexp.test(values.email))
     if (values.email.length === 0) {
       setEmailInputErrorMessage("Email is required")
     } else if (!emailRegexp.test(values.email)) {
