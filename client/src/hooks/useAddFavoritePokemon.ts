@@ -17,7 +17,7 @@ const useAddFavoritePokemon = (): UseMutationResult<
       throw new Error("No token provided")
     }
     return await api.post(
-      "/trainer/favorite",
+      "/trainer/favorite/add",
       { pokemonId },
       {
         headers: {

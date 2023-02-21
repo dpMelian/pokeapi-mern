@@ -2,6 +2,7 @@ import express from "express"
 import jsonwebtoken from "jsonwebtoken"
 import addFavorite from "../models/Favorite.js"
 import Trainer from "../models/Trainer.js"
+import { getFavorite } from "../models/Favorite.js"
 
 const trainerRoutes = express.Router()
 const SECRET_JWT_CODE = process.env.SECRET_JWT_CODE
@@ -82,7 +83,7 @@ trainerRoutes.delete("/trainer/logout", function (req, res) {
   return res.json({ success: true })
 })
 
-trainerRoutes.post("/trainer/favorite", function (req, res) {
+trainerRoutes.post("/trainer/favorite/add", function (req, res) {
   const token = req.headers.authorization?.split(" ")[1]
   if (!token) {
     return res.status(401).json({ message: "No token provided" })
@@ -96,10 +97,36 @@ trainerRoutes.post("/trainer/favorite", function (req, res) {
 
     try {
       const trainer = await Trainer.findById(decodedToken.id)
-
       const favorite = await addFavorite(trainer, pokemonId)
 
       res.json(favorite)
+    } catch (err) {
+      console.error(err)
+      res.status(500).send("Server Error")
+    }
+  })
+})
+
+trainerRoutes.get("/trainer/favorite/get", function (req, res) {
+  const token = req.headers.authorization?.split(" ")[1]
+  if (!token) {
+    return res.status(401).json({ message: "No token provided" })
+  }
+
+  jsonwebtoken.verify(token, SECRET_JWT_CODE, async (err, decodedToken) => {
+    try {
+      const trainer = await Trainer.findById(decodedToken.id)
+      if (!trainer) {
+        return res.status(404).json({ message: "Trainer not found" })
+      }
+
+      const favorite = await getFavorite(trainer._id)
+
+      if (favorite) {
+        return res.json({ pokemonId: favorite.pokemon })
+      } else {
+        return res.status(404).json({ message: "Favorite not found" })
+      }
     } catch (err) {
       console.error(err)
       res.status(500).send("Server Error")

@@ -1,9 +1,9 @@
-import { model, Schema, Types } from "mongoose"
+import { model, Schema } from "mongoose"
 
 const schema = Schema(
   {
     trainer: { type: Schema.Types.ObjectId, ref: "Trainer", required: true },
-    pokemon: { type: Schema.Types.ObjectId, ref: "Pokemon", required: true },
+    pokemon: { type: Number, required: true },
   },
   { collection: "favorite" }
 )
@@ -11,11 +11,14 @@ const schema = Schema(
 const Favorite = model("Favorite", schema)
 
 const addFavorite = async (trainer, pokemonId) => {
-  const favorite = new Favorite({
-    trainer,
-    pokemon: Types.ObjectId(pokemonId),
-  })
-  return favorite.save()
+  const filter = { trainer: trainer }
+  const update = { pokemon: pokemonId }
+  const options = { upsert: true, new: true }
+
+  return Favorite.findOneAndUpdate(filter, update, options)
 }
 
 export default addFavorite
+
+export const getFavorite = async (trainerId) =>
+  await Favorite.findOne({ trainer: trainerId })

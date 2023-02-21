@@ -19,6 +19,7 @@ import { POKEMON_GENERATION_RANGES } from "./constants/pokemonGenerations"
 import { useGetPokemonByName } from "./hooks/useGetPokemonByName"
 import { type Pokemon } from "./interfaces/pokemon"
 import useAddFavoritePokemon from "./hooks/useAddFavoritePokemon"
+import useGetTrainerFavorite from "./hooks/useGetTrainerFavorite"
 
 const Container = styled.main`
   width: 80%;
@@ -47,6 +48,7 @@ const Main = (): JSX.Element => {
     [] as Array<{ value: string; label: string }>
   )
   const [selectedSprite, setSelectedSprite] = useState("")
+  const [isPokemonFavorited, setIsPokemonFavorited] = useState(false)
 
   const { data, isLoading, isError } = useGetPokemonByName(
     searchValue
@@ -57,6 +59,7 @@ const Main = (): JSX.Element => {
   }
 
   const addFavoritePokemon = useAddFavoritePokemon()
+  const { data: favoritePokemonId } = useGetTrainerFavorite()
 
   const handleOnSubmit = (searchInputValue: string): void => {
     setSearchValue(searchInputValue.toLowerCase())
@@ -132,11 +135,19 @@ const Main = (): JSX.Element => {
           <>
             <h2>
               You have searched for {firstLetterToUpperCase(searchValue)}
-              <IconStar
-                onClick={() => {
-                  addFavoritePokemon.mutate(data.id)
-                }}
-              />
+              {isPokemonFavorited ? (
+                <IconStarFilled />
+              ) : (
+                <IconStar
+                  onClick={() => {
+                    addFavoritePokemon.mutate(data.id, {
+                      onSuccess: () => {
+                        setIsPokemonFavorited(true)
+                      },
+                    })
+                  }}
+                />
+              )}
             </h2>
             <h2>
               Sprite:
