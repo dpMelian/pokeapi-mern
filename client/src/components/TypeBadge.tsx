@@ -7,12 +7,13 @@ interface BadgeProps {
   type: string
 }
 
-const Badge = styled.span<BadgeProps>`
-  border: 2px solid;
-  border-radius: 5px;
+const Badge = styled.h3<BadgeProps>`
   background-color: ${(props) => TYPES[props.type]};
-  padding: 0 1rem;
+  border-radius: 5px;
+  border: 2px solid;
   display: inline-block;
+  font-family: "Kadwa";
+  padding: 0 1rem;
   text-align: center;
   width: 120px;
 `

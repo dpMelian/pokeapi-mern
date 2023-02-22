@@ -29,8 +29,6 @@ const theme = {
   secondary: "#F1F0CC",
   "primary--darker": "#3F0D12",
   "secondary--darker": "#75624E",
-  brown: "#D5BF86",
-  secondaryFontFamily: "Roboto",
 }
 
 const queryClient = new QueryClient()

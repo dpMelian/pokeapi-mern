@@ -51,7 +51,6 @@ const Input = styled.input<InputProps>`
     ${(props) =>
       props.isError ?? false ? "red" : props.theme["primary--darker"]};
   box-sizing: border-box;
-  font-family: ${(props) => props.theme.secondaryFontFamily};
   height: 3rem;
   padding-left: 40px;
   width: 100%;
@@ -90,10 +89,6 @@ const InputIconEye = styled(IconEye)`
   right: 10px;
   position: absolute;
   transform: translateY(50%);
-`
-
-const InputDescription = styled.span`
-  font-family: ${(props) => props.theme.secondaryFontFamily};
 `
 
 const Button = styled.button`
@@ -252,7 +247,7 @@ const SignUp = (): JSX.Element => {
             <InputIconMail />
           </InputContainer>
           {emailInputErrorMessage.length > 0 && (
-            <InputDescription>{emailInputErrorMessage}</InputDescription>
+            <span>{emailInputErrorMessage}</span>
           )}
           <label htmlFor="password">Password</label>
           <InputContainer>
@@ -283,7 +278,7 @@ const SignUp = (): JSX.Element => {
             )}
           </InputContainer>
           {passwordInputErrorMessage.length > 0 && (
-            <InputDescription>{passwordInputErrorMessage}</InputDescription>
+            <span>{passwordInputErrorMessage}</span>
           )}
           <Button type="submit">
             <TextColor>Create account</TextColor>
