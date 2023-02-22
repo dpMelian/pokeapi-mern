@@ -119,6 +119,12 @@ const Main = (): JSX.Element => {
     <>
       <Header />
       <Container>
+        <h1>Discover the World of Pokémon with PokéAPI MERN</h1>
+        <p>
+          With our intuitive user interface and powerful search capabilities,
+          you can easily find information about your favorite Pokémon: sprites,
+          abilities, types, stats and more!
+        </p>
         <SearchInput handleOnSubmit={handleOnSubmit} />
 
         {isError && <p>Pokémon {searchValue} not found</p>}
@@ -179,17 +185,17 @@ const Main = (): JSX.Element => {
               </ul>
             </h2>
 
-            <h2>
-              Types:
+            <div>
+              <h2>Types:</h2>
               <TypeBadgeContainer>
                 {data?.types.map(({ type }) => (
                   <TypeBadge key={type.name} type={type.name} />
                 ))}
               </TypeBadgeContainer>
-            </h2>
+            </div>
 
-            <h2>
-              <p>Stats:</p>
+            <div>
+              <h2>Stats:</h2>
               {data?.stats.map((stat) => (
                 <div key={stat.stat.name}>
                   <StatIcon name={stat.stat.name} icon={stat.stat.name} />
@@ -199,7 +205,7 @@ const Main = (): JSX.Element => {
                   />
                 </div>
               ))}
-            </h2>
+            </div>
 
             <h2>
               <IconWeight />
