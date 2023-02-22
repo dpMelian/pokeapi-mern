@@ -19,7 +19,7 @@ import { POKEMON_GENERATION_RANGES } from "./constants/pokemonGenerations"
 import { useGetPokemonByName } from "./hooks/useGetPokemonByName"
 import { type Pokemon } from "./interfaces/pokemon"
 import useAddFavoritePokemon from "./hooks/useAddFavoritePokemon"
-import useGetTrainerFavorite from "./hooks/useGetTrainerFavorite"
+// import useGetTrainerFavorite from "./hooks/useGetTrainerFavorite"
 
 const Container = styled.main`
   width: 80%;
@@ -30,6 +30,11 @@ const Loading = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+`
+
+const ArtworkImage = styled.img`
+  object-fit: contain;
+  width: 300px;
 `
 
 const LargeImage = styled.img`
@@ -49,6 +54,7 @@ const Main = (): JSX.Element => {
   )
   const [selectedSprite, setSelectedSprite] = useState("")
   const [isPokemonFavorited, setIsPokemonFavorited] = useState(false)
+  const [artworkImage, setArtworkImage] = useState("")
 
   const { data, isLoading, isError } = useGetPokemonByName(
     searchValue
@@ -59,7 +65,7 @@ const Main = (): JSX.Element => {
   }
 
   const addFavoritePokemon = useAddFavoritePokemon()
-  const { data: favoritePokemonId } = useGetTrainerFavorite()
+  // const { data: favoritePokemonId } = useGetTrainerFavorite()
 
   const handleOnSubmit = (searchInputValue: string): void => {
     setSearchValue(searchInputValue.toLowerCase())
@@ -95,6 +101,12 @@ const Main = (): JSX.Element => {
 
     const selectedVersion =
       POKEMON_GENERATION_RANGES[selectedGeneration].version
+
+    if (data.sprites.other.dream_world.front_default != null) {
+      setArtworkImage(data.sprites.other.dream_world.front_default)
+    } else {
+      setArtworkImage(data.sprites.other["official-artwork"].front_default)
+    }
 
     setSelectedSprite(
       data.sprites.versions[selectedGeneration][selectedVersion].front_default
@@ -140,7 +152,7 @@ const Main = (): JSX.Element => {
         {!isError && !isLoading && (
           <>
             <h2>
-              You have searched for {firstLetterToUpperCase(searchValue)}
+              {firstLetterToUpperCase(searchValue)}
               {isPokemonFavorited ? (
                 <IconStarFilled />
               ) : (
@@ -155,6 +167,7 @@ const Main = (): JSX.Element => {
                 />
               )}
             </h2>
+            <ArtworkImage src={artworkImage} alt="pokemon dream world image" />
             <h2>
               Sprite:
               <LargeImage src={selectedSprite ?? ""} alt="pokemon sprite" />

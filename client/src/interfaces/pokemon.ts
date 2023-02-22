@@ -3,6 +3,14 @@ export interface Pokemon {
   height: number
   id: number
   sprites: {
+    other: {
+      dream_world: {
+        front_default: string
+      }
+      "official-artwork": {
+        front_default: string
+      }
+    }
     versions: Record<string, Record<string, { front_default: string }>>
   }
   stats: Array<{ base_stat: number; stat: { name: string } }>
