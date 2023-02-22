@@ -2,9 +2,17 @@ import React, { useState } from "react"
 import styled from "styled-components"
 import { IconSearch } from "@tabler/icons-react"
 
-const InputGroup = styled.div`
+const Form = styled.form`
   display: flex;
+  justify-content: center;
+  margin: 0 auto;
+  width: 50%;
+`
+
+const InputGroup = styled.div`
   align-items: center;
+  display: flex;
+  width: 100%;
 `
 
 const Input = styled.input`
@@ -12,6 +20,7 @@ const Input = styled.input`
   border-right: none;
   height: 2rem;
   line-height: 2rem;
+  width: 100%;
 `
 
 const Button = styled.button`
@@ -19,6 +28,7 @@ const Button = styled.button`
   height: 2rem;
   line-height: 2rem;
   box-sizing: content-box;
+  width: auto;
 `
 
 interface Props {
@@ -33,7 +43,7 @@ const SearchInput = ({ handleOnSubmit }: Props): JSX.Element => {
   }
 
   return (
-    <form
+    <Form
       onSubmit={(e) => {
         if (inputValue === "") return
         e.preventDefault()
@@ -52,7 +62,7 @@ const SearchInput = ({ handleOnSubmit }: Props): JSX.Element => {
           <IconSearch />
         </Button>
       </InputGroup>
-    </form>
+    </Form>
   )
 }
 

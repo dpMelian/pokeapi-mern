@@ -29,6 +29,7 @@ const theme = {
   secondary: "#F1F0CC",
   "primary--darker": "#3F0D12",
   "secondary--darker": "#75624E",
+  "secondary--lighter": "#f8f7e5",
 }
 
 const queryClient = new QueryClient()

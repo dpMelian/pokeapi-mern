@@ -12,10 +12,14 @@ const Container = styled.div`
   align-items: center;
 `
 
+const Span = styled.span`
+  font-family: Kadwa;
+`
+
 const StatIcon = ({ name, icon }: Props): JSX.Element => (
   <Container>
     {React.createElement(STAT_ICONS[icon], null)}
-    {<h3>{name.toUpperCase()}</h3>}
+    {<Span>{name.toUpperCase()}</Span>}
   </Container>
 )
 

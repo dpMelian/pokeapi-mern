@@ -22,19 +22,50 @@ import useAddFavoritePokemon from "./hooks/useAddFavoritePokemon"
 // import useGetTrainerFavorite from "./hooks/useGetTrainerFavorite"
 
 const Container = styled.main`
-  width: 80%;
   margin: 1rem auto;
+  width: 80%;
+`
+
+const Card = styled.div`
+  align-items: center;
+  background-color: ${(props) => props.theme["secondary--lighter"]};
+  border-radius: 10px;
+  border: 5px solid ${(props) => props.theme["primary--darker"]};
+  display: flex;
+  flex-direction: column;
+  margin: 2rem auto;
+  position: relative;
+  width: 50%;
+`
+
+const CardContainer = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  padding: 1rem;
+`
+
+const IconWrapper = styled.span`
+  position: absolute;
+  top: 5px;
+  right: 5px;
+`
+
+const H2Border = styled.h2`
+  border-bottom: 5px solid ${(props) => props.theme["primary--darker"]};
+  text-align: center;
+  width: 100%;
 `
 
 const Loading = styled.div`
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
 `
 
 const ArtworkImage = styled.img`
   object-fit: contain;
-  width: 300px;
+  height: 300px;
 `
 
 const LargeImage = styled.img`
@@ -137,6 +168,7 @@ const Main = (): JSX.Element => {
           you can easily find information about your favorite Pokémon: sprites,
           abilities, types, stats and more!
         </p>
+
         <SearchInput handleOnSubmit={handleOnSubmit} />
 
         {isError && <p>Pokémon {searchValue} not found</p>}
@@ -149,88 +181,100 @@ const Main = (): JSX.Element => {
             </span>
           </Loading>
         )}
-        {!isError && !isLoading && (
-          <>
-            <h2>
-              {firstLetterToUpperCase(searchValue)}
+        <Card>
+          {!isError && !isLoading && (
+            <>
+              <H2Border>{`${firstLetterToUpperCase(searchValue)} #${
+                data.id
+              }`}</H2Border>
               {isPokemonFavorited ? (
-                <IconStarFilled />
+                <IconWrapper>
+                  <IconStarFilled />
+                </IconWrapper>
               ) : (
-                <IconStar
-                  onClick={() => {
-                    addFavoritePokemon.mutate(data.id, {
-                      onSuccess: () => {
-                        setIsPokemonFavorited(true)
-                      },
-                    })
-                  }}
-                />
-              )}
-            </h2>
-            <ArtworkImage src={artworkImage} alt="pokemon dream world image" />
-            <h2>
-              Sprite:
-              <LargeImage src={selectedSprite ?? ""} alt="pokemon sprite" />
-            </h2>
-
-            <Select
-              options={spriteOptions}
-              onChange={(e) => {
-                updateSelectedSprite(e)
-              }}
-              styles={{
-                control: (baseStyles) => ({
-                  ...baseStyles,
-                  width: "20rem",
-                }),
-              }}
-            />
-
-            <h2>
-              Abilities:
-              <ul>
-                {data?.abilities.map(({ ability, is_hidden: isHidden }) => (
-                  <li key={ability.name}>
-                    {firstLetterToUpperCase(ability.name)}
-                    {isHidden && " (hidden ability)"}
-                  </li>
-                ))}
-              </ul>
-            </h2>
-
-            <div>
-              <h2>Types:</h2>
-              <TypeBadgeContainer>
-                {data?.types.map(({ type }) => (
-                  <TypeBadge key={type.name} type={type.name} />
-                ))}
-              </TypeBadgeContainer>
-            </div>
-
-            <div>
-              <h2>Stats:</h2>
-              {data?.stats.map((stat) => (
-                <div key={stat.stat.name}>
-                  <StatIcon name={stat.stat.name} icon={stat.stat.name} />
-                  <StatBar
-                    value={stat.base_stat}
-                    rangeColor={getColorRange(stat.base_stat)}
+                <IconWrapper>
+                  <IconStar
+                    onClick={() => {
+                      addFavoritePokemon.mutate(data.id, {
+                        onSuccess: () => {
+                          setIsPokemonFavorited(true)
+                        },
+                      })
+                    }}
                   />
+                </IconWrapper>
+              )}
+              <ArtworkImage
+                src={artworkImage}
+                alt="pokemon dream world image"
+              />
+              <CardContainer>
+                <div>
+                  <h2>Abilities:</h2>
+                  <ul>
+                    {data?.abilities.map(({ ability, is_hidden: isHidden }) => (
+                      <li key={ability.name}>
+                        {firstLetterToUpperCase(ability.name)}
+                        {isHidden && " (hidden ability)"}
+                      </li>
+                    ))}
+                  </ul>
                 </div>
-              ))}
-            </div>
 
-            <h2>
-              <IconWeight />
-              Weight: {data?.weight}
-            </h2>
+                <div>
+                  <h2>Types:</h2>
+                  <TypeBadgeContainer>
+                    {data?.types.map(({ type }) => (
+                      <TypeBadge key={type.name} type={type.name} />
+                    ))}
+                  </TypeBadgeContainer>
+                </div>
 
-            <h2>
-              <IconRuler2 />
-              Height: {data?.height}
-            </h2>
-          </>
-        )}
+                <div>
+                  <h2>Stats:</h2>
+                  {data?.stats.map((stat) => (
+                    <div key={stat.stat.name}>
+                      <StatIcon name={stat.stat.name} icon={stat.stat.name} />
+                      <StatBar
+                        value={stat.base_stat}
+                        rangeColor={getColorRange(stat.base_stat)}
+                      />
+                    </div>
+                  ))}
+                </div>
+
+                <div>
+                  <h2>
+                    <IconWeight />
+                    Weight: {data?.weight}
+                  </h2>
+
+                  <h2>
+                    <IconRuler2 />
+                    Height: {data?.height}
+                  </h2>
+                </div>
+              </CardContainer>
+            </>
+          )}
+        </Card>
+        <h2>
+          Sprite:
+          <LargeImage src={selectedSprite ?? ""} alt="pokemon sprite" />
+        </h2>
+
+        <Select
+          options={spriteOptions}
+          onChange={(e) => {
+            updateSelectedSprite(e)
+          }}
+          styles={{
+            control: (baseStyles) => ({
+              ...baseStyles,
+              width: "20rem",
+            }),
+          }}
+        />
       </Container>
     </>
   )
