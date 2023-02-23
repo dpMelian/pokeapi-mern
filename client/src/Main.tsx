@@ -19,6 +19,7 @@ import { POKEMON_GENERATION_RANGES } from "./constants/pokemonGenerations"
 import { useGetPokemonByName } from "./hooks/useGetPokemonByName"
 import { type Pokemon } from "./interfaces/pokemon"
 import useAddFavoritePokemon from "./hooks/useAddFavoritePokemon"
+import { DarkModeContextProvider } from "./contexts/DarkModeContext"
 // import useGetTrainerFavorite from "./hooks/useGetTrainerFavorite"
 
 const Container = styled.main`
@@ -159,7 +160,7 @@ const Main = (): JSX.Element => {
   }
 
   return (
-    <>
+    <DarkModeContextProvider>
       <Header />
       <Container>
         <h1>Discover the World of Pokémon with PokéAPI MERN</h1>
@@ -276,7 +277,7 @@ const Main = (): JSX.Element => {
           }}
         />
       </Container>
-    </>
+    </DarkModeContextProvider>
   )
 }
 

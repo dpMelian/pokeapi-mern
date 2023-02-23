@@ -1,12 +1,19 @@
-import React, { useEffect, useState } from "react"
+import React, { useContext, useEffect, useState } from "react"
 import { Link } from "react-router-dom"
 import styled from "styled-components"
+import Context from "../contexts/DarkModeContext"
 import useGetLoggedTrainerName from "../hooks/useGetLoggedTrainerName"
 import useLogout from "../hooks/useLogout"
+import DarkModeToggle from "./DarkModeToggle"
 
-const Nav = styled.nav`
+interface NavProps {
+  isDarkMode: boolean
+}
+
+const Nav = styled.nav<NavProps>`
   display: "flex";
-  background-color: ${(props) => props.theme.primary};
+  background-color: ${(props) =>
+    props.isDarkMode ? props.theme["primary--darker"] : props.theme.primary};
   border-bottom: 2px solid ${(props) => props.theme["primary--darker"]};
 `
 
@@ -42,6 +49,7 @@ const Header = (): JSX.Element => {
   const { data } = useGetLoggedTrainerName()
   const logout = useLogout()
   const token = localStorage.getItem("token")
+  const { isDarkMode } = useContext(Context)
 
   const [showHelloMessage, setShowHelloMessage] = useState(false)
 
@@ -50,7 +58,7 @@ const Header = (): JSX.Element => {
   }, [data])
 
   return (
-    <Nav>
+    <Nav isDarkMode={isDarkMode}>
       <Container>
         <LinkNoStyle to="/">
           <H1>PokéAPI MERN project</H1>
@@ -60,6 +68,7 @@ const Header = (): JSX.Element => {
             <H1>{`Hello ${JSON.stringify(data)}!`}</H1>
           </>
         )}
+        <DarkModeToggle />
         <RightBox>
           {token != null ? (
             <LogOutH1
