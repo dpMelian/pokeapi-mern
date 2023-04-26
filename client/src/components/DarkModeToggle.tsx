@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react"
+import React, { useContext } from "react"
 import styled from "styled-components"
 import { IconMoon, IconSun } from "@tabler/icons-react"
 import Context from "../contexts/DarkModeContext"
@@ -17,8 +17,6 @@ const IconSunStyled = styled(IconSun)`
 
 const DarkModeSlider = (): JSX.Element => {
   const { isDarkMode, setIsDarkMode } = useContext(Context)
-  console.log(isDarkMode)
-  console.log(setIsDarkMode)
   return (
     <>
       {isDarkMode ? (

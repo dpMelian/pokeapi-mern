@@ -19,8 +19,12 @@ import { POKEMON_GENERATION_RANGES } from "./constants/pokemonGenerations"
 import { useGetPokemonByName } from "./hooks/useGetPokemonByName"
 import { type Pokemon } from "./interfaces/pokemon"
 import useAddFavoritePokemon from "./hooks/useAddFavoritePokemon"
-import { DarkModeContextProvider } from "./contexts/DarkModeContext"
 // import useGetTrainerFavorite from "./hooks/useGetTrainerFavorite"
+
+const Base = styled.div`
+  background-color: ${(props) => props.theme.secondary};
+  color: ${(props) => props.theme["primary--darker"]};
+`
 
 const Container = styled.main`
   margin: 1rem auto;
@@ -80,7 +84,9 @@ const TypeBadgeContainer = styled.div`
 `
 
 const Main = (): JSX.Element => {
-  const [searchValue, setSearchValue] = useState("pikachu")
+  const [searchValue, setSearchValue] = useState(
+    Math.floor(Math.random() * (1010 - 1) + 1) as string | number
+  )
   const [spriteOptions, setSpriteOptions] = useState(
     [] as Array<{ value: string; label: string }>
   )
@@ -160,7 +166,7 @@ const Main = (): JSX.Element => {
   }
 
   return (
-    <DarkModeContextProvider>
+    <Base>
       <Header />
       <Container>
         <h1>Discover the World of Pokémon with PokéAPI MERN</h1>
@@ -178,14 +184,19 @@ const Main = (): JSX.Element => {
             <IconSearch />
             <span>
               Searching Pokémon{" "}
-              <strong>{firstLetterToUpperCase(searchValue)}</strong>...
+              <strong>
+                {typeof searchValue === "string"
+                  ? firstLetterToUpperCase(searchValue)
+                  : searchValue}
+              </strong>
+              ...
             </span>
           </Loading>
         )}
         <Card>
           {!isError && !isLoading && (
             <>
-              <H2Border>{`${firstLetterToUpperCase(searchValue)} #${
+              <H2Border>{`${firstLetterToUpperCase(data.name)} #${
                 data.id
               }`}</H2Border>
               {isPokemonFavorited ? (
@@ -277,7 +288,7 @@ const Main = (): JSX.Element => {
           }}
         />
       </Container>
-    </DarkModeContextProvider>
+    </Base>
   )
 }
 

@@ -6,7 +6,8 @@ import SignUp from "./pages/SignUp"
 import Login from "./pages/Login"
 import { createBrowserRouter, RouterProvider } from "react-router-dom"
 import { QueryClient, QueryClientProvider } from "react-query"
-import { ThemeProvider } from "styled-components"
+import ThemeProviderWrapper from "./providers/ThemeProviderWrapper"
+import { DarkModeContextProvider } from "./contexts/DarkModeContext"
 import "./index.css"
 
 const router = createBrowserRouter([
@@ -24,24 +25,18 @@ const router = createBrowserRouter([
   },
 ])
 
-const theme = {
-  primary: "#FE6D7A",
-  secondary: "#F1F0CC",
-  "primary--darker": "#3F0D12",
-  "secondary--darker": "#75624E",
-  "secondary--lighter": "#f8f7e5",
-}
-
 const queryClient = new QueryClient()
 
 const root = ReactDOM.createRoot(document.getElementById("root"))
 root.render(
   <QueryClientProvider client={queryClient}>
-    <ThemeProvider theme={theme}>
-      <React.StrictMode>
-        <RouterProvider router={router} />
-      </React.StrictMode>
-    </ThemeProvider>
+    <DarkModeContextProvider>
+      <ThemeProviderWrapper>
+        <React.StrictMode>
+          <RouterProvider router={router} />
+        </React.StrictMode>
+      </ThemeProviderWrapper>
+    </DarkModeContextProvider>
   </QueryClientProvider>
 )
 

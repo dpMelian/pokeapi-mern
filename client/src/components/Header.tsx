@@ -1,19 +1,13 @@
-import React, { useContext, useEffect, useState } from "react"
+import React, { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
 import styled from "styled-components"
-import Context from "../contexts/DarkModeContext"
 import useGetLoggedTrainerName from "../hooks/useGetLoggedTrainerName"
 import useLogout from "../hooks/useLogout"
 import DarkModeToggle from "./DarkModeToggle"
 
-interface NavProps {
-  isDarkMode: boolean
-}
-
-const Nav = styled.nav<NavProps>`
+const Nav = styled.nav`
   display: "flex";
-  background-color: ${(props) =>
-    props.isDarkMode ? props.theme["primary--darker"] : props.theme.primary};
+  background-color: ${(props) => props.theme.primary};
   border-bottom: 2px solid ${(props) => props.theme["primary--darker"]};
 `
 
@@ -49,7 +43,6 @@ const Header = (): JSX.Element => {
   const { data } = useGetLoggedTrainerName()
   const logout = useLogout()
   const token = localStorage.getItem("token")
-  const { isDarkMode } = useContext(Context)
 
   const [showHelloMessage, setShowHelloMessage] = useState(false)
 
@@ -58,7 +51,7 @@ const Header = (): JSX.Element => {
   }, [data])
 
   return (
-    <Nav isDarkMode={isDarkMode}>
+    <Nav>
       <Container>
         <LinkNoStyle to="/">
           <H1>PokéAPI MERN project</H1>

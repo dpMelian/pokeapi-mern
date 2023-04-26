@@ -1,11 +1,22 @@
 import React, { useState } from "react"
 
-const Context = React.createContext({
+interface ContextProps {
+  isDarkMode: boolean
+  setIsDarkMode: React.Dispatch<React.SetStateAction<boolean>>
+}
+
+const Context = React.createContext<ContextProps>({
   isDarkMode: false,
-  setIsDarkMode: () => {},
+  setIsDarkMode: () => {
+    console.error("no function set")
+  },
 })
 
-export function DarkModeContextProvider({ children }: { children: any }) {
+export const DarkModeContextProvider = ({
+  children,
+}: {
+  children: React.ReactNode
+}): JSX.Element => {
   const [isDarkMode, setIsDarkMode] = useState(false)
 
   const contextValue = {

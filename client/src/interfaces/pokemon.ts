@@ -1,6 +1,7 @@
 export interface Pokemon {
   abilities: Array<{ ability: { name: string }; is_hidden: boolean }>
   height: number
+  name: string
   id: number
   sprites: {
     other: {

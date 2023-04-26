@@ -19,6 +19,11 @@ interface MessageProps {
   type: string
 }
 
+const BaseDiv = styled.div`
+  background-color: ${(props) => props.theme.secondary};
+  color: ${(props) => props.theme["primary--darker"]};
+`
+
 const Container = styled.main`
   display: flex;
   flex-direction: column;
@@ -97,7 +102,6 @@ const Button = styled.button`
   border: 2px solid ${(props) => props.theme["primary--darker"]};
   box-sizing: border-box;
   cursor: pointer;
-  font-family: "Kadwa";
   height: 3rem;
   margin-top: 2rem;
   width: 100%;
@@ -105,6 +109,7 @@ const Button = styled.button`
 
 const TextColor = styled.span`
   color: ${(props) => props.theme["primary--darker"]};
+  font-family: "Kadwa";
   font-size: large;
 `
 
@@ -214,7 +219,7 @@ const SignUp = (): JSX.Element => {
   }
 
   return (
-    <>
+    <BaseDiv>
       <Header />
       <Container>
         <H2>Create account</H2>
@@ -289,7 +294,7 @@ const SignUp = (): JSX.Element => {
           <Message type={messageText.type}>{messageText.message}</Message>
         )}
       </Container>
-    </>
+    </BaseDiv>
   )
 }
 

@@ -3,7 +3,7 @@ import { useQuery, type UseQueryResult } from "react-query"
 import { POKE_API_BASE_URL } from "../constants/baseUrls"
 
 export const useGetPokemonByName = (
-  name: string
+  name: string | number
 ): UseQueryResult<AxiosResponse<any, unknown>> =>
   useQuery(
     ["getPokemonByName", name],
