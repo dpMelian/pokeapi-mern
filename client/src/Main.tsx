@@ -40,7 +40,7 @@ const Card = styled.div`
   flex-direction: column;
   margin: 2rem auto;
   position: relative;
-  width: 50%;
+  width: 70%;
 `
 
 const CardContainer = styled.div`
@@ -133,18 +133,18 @@ const Main = (): JSX.Element => {
       }
     }
 
+    if (data.sprites.other.dream_world.front_default != null) {
+      setArtworkImage(data.sprites.other.dream_world.front_default)
+    } else {
+      setArtworkImage(data.sprites.other["official-artwork"].front_default)
+    }
+
     if (selectedGeneration.length === 0) {
       return
     }
 
     const selectedVersion =
       POKEMON_GENERATION_RANGES[selectedGeneration].version
-
-    if (data.sprites.other.dream_world.front_default != null) {
-      setArtworkImage(data.sprites.other.dream_world.front_default)
-    } else {
-      setArtworkImage(data.sprites.other["official-artwork"].front_default)
-    }
 
     setSelectedSprite(
       data.sprites.versions[selectedGeneration][selectedVersion].front_default
@@ -216,10 +216,12 @@ const Main = (): JSX.Element => {
                   />
                 </IconWrapper>
               )}
-              <ArtworkImage
-                src={artworkImage}
-                alt="pokemon dream world image"
-              />
+              <a href={artworkImage} target="_blank" rel="noreferrer">
+                <ArtworkImage
+                  src={artworkImage}
+                  alt="pokemon dream world image"
+                />
+              </a>
               <CardContainer>
                 <div>
                   <h2>Abilities:</h2>
@@ -266,27 +268,34 @@ const Main = (): JSX.Element => {
                     Height: {data?.height}
                   </h2>
                 </div>
+                {spriteOptions.length > 0 && (
+                  <>
+                    <h2>
+                      Sprite:
+                      <LargeImage
+                        src={selectedSprite ?? ""}
+                        alt="pokemon sprite"
+                      />
+                    </h2>
+
+                    <Select
+                      options={spriteOptions}
+                      onChange={(e) => {
+                        updateSelectedSprite(e)
+                      }}
+                      styles={{
+                        control: (baseStyles) => ({
+                          ...baseStyles,
+                          width: "20rem",
+                        }),
+                      }}
+                    />
+                  </>
+                )}
               </CardContainer>
             </>
           )}
         </Card>
-        <h2>
-          Sprite:
-          <LargeImage src={selectedSprite ?? ""} alt="pokemon sprite" />
-        </h2>
-
-        <Select
-          options={spriteOptions}
-          onChange={(e) => {
-            updateSelectedSprite(e)
-          }}
-          styles={{
-            control: (baseStyles) => ({
-              ...baseStyles,
-              width: "20rem",
-            }),
-          }}
-        />
       </Container>
     </Base>
   )
