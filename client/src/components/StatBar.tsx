@@ -11,13 +11,17 @@ interface BarProps {
   rangeColor: string
 }
 
+const MAX_STAT_VALUE = 255
+const MAX_BAR_WIDTH_PERCENTAGE = 100
+
 const Bar = styled.span<BarProps>`
   display: flex;
   border: 2px solid;
   border-radius: 5px;
   background-color: ${(props: ThemedStyledProps<BarProps, any>) =>
     props.rangeColor};
-  width: ${(props: ThemedStyledProps<BarProps, any>) => props.value}px;
+  width: ${(props) =>
+    `calc(${props.value / MAX_STAT_VALUE} * ${MAX_BAR_WIDTH_PERCENTAGE}%)`};
   height: 20px;
 `
 

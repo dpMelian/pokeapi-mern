@@ -19,7 +19,12 @@ import { POKEMON_GENERATION_RANGES } from "./constants/pokemonGenerations"
 import { useGetPokemonByName } from "./hooks/useGetPokemonByName"
 import { type Pokemon } from "./interfaces/pokemon"
 import useAddFavoritePokemon from "./hooks/useAddFavoritePokemon"
+import { TYPES } from "./constants/pokemonTypes"
 // import useGetTrainerFavorite from "./hooks/useGetTrainerFavorite"
+
+interface CardHeaderProps {
+  pokemonType: string
+}
 
 const Base = styled.div`
   background-color: ${(props) => props.theme.secondary};
@@ -40,14 +45,35 @@ const Card = styled.div`
   flex-direction: column;
   margin: 2rem auto;
   position: relative;
-  width: 70%;
+  width: 60%;
+
+  @media screen and (max-width: 768px) {
+    width: 90%;
+  }
+`
+
+const CardHeader = styled.div<CardHeaderProps>`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  border-bottom: 5px solid ${(props) => props.theme["primary--darker"]};
+  background-color: ${(props) => TYPES[props.pokemonType]};
+  width: 100%;
+
+  @media screen and (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
 `
 
 const CardContainer = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 4rem;
+  justify-items: center;
   padding: 1rem;
+
+  @media screen and (max-width: 1000px) {
+    grid-template-columns: 1fr;
+  }
 `
 
 const IconWrapper = styled.span`
@@ -56,8 +82,7 @@ const IconWrapper = styled.span`
   right: 5px;
 `
 
-const H2Border = styled.h2`
-  border-bottom: 5px solid ${(props) => props.theme["primary--darker"]};
+const H2 = styled.h2`
   text-align: center;
   width: 100%;
 `
@@ -71,6 +96,12 @@ const Loading = styled.div`
 const ArtworkImage = styled.img`
   object-fit: contain;
   height: 300px;
+  width: 100%;
+  padding: 1rem;
+
+  @media screen and (max-width: 768px) {
+    padding: 0;
+  }
 `
 
 const LargeImage = styled.img`
@@ -196,33 +227,45 @@ const Main = (): JSX.Element => {
         <Card>
           {!isError && !isLoading && (
             <>
-              <H2Border>{`${firstLetterToUpperCase(data.name)} #${
-                data.id
-              }`}</H2Border>
-              {isPokemonFavorited ? (
-                <IconWrapper>
-                  <IconStarFilled />
-                </IconWrapper>
-              ) : (
-                <IconWrapper>
-                  <IconStar
-                    onClick={() => {
-                      addFavoritePokemon.mutate(data.id, {
-                        onSuccess: () => {
-                          setIsPokemonFavorited(true)
-                        },
-                      })
-                    }}
+              <CardHeader pokemonType={data?.types[0]?.type.name}>
+                <a href={artworkImage} target="_blank" rel="noreferrer">
+                  <ArtworkImage
+                    src={artworkImage}
+                    alt="pokemon dream world image"
                   />
-                </IconWrapper>
-              )}
-              <a href={artworkImage} target="_blank" rel="noreferrer">
-                <ArtworkImage
-                  src={artworkImage}
-                  alt="pokemon dream world image"
-                />
-              </a>
+                </a>
+                <H2>
+                  {`${firstLetterToUpperCase(data.name)} #${data.id}`}
+                  {isPokemonFavorited ? (
+                    <IconWrapper>
+                      <IconStarFilled />
+                    </IconWrapper>
+                  ) : (
+                    <IconWrapper>
+                      <IconStar
+                        onClick={() => {
+                          addFavoritePokemon.mutate(data.id, {
+                            onSuccess: () => {
+                              setIsPokemonFavorited(true)
+                            },
+                          })
+                        }}
+                      />
+                    </IconWrapper>
+                  )}
+                </H2>
+              </CardHeader>
+
               <CardContainer>
+                <div>
+                  <h2>Types:</h2>
+                  <TypeBadgeContainer>
+                    {data?.types.map(({ type }) => (
+                      <TypeBadge key={type.name} type={type.name} />
+                    ))}
+                  </TypeBadgeContainer>
+                </div>
+
                 <div>
                   <h2>Abilities:</h2>
                   <ul>
@@ -233,15 +276,6 @@ const Main = (): JSX.Element => {
                       </li>
                     ))}
                   </ul>
-                </div>
-
-                <div>
-                  <h2>Types:</h2>
-                  <TypeBadgeContainer>
-                    {data?.types.map(({ type }) => (
-                      <TypeBadge key={type.name} type={type.name} />
-                    ))}
-                  </TypeBadgeContainer>
                 </div>
 
                 <div>
