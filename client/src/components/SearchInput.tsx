@@ -58,7 +58,7 @@ const SearchInput = ({ handleOnSubmit }: Props): JSX.Element => {
           placeholder="Pikachu"
           onInput={handleOnInput}
         />
-        <Button onClick={() => handleOnSubmit}>
+        <Button onClick={() => handleOnSubmit} aria-label="Search">
           <IconSearch />
         </Button>
       </InputGroup>
