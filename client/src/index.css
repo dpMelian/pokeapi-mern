@@ -9,6 +9,7 @@ body {
   font-family: "Kadwa";
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overflow: scroll;
 }
 
 code {
