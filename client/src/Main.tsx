@@ -3,11 +3,14 @@ import styled from "styled-components"
 import Select, { type SingleValue } from "react-select"
 import {
   IconRuler2,
-  IconSearch,
   IconWeight,
   IconStar,
   IconStarFilled,
 } from "@tabler/icons-react"
+import Box from "@mui/material/Box/Box"
+import Tab from "@mui/material/Tab/Tab"
+import TabList from "@mui/lab/TabList/TabList"
+import TabPanel from "@mui/lab/TabPanel/TabPanel"
 import Header from "./components/Header"
 import StatIcon from "./components/StatIcon"
 import SearchInput from "./components/SearchInput"
@@ -22,6 +25,8 @@ import { type PokemonSpecies } from "./interfaces/pokemonSpecies"
 import useAddFavoritePokemon from "./hooks/useAddFavoritePokemon"
 import { TYPES } from "./constants/pokemonTypes"
 import { useGetPokemonSpeciesByName } from "./hooks/useGetPokemonSpeciesByName"
+import { Skeleton } from "@mui/material"
+import { TabContext } from "@mui/lab"
 // import useGetTrainerFavorite from "./hooks/useGetTrainerFavorite"
 
 interface CardHeaderProps {
@@ -30,6 +35,10 @@ interface CardHeaderProps {
 
 interface JapaneseTextBackgroundProps {
   pokemonType: string
+}
+
+interface SkeletonStyledProps {
+  margin: string
 }
 
 const Base = styled.div`
@@ -75,7 +84,7 @@ const CardHeader = styled.div<CardHeaderProps>`
 
 const CardContainer = styled.div`
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr;
   justify-items: center;
   padding: 1rem;
   width: 100%;
@@ -93,7 +102,7 @@ const IconWrapper = styled.span`
 `
 
 const ArtworkImage = styled.img`
-  height: 300px;
+  height: 200px;
   object-fit: contain;
   padding: 1rem;
   position: relative;
@@ -129,15 +138,23 @@ const JapaneseTextBackground = styled.span<JapaneseTextBackgroundProps>`
   }
 `
 
-const Loading = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
+const SingleColumn = styled.div`
+  grid-column: 1/3;
+  margin: 1rem auto;
+  width: 60%;
 `
 
 const LargeImage = styled.img`
   transform: scale(1.5);
   padding: 0 2rem;
+`
+
+const SkeletonStyled = styled(Skeleton)<SkeletonStyledProps>`
+  margin: ${(props) => props.margin};
+`
+
+const BoxStyled = styled(Box)`
+  font-family: "Kadwa";
 `
 
 const TypeBadgeContainer = styled.div`
@@ -155,6 +172,7 @@ const Main = (): JSX.Element => {
   const [selectedSprite, setSelectedSprite] = useState("")
   const [isPokemonFavorited, setIsPokemonFavorited] = useState(false)
   const [artworkImage, setArtworkImage] = useState("")
+  const [tabValue, setTabValue] = useState("1")
 
   const {
     data: pokemon,
@@ -172,6 +190,13 @@ const Main = (): JSX.Element => {
 
   const addFavoritePokemon = useAddFavoritePokemon()
   // const { data: favoritePokemonId } = useGetTrainerFavorite()
+
+  const handleTabChange = (
+    _e: React.ChangeEvent<unknown>,
+    value: string
+  ): void => {
+    setTabValue(value)
+  }
 
   const handleOnSubmit = (searchInputValue: string): void => {
     setSearchValue(searchInputValue.toLowerCase())
@@ -245,23 +270,26 @@ const Main = (): JSX.Element => {
           abilities, types, stats and more!
         </p>
 
-        <SearchInput handleOnSubmit={handleOnSubmit} />
-
         {isError && <p>Pokémon {searchValue} not found</p>}
         {!isError && isLoading && (
-          <Loading>
-            <IconSearch />
-            <span>
-              Searching Pokémon{" "}
-              <strong>
-                {typeof searchValue === "string"
-                  ? firstLetterToUpperCase(searchValue)
-                  : searchValue}
-              </strong>
-              ...
-            </span>
-          </Loading>
+          <>
+            <SkeletonStyled
+              variant="rounded"
+              width={"60%"}
+              height={"4rem"}
+              animation="wave"
+              margin="2rem auto 1rem auto"
+            />
+            <SkeletonStyled
+              variant="rounded"
+              width={"60%"}
+              height={"32rem"}
+              animation="wave"
+              margin="0 auto"
+            />
+          </>
         )}
+
         <Card>
           {!isError && !isLoading && (
             <>
@@ -297,80 +325,93 @@ const Main = (): JSX.Element => {
                 >
                   {pokemonSpecies?.names[0].name}
                 </JapaneseTextBackground>
+                <SingleColumn>
+                  <SearchInput handleOnSubmit={handleOnSubmit} />
+                </SingleColumn>
               </CardHeader>
 
               <CardContainer>
-                <div>
-                  <h2>Types:</h2>
-                  <TypeBadgeContainer>
-                    {pokemon?.types.map(({ type }) => (
-                      <TypeBadge key={type.name} type={type.name} />
+                <TabContext value={tabValue}>
+                  <BoxStyled sx={{ borderBottom: 1, borderColor: "divider" }}>
+                    <TabList
+                      onChange={handleTabChange}
+                      aria-label="Pokémon data tabs"
+                    >
+                      <Tab label="Types" value="1" />
+                      <Tab label="Abilities" value="2" />
+                      <Tab label="Stats" value="3" />
+                      <Tab label="Weight" value="4" />
+                      <Tab label="Height" value="5" />
+                      <Tab label="Sprite" value="6" />
+                    </TabList>
+                  </BoxStyled>
+
+                  <TabPanel value="1">
+                    <TypeBadgeContainer>
+                      {pokemon?.types.map(({ type }) => (
+                        <TypeBadge key={type.name} type={type.name} />
+                      ))}
+                    </TypeBadgeContainer>
+                  </TabPanel>
+                  <TabPanel value="2">
+                    <ul>
+                      {pokemon?.abilities.map(
+                        ({ ability, is_hidden: isHidden }) => (
+                          <li key={ability.name}>
+                            {firstLetterToUpperCase(ability.name)}
+                            {isHidden && " (hidden ability)"}
+                          </li>
+                        )
+                      )}
+                    </ul>
+                  </TabPanel>
+                  <TabPanel value="3">
+                    {pokemon?.stats.map((stat) => (
+                      <div key={stat.stat.name}>
+                        <StatIcon name={stat.stat.name} icon={stat.stat.name} />
+                        <StatBar
+                          value={stat.base_stat}
+                          rangeColor={getColorRange(stat.base_stat)}
+                        />
+                      </div>
                     ))}
-                  </TypeBadgeContainer>
-                </div>
-
-                <div>
-                  <h2>Abilities:</h2>
-                  <ul>
-                    {pokemon?.abilities.map(
-                      ({ ability, is_hidden: isHidden }) => (
-                        <li key={ability.name}>
-                          {firstLetterToUpperCase(ability.name)}
-                          {isHidden && " (hidden ability)"}
-                        </li>
-                      )
-                    )}
-                  </ul>
-                </div>
-
-                <div>
-                  <h2>Stats:</h2>
-                  {pokemon?.stats.map((stat) => (
-                    <div key={stat.stat.name}>
-                      <StatIcon name={stat.stat.name} icon={stat.stat.name} />
-                      <StatBar
-                        value={stat.base_stat}
-                        rangeColor={getColorRange(stat.base_stat)}
-                      />
-                    </div>
-                  ))}
-                </div>
-
-                <div>
-                  <h2>
-                    <IconWeight />
-                    Weight: {pokemon?.weight}
-                  </h2>
-
-                  <h2>
-                    <IconRuler2 />
-                    Height: {pokemon?.height}
-                  </h2>
-                </div>
-                {spriteOptions.length > 0 && (
-                  <>
+                  </TabPanel>
+                  <TabPanel value="4">
                     <h2>
-                      Sprite:
-                      <LargeImage
-                        src={selectedSprite ?? ""}
-                        alt="pokemon sprite"
-                      />
+                      <IconWeight />
+                      {pokemon?.weight}
                     </h2>
+                  </TabPanel>
+                  <TabPanel value="5">
+                    <h2>
+                      <IconRuler2 />
+                      {pokemon?.height}
+                    </h2>
+                  </TabPanel>
+                  <TabPanel value="6">
+                    {spriteOptions.length > 0 && (
+                      <>
+                        <LargeImage
+                          src={selectedSprite ?? ""}
+                          alt="pokemon sprite"
+                        />
 
-                    <Select
-                      options={spriteOptions}
-                      onChange={(e) => {
-                        updateSelectedSprite(e)
-                      }}
-                      styles={{
-                        control: (baseStyles) => ({
-                          ...baseStyles,
-                          width: "20rem",
-                        }),
-                      }}
-                    />
-                  </>
-                )}
+                        <Select
+                          options={spriteOptions}
+                          onChange={(e) => {
+                            updateSelectedSprite(e)
+                          }}
+                          styles={{
+                            control: (baseStyles) => ({
+                              ...baseStyles,
+                              width: "20rem",
+                            }),
+                          }}
+                        />
+                      </>
+                    )}
+                  </TabPanel>
+                </TabContext>
               </CardContainer>
             </>
           )}

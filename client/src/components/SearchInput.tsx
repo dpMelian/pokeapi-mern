@@ -3,10 +3,11 @@ import styled from "styled-components"
 import { IconSearch } from "@tabler/icons-react"
 
 const Form = styled.form`
+  border: 3px solid ${(props) => props.theme["primary--darker"]};
+  border-radius: 5px;
   display: flex;
   justify-content: center;
   margin: 0 auto;
-  width: 50%;
 `
 
 const InputGroup = styled.div`
@@ -16,15 +17,15 @@ const InputGroup = styled.div`
 `
 
 const Input = styled.input`
-  border-radius: 5px 0 0 5px;
-  border-right: none;
+  border-right: 3px solid ${(props) => props.theme["primary--darker"]};
+  font-family: "Kadwa";
+  font-size: 16px;
   height: 2rem;
   line-height: 2rem;
   width: 100%;
 `
 
 const Button = styled.button`
-  border-radius: 0 5px 5px 0;
   height: 2rem;
   line-height: 2rem;
   box-sizing: content-box;
@@ -55,7 +56,7 @@ const SearchInput = ({ handleOnSubmit }: Props): JSX.Element => {
           type="text"
           name="search"
           id="search"
-          placeholder="Pikachu"
+          placeholder="Search for a pokémon..."
           onInput={handleOnInput}
         />
         <Button onClick={() => handleOnSubmit} aria-label="Search">
