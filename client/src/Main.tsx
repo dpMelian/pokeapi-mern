@@ -18,11 +18,17 @@ import { getColorRange } from "./helpers/getColorRange"
 import { POKEMON_GENERATION_RANGES } from "./constants/pokemonGenerations"
 import { useGetPokemonByName } from "./hooks/useGetPokemonByName"
 import { type Pokemon } from "./interfaces/pokemon"
+import { type PokemonSpecies } from "./interfaces/pokemonSpecies"
 import useAddFavoritePokemon from "./hooks/useAddFavoritePokemon"
 import { TYPES } from "./constants/pokemonTypes"
+import { useGetPokemonSpeciesByName } from "./hooks/useGetPokemonSpeciesByName"
 // import useGetTrainerFavorite from "./hooks/useGetTrainerFavorite"
 
 interface CardHeaderProps {
+  pokemonType: string
+}
+
+interface JapaneseTextBackgroundProps {
   pokemonType: string
 }
 
@@ -59,6 +65,8 @@ const CardHeader = styled.div<CardHeaderProps>`
   border-bottom: 5px solid ${(props) => props.theme["primary--darker"]};
   background-color: ${(props) => TYPES[props.pokemonType]};
   width: 100%;
+  position: relative;
+  z-index: 0;
 
   @media screen and (max-width: 768px) {
     grid-template-columns: 1fr;
@@ -70,9 +78,11 @@ const CardContainer = styled.div`
   grid-template-columns: 1fr 1fr;
   justify-items: center;
   padding: 1rem;
+  width: 100%;
 
   @media screen and (max-width: 1000px) {
     grid-template-columns: 1fr;
+    justify-items: start;
   }
 `
 
@@ -82,26 +92,47 @@ const IconWrapper = styled.span`
   right: 5px;
 `
 
-const H2 = styled.h2`
+const ArtworkImage = styled.img`
+  height: 300px;
+  object-fit: contain;
+  padding: 1rem;
+  position: relative;
+  width: 100%;
+  z-index: 2;
+
+  @media screen and (max-width: 768px) {
+    padding: 0;
+  }
+`
+
+const H1 = styled.h1`
+  position: relative;
   text-align: center;
   width: 100%;
+  z-index: 2;
+`
+
+const JapaneseTextBackground = styled.span<JapaneseTextBackgroundProps>`
+  align-self: center;
+  color: ${(props) => TYPES[props.pokemonType]};
+  filter: brightness(60%);
+  font-size: 64px;
+  font-weight: bold;
+  grid-column: 2/3;
+  justify-self: center;
+  margin: 0 auto;
+  position: absolute;
+  z-index: 1;
+
+  @media screen and (max-width: 768px) {
+    display: none;
+  }
 `
 
 const Loading = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-`
-
-const ArtworkImage = styled.img`
-  object-fit: contain;
-  height: 300px;
-  width: 100%;
-  padding: 1rem;
-
-  @media screen and (max-width: 768px) {
-    padding: 0;
-  }
 `
 
 const LargeImage = styled.img`
@@ -125,13 +156,19 @@ const Main = (): JSX.Element => {
   const [isPokemonFavorited, setIsPokemonFavorited] = useState(false)
   const [artworkImage, setArtworkImage] = useState("")
 
-  const { data, isLoading, isError } = useGetPokemonByName(
-    searchValue
-  ) as unknown as {
+  const {
+    data: pokemon,
+    isLoading,
+    isError,
+  } = useGetPokemonByName(searchValue) as unknown as {
     data: Pokemon
     isLoading: boolean
     isError: boolean
   }
+
+  const { data: pokemonSpecies } = useGetPokemonSpeciesByName(
+    searchValue
+  ) as unknown as { data: PokemonSpecies }
 
   const addFavoritePokemon = useAddFavoritePokemon()
   // const { data: favoritePokemonId } = useGetTrainerFavorite()
@@ -141,13 +178,13 @@ const Main = (): JSX.Element => {
   }
 
   useEffect(() => {
-    if (data == null) return
+    if (pokemon == null) return
 
     let selectedGeneration = ""
     const spriteOptions: Array<{ value: string; label: string }> = []
 
     for (const [generation, versions] of Object.entries(
-      data.sprites.versions
+      pokemon.sprites.versions
     )) {
       const { front_default: frontDefault } =
         versions[POKEMON_GENERATION_RANGES[generation].version]
@@ -164,10 +201,10 @@ const Main = (): JSX.Element => {
       }
     }
 
-    if (data.sprites.other.dream_world.front_default != null) {
-      setArtworkImage(data.sprites.other.dream_world.front_default)
+    if (pokemon.sprites.other.dream_world.front_default != null) {
+      setArtworkImage(pokemon.sprites.other.dream_world.front_default)
     } else {
-      setArtworkImage(data.sprites.other["official-artwork"].front_default)
+      setArtworkImage(pokemon.sprites.other["official-artwork"].front_default)
     }
 
     if (selectedGeneration.length === 0) {
@@ -178,10 +215,11 @@ const Main = (): JSX.Element => {
       POKEMON_GENERATION_RANGES[selectedGeneration].version
 
     setSelectedSprite(
-      data.sprites.versions[selectedGeneration][selectedVersion].front_default
+      pokemon.sprites.versions[selectedGeneration][selectedVersion]
+        .front_default
     )
     setSpriteOptions(spriteOptions)
-  }, [data])
+  }, [pokemon])
 
   const updateSelectedSprite = (
     event: SingleValue<{ value: string; label: string }>
@@ -192,7 +230,7 @@ const Main = (): JSX.Element => {
     const version = POKEMON_GENERATION_RANGES[event.value].version
 
     setSelectedSprite(
-      data?.sprites.versions?.[event.value][version].front_default
+      pokemon?.sprites.versions?.[event.value][version].front_default
     )
   }
 
@@ -227,15 +265,15 @@ const Main = (): JSX.Element => {
         <Card>
           {!isError && !isLoading && (
             <>
-              <CardHeader pokemonType={data?.types[0]?.type.name}>
+              <CardHeader pokemonType={pokemon?.types[0]?.type.name}>
                 <a href={artworkImage} target="_blank" rel="noreferrer">
                   <ArtworkImage
                     src={artworkImage}
                     alt="pokemon dream world image"
                   />
                 </a>
-                <H2>
-                  {`${firstLetterToUpperCase(data.name)} #${data.id}`}
+                <H1>
+                  {`${firstLetterToUpperCase(pokemon.name)} #${pokemon.id}`}
                   {isPokemonFavorited ? (
                     <IconWrapper>
                       <IconStarFilled />
@@ -244,7 +282,7 @@ const Main = (): JSX.Element => {
                     <IconWrapper>
                       <IconStar
                         onClick={() => {
-                          addFavoritePokemon.mutate(data.id, {
+                          addFavoritePokemon.mutate(pokemon.id, {
                             onSuccess: () => {
                               setIsPokemonFavorited(true)
                             },
@@ -253,14 +291,19 @@ const Main = (): JSX.Element => {
                       />
                     </IconWrapper>
                   )}
-                </H2>
+                </H1>
+                <JapaneseTextBackground
+                  pokemonType={pokemon?.types[0]?.type.name}
+                >
+                  {pokemonSpecies?.names[0].name}
+                </JapaneseTextBackground>
               </CardHeader>
 
               <CardContainer>
                 <div>
                   <h2>Types:</h2>
                   <TypeBadgeContainer>
-                    {data?.types.map(({ type }) => (
+                    {pokemon?.types.map(({ type }) => (
                       <TypeBadge key={type.name} type={type.name} />
                     ))}
                   </TypeBadgeContainer>
@@ -269,18 +312,20 @@ const Main = (): JSX.Element => {
                 <div>
                   <h2>Abilities:</h2>
                   <ul>
-                    {data?.abilities.map(({ ability, is_hidden: isHidden }) => (
-                      <li key={ability.name}>
-                        {firstLetterToUpperCase(ability.name)}
-                        {isHidden && " (hidden ability)"}
-                      </li>
-                    ))}
+                    {pokemon?.abilities.map(
+                      ({ ability, is_hidden: isHidden }) => (
+                        <li key={ability.name}>
+                          {firstLetterToUpperCase(ability.name)}
+                          {isHidden && " (hidden ability)"}
+                        </li>
+                      )
+                    )}
                   </ul>
                 </div>
 
                 <div>
                   <h2>Stats:</h2>
-                  {data?.stats.map((stat) => (
+                  {pokemon?.stats.map((stat) => (
                     <div key={stat.stat.name}>
                       <StatIcon name={stat.stat.name} icon={stat.stat.name} />
                       <StatBar
@@ -294,12 +339,12 @@ const Main = (): JSX.Element => {
                 <div>
                   <h2>
                     <IconWeight />
-                    Weight: {data?.weight}
+                    Weight: {pokemon?.weight}
                   </h2>
 
                   <h2>
                     <IconRuler2 />
-                    Height: {data?.height}
+                    Height: {pokemon?.height}
                   </h2>
                 </div>
                 {spriteOptions.length > 0 && (
