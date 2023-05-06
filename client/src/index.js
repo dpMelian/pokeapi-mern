@@ -6,6 +6,8 @@ import SignUp from "./pages/SignUp"
 import Login from "./pages/Login"
 import { createBrowserRouter, RouterProvider } from "react-router-dom"
 import { QueryClient, QueryClientProvider } from "react-query"
+import ThemeProvider from "@mui/material/styles/ThemeProvider"
+import { MUI_THEME } from "./constants/muiTheme"
 import ThemeProviderWrapper from "./providers/ThemeProviderWrapper"
 import { DarkModeContextProvider } from "./contexts/DarkModeContext"
 import "./index.css"
@@ -30,13 +32,15 @@ const queryClient = new QueryClient()
 const root = ReactDOM.createRoot(document.getElementById("root"))
 root.render(
   <QueryClientProvider client={queryClient}>
-    <DarkModeContextProvider>
-      <ThemeProviderWrapper>
-        <React.StrictMode>
-          <RouterProvider router={router} />
-        </React.StrictMode>
-      </ThemeProviderWrapper>
-    </DarkModeContextProvider>
+    <ThemeProvider theme={MUI_THEME}>
+      <DarkModeContextProvider>
+        <ThemeProviderWrapper>
+          <React.StrictMode>
+            <RouterProvider router={router} />
+          </React.StrictMode>
+        </ThemeProviderWrapper>
+      </DarkModeContextProvider>
+    </ThemeProvider>
   </QueryClientProvider>
 )
 
