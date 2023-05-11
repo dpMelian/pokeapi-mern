@@ -5,21 +5,30 @@ import { STAT_ICONS } from "../constants/statIcons"
 interface Props {
   name: string
   icon: string
+  children: JSX.Element
 }
 
 const Container = styled.div`
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr 2fr;
   align-items: center;
 `
 
 const Span = styled.span`
+  align-items: center;
+  display: flex;
   font-family: Kadwa;
 `
 
-const StatIcon = ({ name, icon }: Props): JSX.Element => (
+const StatIcon = ({ name, icon, children }: Props): JSX.Element => (
   <Container>
-    {React.createElement(STAT_ICONS[icon], null)}
-    {<Span>{name.toUpperCase()}</Span>}
+    {
+      <Span>
+        {React.createElement(STAT_ICONS[icon], null)}
+        {name.toUpperCase()}
+      </Span>
+    }
+    {children}
   </Container>
 )
 
