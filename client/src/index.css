@@ -17,18 +17,6 @@ code {
     monospace;
 }
 
-p {
-  font-family: "Roboto";
-}
-
-input {
-  font-family: "Roboto";
-}
-
-span {
-  font-family: "Roboto";
-}
-
 footer {
   margin-top: auto;
   display: flex;
