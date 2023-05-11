@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react"
-import styled from "styled-components"
+import styled, { useTheme } from "styled-components"
 import Select, { type SingleValue } from "react-select"
 import {
   IconRuler2,
@@ -11,6 +11,8 @@ import Box from "@mui/material/Box/Box"
 import Tab from "@mui/material/Tab/Tab"
 import TabList from "@mui/lab/TabList/TabList"
 import TabPanel from "@mui/lab/TabPanel/TabPanel"
+import { Skeleton } from "@mui/material"
+import { TabContext } from "@mui/lab"
 import Header from "./components/Header"
 import StatIcon from "./components/StatIcon"
 import SearchInput from "./components/SearchInput"
@@ -25,8 +27,7 @@ import { type PokemonSpecies } from "./interfaces/pokemonSpecies"
 import useAddFavoritePokemon from "./hooks/useAddFavoritePokemon"
 import { TYPES } from "./constants/pokemonTypes"
 import { useGetPokemonSpeciesByName } from "./hooks/useGetPokemonSpeciesByName"
-import { Skeleton } from "@mui/material"
-import { TabContext } from "@mui/lab"
+import EvolutionChainTab from "./components/EvolutionChainTab"
 // import useGetTrainerFavorite from "./hooks/useGetTrainerFavorite"
 
 interface CardHeaderProps {
@@ -157,6 +158,10 @@ const BoxStyled = styled(Box)`
   font-family: "Kadwa";
 `
 
+const StyledTabPanel = styled(TabPanel)`
+  width: 75%;
+`
+
 const TypeBadgeContainer = styled.div`
   display: grid;
   grid-gap: 5px;
@@ -187,6 +192,14 @@ const Main = (): JSX.Element => {
   const { data: pokemonSpecies } = useGetPokemonSpeciesByName(
     searchValue
   ) as unknown as { data: PokemonSpecies }
+
+  const theme = useTheme() as {
+    primary: string
+    secondary: string
+    "primary--darker": string
+    "secondary--darker": string
+    "secondary--lighter": string
+  }
 
   const addFavoritePokemon = useAddFavoritePokemon()
   // const { data: favoritePokemonId } = useGetTrainerFavorite()
@@ -276,7 +289,7 @@ const Main = (): JSX.Element => {
             <SkeletonStyled
               variant="rounded"
               width={"60%"}
-              height={"4rem"}
+              height={"24rem"}
               animation="wave"
               margin="2rem auto 1rem auto"
             />
@@ -332,27 +345,38 @@ const Main = (): JSX.Element => {
 
               <CardContainer>
                 <TabContext value={tabValue}>
-                  <BoxStyled sx={{ borderBottom: 1, borderColor: "divider" }}>
+                  <BoxStyled
+                    sx={{
+                      borderBottom: 5,
+                      borderColor: `${theme["primary--darker"]}`,
+                    }}
+                  >
                     <TabList
                       onChange={handleTabChange}
                       aria-label="Pokémon data tabs"
                     >
-                      <Tab label="Types" value="1" />
+                      <Tab label="Stats" value="1" />
                       <Tab label="Abilities" value="2" />
-                      <Tab label="Stats" value="3" />
+                      <Tab label="Types" value="3" />
                       <Tab label="Weight" value="4" />
                       <Tab label="Height" value="5" />
                       <Tab label="Sprite" value="6" />
+                      <Tab label="Evolutions" value="7" />
                     </TabList>
                   </BoxStyled>
 
-                  <TabPanel value="1">
-                    <TypeBadgeContainer>
-                      {pokemon?.types.map(({ type }) => (
-                        <TypeBadge key={type.name} type={type.name} />
-                      ))}
-                    </TypeBadgeContainer>
-                  </TabPanel>
+                  <StyledTabPanel value="1">
+                    {pokemon?.stats.map((stat) => (
+                      <div key={stat.stat.name}>
+                        <StatIcon name={stat.stat.name} icon={stat.stat.name}>
+                          <StatBar
+                            value={stat.base_stat}
+                            rangeColor={getColorRange(stat.base_stat)}
+                          />
+                        </StatIcon>
+                      </div>
+                    ))}
+                  </StyledTabPanel>
                   <TabPanel value="2">
                     <ul>
                       {pokemon?.abilities.map(
@@ -366,15 +390,11 @@ const Main = (): JSX.Element => {
                     </ul>
                   </TabPanel>
                   <TabPanel value="3">
-                    {pokemon?.stats.map((stat) => (
-                      <div key={stat.stat.name}>
-                        <StatIcon name={stat.stat.name} icon={stat.stat.name} />
-                        <StatBar
-                          value={stat.base_stat}
-                          rangeColor={getColorRange(stat.base_stat)}
-                        />
-                      </div>
-                    ))}
+                    <TypeBadgeContainer>
+                      {pokemon?.types.map(({ type }) => (
+                        <TypeBadge key={type.name} type={type.name} />
+                      ))}
+                    </TypeBadgeContainer>
                   </TabPanel>
                   <TabPanel value="4">
                     <h2>
@@ -410,6 +430,9 @@ const Main = (): JSX.Element => {
                         />
                       </>
                     )}
+                  </TabPanel>
+                  <TabPanel value="7">
+                    <EvolutionChainTab pokemonSpecies={pokemonSpecies} />
                   </TabPanel>
                 </TabContext>
               </CardContainer>
