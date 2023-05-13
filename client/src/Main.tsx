@@ -28,6 +28,7 @@ import useAddFavoritePokemon from "./hooks/useAddFavoritePokemon"
 import { TYPES } from "./constants/pokemonTypes"
 import { useGetPokemonSpeciesByName } from "./hooks/useGetPokemonSpeciesByName"
 import EvolutionChainTab from "./components/EvolutionChainTab"
+import setAvailableSpriteOptions from "./helpers/setAvailableSpriteOptions"
 // import useGetTrainerFavorite from "./hooks/useGetTrainerFavorite"
 
 interface CardHeaderProps {
@@ -218,26 +219,8 @@ const Main = (): JSX.Element => {
   useEffect(() => {
     if (pokemon == null) return
 
-    let selectedGeneration = ""
-    const spriteOptions: Array<{ value: string; label: string }> = []
-
-    for (const [generation, versions] of Object.entries(
-      pokemon.sprites.versions
-    )) {
-      const { front_default: frontDefault } =
-        versions[POKEMON_GENERATION_RANGES[generation].version]
-
-      if (frontDefault !== null) {
-        if (selectedGeneration.length === 0) {
-          selectedGeneration = generation
-        }
-
-        spriteOptions.push({
-          value: generation,
-          label: firstLetterToUpperCase(generation),
-        })
-      }
-    }
+    const { firstAvailableGeneration, spriteOptions } =
+      setAvailableSpriteOptions(pokemon.sprites.versions)
 
     if (pokemon.sprites.other.dream_world.front_default != null) {
       setArtworkImage(pokemon.sprites.other.dream_world.front_default)
@@ -245,17 +228,18 @@ const Main = (): JSX.Element => {
       setArtworkImage(pokemon.sprites.other["official-artwork"].front_default)
     }
 
-    if (selectedGeneration.length === 0) {
+    if (firstAvailableGeneration.length === 0) {
       return
     }
 
-    const selectedVersion =
-      POKEMON_GENERATION_RANGES[selectedGeneration].version
+    const generationVersion =
+      POKEMON_GENERATION_RANGES[firstAvailableGeneration].version
 
     setSelectedSprite(
-      pokemon.sprites.versions[selectedGeneration][selectedVersion]
+      pokemon.sprites.versions[firstAvailableGeneration][generationVersion]
         .front_default
     )
+
     setSpriteOptions(spriteOptions)
   }, [pokemon])
 
