@@ -352,8 +352,15 @@ const Main = (): JSX.Element => {
                     }}
                   >
                     <TabList
-                      onChange={handleTabChange}
                       aria-label="Pokémon data tabs"
+                      onChange={handleTabChange}
+                      sx={{
+                        "& .MuiTabs-scroller": {
+                          "& .MuiTabs-flexContainer": {
+                            flexWrap: "wrap",
+                          },
+                        },
+                      }}
                     >
                       <Tab label="Stats" value="1" />
                       <Tab label="Abilities" value="2" />
