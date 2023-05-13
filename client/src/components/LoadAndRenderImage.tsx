@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react"
 import styled from "styled-components"
-import { useGetPokemonByName } from "../hooks/useGetPokemonByName"
+import Skeleton from "@mui/material/Skeleton"
+import useGetPokemonByName from "../hooks/useGetPokemonByName"
 import { type Pokemon } from "../interfaces/pokemon"
-import { Skeleton } from "@mui/material"
 
 interface Props {
   name: string
