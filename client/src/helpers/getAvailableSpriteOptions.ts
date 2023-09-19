@@ -1,7 +1,7 @@
 import { firstLetterToUpperCase } from "./firstLetterToUpperCase"
 import { POKEMON_GENERATION_RANGES } from "../constants/pokemonGenerations"
 
-const setAvailableSpriteOptions = (
+const getAvailableSpriteOptions = (
   availableVersions: Record<
     string,
     Record<
@@ -37,4 +37,4 @@ const setAvailableSpriteOptions = (
   return { firstAvailableGeneration, spriteOptions }
 }
 
-export default setAvailableSpriteOptions
+export default getAvailableSpriteOptions
