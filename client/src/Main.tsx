@@ -48,11 +48,6 @@ const Base = styled.div`
   color: ${(props) => props.theme["primary--darker"]};
 `
 
-const Container = styled.main`
-  margin: 1rem auto;
-  width: 80%;
-`
-
 const Card = styled.div`
   align-items: center;
   background-color: ${(props) => props.theme["secondary--lighter"]};
@@ -84,45 +79,6 @@ const CardHeader = styled.div<CardHeaderProps>`
   }
 `
 
-const CardContainer = styled.div`
-  display: grid;
-  grid-template-columns: 1fr;
-  justify-items: center;
-  padding: 1rem;
-  width: 100%;
-
-  @media screen and (max-width: 1000px) {
-    grid-template-columns: 1fr;
-    justify-items: start;
-  }
-`
-
-const IconWrapper = styled.span`
-  position: absolute;
-  top: 5px;
-  right: 5px;
-`
-
-const ArtworkImage = styled.img`
-  height: 200px;
-  object-fit: contain;
-  padding: 1rem;
-  position: relative;
-  width: 100%;
-  z-index: 2;
-
-  @media screen and (max-width: 768px) {
-    padding: 0;
-  }
-`
-
-const H1 = styled.h1`
-  position: relative;
-  text-align: center;
-  width: 100%;
-  z-index: 2;
-`
-
 const JapaneseTextBackground = styled.span<JapaneseTextBackgroundProps>`
   align-self: center;
   color: ${(props) => TYPES[props.pokemonType]};
@@ -140,17 +96,6 @@ const JapaneseTextBackground = styled.span<JapaneseTextBackgroundProps>`
   }
 `
 
-const SingleColumn = styled.div`
-  grid-column: 1/3;
-  margin: 1rem auto;
-  width: 60%;
-`
-
-const LargeImage = styled.img`
-  transform: scale(1.5);
-  padding: 0 2rem;
-`
-
 const SkeletonStyled = styled(Skeleton)<SkeletonStyledProps>`
   margin: ${(props) => props.margin};
 `
@@ -161,11 +106,6 @@ const BoxStyled = styled(Box)`
 
 const StyledTabPanel = styled(TabPanel)`
   width: 75%;
-`
-
-const TypeBadgeContainer = styled.div`
-  display: grid;
-  grid-gap: 5px;
 `
 
 const Main = (): JSX.Element => {
@@ -267,7 +207,7 @@ const Main = (): JSX.Element => {
   return (
     <Base>
       <Header />
-      <Container>
+      <main className="mx-auto my-4 w-4/5">
         <h1>Discover the World of Pokémon with PokéAPI MERN</h1>
         <p>
           With our intuitive user interface and powerful search capabilities,
@@ -287,7 +227,8 @@ const Main = (): JSX.Element => {
                   target="_blank"
                   rel="noreferrer"
                 >
-                  <ArtworkImage
+                  <img
+                    className="h-[200px] object-contain p-4 relative w-full z-[2] max-md:p-0"
                     src={
                       pokemonSprites.other.dream_world.front_default ??
                       pokemonSprites.other["official-artwork"].front_default
@@ -295,14 +236,14 @@ const Main = (): JSX.Element => {
                     alt="pokemon dream world image"
                   />
                 </a>
-                <H1>
+                <h1 className="relative text-center w-full z-[2]">
                   {`${firstLetterToUpperCase(pokemonName)} #${pokemonId}`}
                   {isPokemonFavorited ? (
-                    <IconWrapper>
+                    <span className="absolute top-[5px] right-[5px]">
                       <IconStarFilled />
-                    </IconWrapper>
+                    </span>
                   ) : (
-                    <IconWrapper>
+                    <span className="absolute top-[5px] right-[5px]">
                       <IconStar
                         onClick={() => {
                           addFavoritePokemon.mutate(pokemonId, {
@@ -312,20 +253,20 @@ const Main = (): JSX.Element => {
                           })
                         }}
                       />
-                    </IconWrapper>
+                    </span>
                   )}
-                </H1>
+                </h1>
                 <JapaneseTextBackground
                   pokemonType={pokemonTypes[0]?.type.name}
                 >
                   {pokemonSpecies?.names[0].name}
                 </JapaneseTextBackground>
-                <SingleColumn>
+                <div className="col-span-2 my-4 mx-auto w-3/5">
                   <SearchInput handleOnSubmit={handleOnSubmit} />
-                </SingleColumn>
+                </div>
               </CardHeader>
 
-              <CardContainer>
+              <div className="grid grid-cols-1 justify-items-center p-4 w-full md:grid md:grid-cols-1 md-justify-start">
                 <TabContext value={tabValue}>
                   <BoxStyled
                     sx={{
@@ -379,11 +320,11 @@ const Main = (): JSX.Element => {
                     </ul>
                   </TabPanel>
                   <TabPanel value="3">
-                    <TypeBadgeContainer>
+                    <div className="grid gap-[5px]">
                       {pokemonTypes.map(({ type }) => (
                         <TypeBadge key={type.name} type={type.name} />
                       ))}
-                    </TypeBadgeContainer>
+                    </div>
                   </TabPanel>
                   <TabPanel value="4">
                     <h2>
@@ -400,7 +341,8 @@ const Main = (): JSX.Element => {
                   <TabPanel value="6">
                     {spriteOptions.length > 0 && (
                       <>
-                        <LargeImage
+                        <img
+                          className="transform scale-150 py-0 px-8"
                           src={
                             selectedSprite.length > 0
                               ? selectedSprite
@@ -434,11 +376,11 @@ const Main = (): JSX.Element => {
                     <EvolutionChainTab pokemonSpecies={pokemonSpecies} />
                   </TabPanel>
                 </TabContext>
-              </CardContainer>
+              </div>
             </>
           )}
         </Card>
-      </Container>
+      </main>
     </Base>
   )
 }
