@@ -2,29 +2,15 @@ import React from "react"
 import styled, { type DefaultTheme, useTheme } from "styled-components"
 import { firstLetterToUpperCase } from "../helpers/firstLetterToUpperCase"
 import { TYPES } from "../constants/pokemonTypes"
+import { cn } from "../helpers/cn"
 
 interface MyTheme extends DefaultTheme {
   "primary--darker": string
 }
 
-interface BadgeProps {
-  type: string
-}
-
 interface BadgeTextProps {
   color: string
 }
-
-const Badge = styled.h3<BadgeProps>`
-  background-color: ${(props) => TYPES[props.type]};
-  border-radius: 5px;
-  border: 2px solid;
-  display: inline-block;
-  font-family: "Kadwa";
-  padding: 0 1rem;
-  text-align: center;
-  width: 120px;
-`
 
 const BadgeText = styled.span<BadgeTextProps>`
   color: ${(props) => props.color};
@@ -48,9 +34,15 @@ const TypeBadge = ({ type }: Props): JSX.Element => {
   }
 
   return (
-    <Badge key={type} type={type}>
+    <h3
+      className={cn(
+        "rounded-[5px] border-2 border-solid inline-block py-0 px-4 text-center w-[120px]",
+        "bg-" + type
+      )}
+      key={type}
+    >
       <BadgeText color={textColor}>{firstLetterToUpperCase(type)}</BadgeText>
-    </Badge>
+    </h3>
   )
 }
 

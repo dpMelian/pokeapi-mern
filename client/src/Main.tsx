@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import styled, { useTheme } from "styled-components"
+import { useTheme } from "styled-components"
 import Select, { type SingleValue } from "react-select"
 import {
   IconRuler2,
@@ -13,12 +13,14 @@ import Tab from "@mui/material/Tab/Tab"
 import TabContext from "@mui/lab/TabContext"
 import TabList from "@mui/lab/TabList/TabList"
 import TabPanel from "@mui/lab/TabPanel/TabPanel"
+
 import EvolutionChainTab from "./components/EvolutionChainTab"
 import Header from "./components/Header"
 import SearchInput from "./components/SearchInput"
 import StatBar from "./components/StatBar"
 import StatIcon from "./components/StatIcon"
 import TypeBadge from "./components/TypeBadge"
+import { cn } from "./helpers/cn"
 import { firstLetterToUpperCase } from "./helpers/firstLetterToUpperCase"
 import { getColorRange } from "./helpers/getColorRange"
 import { POKEMON_GENERATION_RANGES } from "./constants/pokemonGenerations"
@@ -30,83 +32,6 @@ import useAddFavoritePokemon from "./hooks/useAddFavoritePokemon"
 import useGetPokemonByName from "./hooks/useGetPokemonByName"
 import useGetPokemonSpeciesByName from "./hooks/useGetPokemonSpeciesByName"
 // import useGetTrainerFavorite from "./hooks/useGetTrainerFavorite"
-
-interface CardHeaderProps {
-  pokemonType: string
-}
-
-interface JapaneseTextBackgroundProps {
-  pokemonType: string
-}
-
-interface SkeletonStyledProps {
-  margin: string
-}
-
-const Base = styled.div`
-  background-color: ${(props) => props.theme.secondary};
-  color: ${(props) => props.theme["primary--darker"]};
-`
-
-const Card = styled.div`
-  align-items: center;
-  background-color: ${(props) => props.theme["secondary--lighter"]};
-  border-radius: 10px;
-  border: 5px solid ${(props) => props.theme["primary--darker"]};
-  display: flex;
-  flex-direction: column;
-  margin: 2rem auto;
-  position: relative;
-  width: 60%;
-
-  @media screen and (max-width: 768px) {
-    width: 90%;
-  }
-`
-
-const CardHeader = styled.div<CardHeaderProps>`
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 4rem;
-  border-bottom: 5px solid ${(props) => props.theme["primary--darker"]};
-  background-color: ${(props) => TYPES[props.pokemonType]};
-  width: 100%;
-  position: relative;
-  z-index: 0;
-
-  @media screen and (max-width: 768px) {
-    grid-template-columns: 1fr;
-  }
-`
-
-const JapaneseTextBackground = styled.span<JapaneseTextBackgroundProps>`
-  align-self: center;
-  color: ${(props) => TYPES[props.pokemonType]};
-  filter: brightness(60%);
-  font-size: 64px;
-  font-weight: bold;
-  grid-column: 2/3;
-  justify-self: center;
-  margin: 0 auto;
-  position: absolute;
-  z-index: 1;
-
-  @media screen and (max-width: 768px) {
-    display: none;
-  }
-`
-
-const SkeletonStyled = styled(Skeleton)<SkeletonStyledProps>`
-  margin: ${(props) => props.margin};
-`
-
-const BoxStyled = styled(Box)`
-  font-family: "Kadwa";
-`
-
-const StyledTabPanel = styled(TabPanel)`
-  width: 75%;
-`
 
 const Main = (): JSX.Element => {
   const [searchValue, setSearchValue] = useState(
@@ -158,19 +83,19 @@ const Main = (): JSX.Element => {
   if (!isError && isLoading) {
     return (
       <>
-        <SkeletonStyled
+        <Skeleton
           variant="rounded"
           width={"60%"}
           height={"24rem"}
           animation="wave"
-          margin="2rem auto 1rem auto"
+          className="mt-8 mb-4 mx-auto"
         />
-        <SkeletonStyled
+        <Skeleton
           variant="rounded"
           width={"60%"}
           height={"32rem"}
           animation="wave"
-          margin="0 auto"
+          className="my-0 mx-auto"
         />
       </>
     )
@@ -186,6 +111,8 @@ const Main = (): JSX.Element => {
     types: pokemonTypes,
     weight: pokemonWeight,
   } = data
+
+  const typeColors = TYPES[pokemonTypes[0]?.type.name ?? "default"]
 
   const { firstAvailableGeneration, spriteOptions } = getAvailableSpriteOptions(
     pokemonSprites.versions
@@ -205,7 +132,7 @@ const Main = (): JSX.Element => {
   }
 
   return (
-    <Base>
+    <div className="bg-secondary text-primary--darker">
       <Header />
       <main className="mx-auto my-4 w-4/5">
         <h1>Discover the World of Pokémon with PokéAPI MERN</h1>
@@ -215,10 +142,15 @@ const Main = (): JSX.Element => {
           abilities, types, stats and more!
         </p>
 
-        <Card>
+        <div className="items-center bg-secondary--lighter rounded-[10px] border-[5px] border-solid border-primary--darker flex flex-col mx-auto my-8 relative w-3/5 max-md:w-[90%]">
           {!isError && !isLoading && (
             <>
-              <CardHeader pokemonType={pokemonTypes[0]?.type.name}>
+              <div
+                className={cn(
+                  "grid grid-cols-2 gap-16 border-b-[5px] border-solid border-b-primary--darker w-full relative z-0 max-md:grid-cols-1",
+                  typeColors
+                )}
+              >
                 <a
                   href={
                     pokemonSprites.other.dream_world.front_default ??
@@ -256,19 +188,19 @@ const Main = (): JSX.Element => {
                     </span>
                   )}
                 </h1>
-                <JapaneseTextBackground
-                  pokemonType={pokemonTypes[0]?.type.name}
+                <span
+                  className={`self-center text-[${typeColors}] brightness-50 text-6xl font-bold col-span-1 justify-self-center my-0 mx-auto absolute z-1 max-md:hidden`}
                 >
                   {pokemonSpecies?.names[0].name}
-                </JapaneseTextBackground>
+                </span>
                 <div className="col-span-2 my-4 mx-auto w-3/5">
                   <SearchInput handleOnSubmit={handleOnSubmit} />
                 </div>
-              </CardHeader>
+              </div>
 
               <div className="grid grid-cols-1 justify-items-center p-4 w-full md:grid md:grid-cols-1 md-justify-start">
                 <TabContext value={tabValue}>
-                  <BoxStyled
+                  <Box
                     sx={{
                       borderBottom: 5,
                       borderColor: `${theme["primary--darker"]}`,
@@ -293,9 +225,9 @@ const Main = (): JSX.Element => {
                       <Tab label="Sprite" value="6" />
                       <Tab label="Evolutions" value="7" />
                     </TabList>
-                  </BoxStyled>
+                  </Box>
 
-                  <StyledTabPanel value="1">
+                  <TabPanel className="w-3/4" value="1">
                     {pokemonStats.map((stat) => (
                       <div key={stat.stat.name}>
                         <StatIcon name={stat.stat.name} icon={stat.stat.name}>
@@ -306,7 +238,7 @@ const Main = (): JSX.Element => {
                         </StatIcon>
                       </div>
                     ))}
-                  </StyledTabPanel>
+                  </TabPanel>
                   <TabPanel value="2">
                     <ul>
                       {pokemonAbilities.map(
@@ -379,9 +311,9 @@ const Main = (): JSX.Element => {
               </div>
             </>
           )}
-        </Card>
+        </div>
       </main>
-    </Base>
+    </div>
   )
 }
 
