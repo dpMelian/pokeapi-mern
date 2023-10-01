@@ -1,5 +1,4 @@
 import { createTheme } from "@mui/material/styles"
-import { THEME } from "./theme"
 
 export const MUI_THEME = createTheme({
   typography: {
@@ -7,10 +6,10 @@ export const MUI_THEME = createTheme({
   },
   palette: {
     primary: {
-      main: THEME["primary--darker"],
+      main: "#FFFFFF",
     },
     secondary: {
-      main: THEME.secondary,
+      main: "#FB1B1B",
     },
   },
 })

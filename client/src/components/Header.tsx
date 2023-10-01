@@ -5,12 +5,6 @@ import useGetLoggedTrainerName from "../hooks/useGetLoggedTrainerName"
 import useLogout from "../hooks/useLogout"
 import DarkModeToggle from "./DarkModeToggle"
 
-const Nav = styled.nav`
-  display: "flex";
-  background-color: ${(props) => props.theme.primary};
-  border-bottom: 2px solid ${(props) => props.theme["primary--darker"]};
-`
-
 const Container = styled.div`
   display: flex;
   justify-content: space-between;
@@ -51,7 +45,7 @@ const Header = (): JSX.Element => {
   }, [data])
 
   return (
-    <Nav>
+    <nav className="flex border-x-0 border-b-2 border-t-0 border-solid border-black bg-secondary dark:border-primary dark:bg-slate-900">
       <Container>
         <LinkNoStyle to="/">
           <H1>PokéAPI MERN project</H1>
@@ -86,7 +80,7 @@ const Header = (): JSX.Element => {
           </LinkNoStyle>
         </RightBox>
       </Container>
-    </Nav>
+    </nav>
   )
 }
 

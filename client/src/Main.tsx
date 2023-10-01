@@ -35,7 +35,7 @@ import useGetPokemonSpeciesByName from "./hooks/useGetPokemonSpeciesByName"
 
 const Main = (): JSX.Element => {
   const [searchValue, setSearchValue] = useState(
-    Math.floor(Math.random() * (1010 - 1) + 1) as string | number
+    Math.floor(Math.random() * (1010 - 1) + 1) as string | number,
   )
 
   const [selectedSprite, setSelectedSprite] = useState("")
@@ -43,7 +43,7 @@ const Main = (): JSX.Element => {
   const [tabValue, setTabValue] = useState("1")
 
   const { data, isLoading, isError } = useGetPokemonByName(
-    searchValue
+    searchValue,
   ) as unknown as {
     data: Pokemon
     isLoading: boolean
@@ -51,7 +51,7 @@ const Main = (): JSX.Element => {
   }
 
   const { data: pokemonSpecies } = useGetPokemonSpeciesByName(
-    searchValue
+    searchValue,
   ) as unknown as { data: PokemonSpecies }
 
   const theme = useTheme() as {
@@ -59,7 +59,6 @@ const Main = (): JSX.Element => {
     secondary: string
     "primary--darker": string
     "secondary--darker": string
-    "secondary--lighter": string
   }
 
   const addFavoritePokemon = useAddFavoritePokemon()
@@ -67,7 +66,7 @@ const Main = (): JSX.Element => {
 
   const handleTabChange = (
     _e: React.ChangeEvent<unknown>,
-    value: string
+    value: string,
   ): void => {
     setTabValue(value)
   }
@@ -88,14 +87,14 @@ const Main = (): JSX.Element => {
           width={"60%"}
           height={"24rem"}
           animation="wave"
-          className="mt-8 mb-4 mx-auto"
+          className="mx-auto mb-4 mt-8"
         />
         <Skeleton
           variant="rounded"
           width={"60%"}
           height={"32rem"}
           animation="wave"
-          className="my-0 mx-auto"
+          className="mx-auto my-0"
         />
       </>
     )
@@ -115,11 +114,11 @@ const Main = (): JSX.Element => {
   const typeColors = TYPES[pokemonTypes[0]?.type.name ?? "default"]
 
   const { firstAvailableGeneration, spriteOptions } = getAvailableSpriteOptions(
-    pokemonSprites.versions
+    pokemonSprites.versions,
   )
 
   const updateSelectedSprite = (
-    event: SingleValue<{ value: string; label: string }>
+    event: SingleValue<{ value: string; label: string }>,
   ): void => {
     if (event === null) {
       return
@@ -127,12 +126,12 @@ const Main = (): JSX.Element => {
     const version = POKEMON_GENERATION_RANGES[event.value].version
 
     setSelectedSprite(
-      pokemonSprites.versions?.[event.value][version].front_default
+      pokemonSprites.versions?.[event.value][version].front_default,
     )
   }
 
   return (
-    <div className="bg-secondary text-primary--darker">
+    <div className="bg-primary dark:bg-slate-700 dark:text-primary">
       <Header />
       <main className="mx-auto my-4 w-4/5">
         <h1>Discover the World of Pokémon with PokéAPI MERN</h1>
@@ -142,13 +141,13 @@ const Main = (): JSX.Element => {
           abilities, types, stats and more!
         </p>
 
-        <div className="items-center bg-secondary--lighter rounded-[10px] border-[5px] border-solid border-primary--darker flex flex-col mx-auto my-8 relative w-3/5 max-md:w-[90%]">
+        <div className="relative mx-auto my-8 flex w-3/5 flex-col items-center rounded-[10px] border-[5px] border-solid border-black bg-primary--darker dark:bg-slate-700 max-md:w-[90%]">
           {!isError && !isLoading && (
             <>
               <div
                 className={cn(
-                  "grid grid-cols-2 gap-16 border-b-[5px] border-solid border-b-primary--darker w-full relative z-0 max-md:grid-cols-1",
-                  typeColors
+                  "relative z-0 grid w-full grid-cols-2 gap-16 border-b-[5px] border-solid border-b-black max-md:grid-cols-1",
+                  typeColors,
                 )}
               >
                 <a
@@ -160,7 +159,7 @@ const Main = (): JSX.Element => {
                   rel="noreferrer"
                 >
                   <img
-                    className="h-[200px] object-contain p-4 relative w-full z-[2] max-md:p-0"
+                    className="relative z-[2] h-[200px] w-full object-contain p-4 max-md:p-0"
                     src={
                       pokemonSprites.other.dream_world.front_default ??
                       pokemonSprites.other["official-artwork"].front_default
@@ -168,14 +167,14 @@ const Main = (): JSX.Element => {
                     alt="pokemon dream world image"
                   />
                 </a>
-                <h1 className="relative text-center w-full z-[2]">
+                <h1 className="relative z-[2] w-full text-center">
                   {`${firstLetterToUpperCase(pokemonName)} #${pokemonId}`}
                   {isPokemonFavorited ? (
-                    <span className="absolute top-[5px] right-[5px]">
+                    <span className="absolute right-[5px] top-[5px]">
                       <IconStarFilled />
                     </span>
                   ) : (
-                    <span className="absolute top-[5px] right-[5px]">
+                    <span className="absolute right-[5px] top-[5px]">
                       <IconStar
                         onClick={() => {
                           addFavoritePokemon.mutate(pokemonId, {
@@ -189,21 +188,21 @@ const Main = (): JSX.Element => {
                   )}
                 </h1>
                 <span
-                  className={`self-center text-[${typeColors}] brightness-50 text-6xl font-bold col-span-1 justify-self-center my-0 mx-auto absolute z-1 max-md:hidden`}
+                  className={`self-center text-[${typeColors}] z-1 absolute col-span-1 mx-auto my-0 justify-self-center text-6xl font-bold brightness-50 max-md:hidden`}
                 >
                   {pokemonSpecies?.names[0].name}
                 </span>
-                <div className="col-span-2 my-4 mx-auto w-3/5">
+                <div className="col-span-2 mx-auto my-4 w-3/5">
                   <SearchInput handleOnSubmit={handleOnSubmit} />
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 justify-items-center p-4 w-full md:grid md:grid-cols-1 md-justify-start">
+              <div className="md-justify-start grid w-full grid-cols-1 justify-items-center p-4 md:grid md:grid-cols-1">
                 <TabContext value={tabValue}>
                   <Box
                     sx={{
                       borderBottom: 5,
-                      borderColor: `${theme["primary--darker"]}`,
+                      borderColor: "black",
                     }}
                   >
                     <TabList
@@ -247,7 +246,7 @@ const Main = (): JSX.Element => {
                             {firstLetterToUpperCase(ability.name)}
                             {isHidden && " (hidden ability)"}
                           </li>
-                        )
+                        ),
                       )}
                     </ul>
                   </TabPanel>
@@ -274,7 +273,7 @@ const Main = (): JSX.Element => {
                     {spriteOptions.length > 0 && (
                       <>
                         <img
-                          className="transform scale-150 py-0 px-8"
+                          className="scale-150 transform px-8 py-0"
                           src={
                             selectedSprite.length > 0
                               ? selectedSprite
