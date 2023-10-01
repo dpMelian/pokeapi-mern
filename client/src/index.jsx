@@ -1,15 +1,18 @@
 import React from "react"
 import ReactDOM from "react-dom/client"
+import ThemeProvider from "@mui/material/styles/ThemeProvider"
+import { createBrowserRouter, RouterProvider } from "react-router-dom"
+import { QueryClient, QueryClientProvider } from "react-query"
+
+import Login from "./pages/Login"
 import Main from "./Main"
 import reportWebVitals from "./reportWebVitals"
 import SignUp from "./pages/SignUp"
-import Login from "./pages/Login"
-import { createBrowserRouter, RouterProvider } from "react-router-dom"
-import { QueryClient, QueryClientProvider } from "react-query"
-import ThemeProvider from "@mui/material/styles/ThemeProvider"
-import { MUI_THEME } from "./constants/muiTheme"
 import ThemeProviderWrapper from "./providers/ThemeProviderWrapper"
+
 import { DarkModeContextProvider } from "./contexts/DarkModeContext"
+import { MUI_THEME } from "./constants/muiTheme"
+
 import "./index.css"
 
 const router = createBrowserRouter([
