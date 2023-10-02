@@ -1,0 +1,29 @@
+{
+  "name": "pokeapi-mern",
+  "version": "1.0.0",
+  "description": "PokeAPI MERN project",
+  "main": "index.jsx",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "install-server": "cd server && npm install",
+    "start-server": "cd server/src && node app.js",
+    "install-client": "cd client && npm install",
+    "build-client": "cd client && npm run build",
+    "start-client": "cd client && npm run start",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dpMelian/pokeapi-mern.git"
+  },
+  "author": "dpMelian",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dpMelian/pokeapi-mern/issues"
+  },
+  "homepage": "https://github.com/dpMelian/pokeapi-mern#readme"
+}
