@@ -1,5 +1,4 @@
 import React, { useState } from "react"
-import { useTheme } from "styled-components"
 import Select, { type SingleValue } from "react-select"
 import {
   IconRuler2,
@@ -53,13 +52,6 @@ const Main = (): JSX.Element => {
   const { data: pokemonSpecies } = useGetPokemonSpeciesByName(
     searchValue,
   ) as unknown as { data: PokemonSpecies }
-
-  const theme = useTheme() as {
-    primary: string
-    secondary: string
-    "primary--darker": string
-    "secondary--darker": string
-  }
 
   const addFavoritePokemon = useAddFavoritePokemon()
   // const { data: favoritePokemonId } = useGetTrainerFavorite()
@@ -152,8 +144,8 @@ const Main = (): JSX.Element => {
               >
                 <a
                   href={
-                    pokemonSprites.other.dream_world.front_default ??
-                    pokemonSprites.other["official-artwork"].front_default
+                    pokemonSprites.other["official-artwork"].front_default ??
+                    pokemonSprites.other.dream_world.front_default
                   }
                   target="_blank"
                   rel="noreferrer"
@@ -161,10 +153,10 @@ const Main = (): JSX.Element => {
                   <img
                     className="relative z-[2] h-[200px] w-full object-contain p-4 max-md:p-0"
                     src={
-                      pokemonSprites.other.dream_world.front_default ??
-                      pokemonSprites.other["official-artwork"].front_default
+                      pokemonSprites.other["official-artwork"].front_default ??
+                      pokemonSprites.other.dream_world.front_default
                     }
-                    alt="pokemon dream world image"
+                    alt="pokemon artwork image"
                   />
                 </a>
                 <h1 className="relative z-[2] w-full text-center">
@@ -187,11 +179,6 @@ const Main = (): JSX.Element => {
                     </span>
                   )}
                 </h1>
-                <span
-                  className={`self-center text-[${typeColors}] z-1 absolute col-span-1 mx-auto my-0 justify-self-center text-6xl font-bold brightness-50 max-md:hidden`}
-                >
-                  {pokemonSpecies?.names[0].name}
-                </span>
                 <div className="col-span-2 mx-auto my-4 w-3/5">
                   <SearchInput handleOnSubmit={handleOnSubmit} />
                 </div>
