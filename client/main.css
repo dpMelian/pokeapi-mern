@@ -26,12 +26,12 @@
   z-index: 2;
 }
 
-.col-span-1{
-  grid-column: span 1 / span 1;
-}
-
 .col-span-2{
   grid-column: span 2 / span 2;
+}
+
+.col-span-1{
+  grid-column: span 1 / span 1;
 }
 
 .mx-auto{
@@ -62,6 +62,10 @@
   margin-top: 2rem;
 }
 
+.box-content{
+  box-sizing: content-box;
+}
+
 .inline-block{
   display: inline-block;
 }
@@ -76,6 +80,14 @@
 
 .hidden{
   display: none;
+}
+
+.h-8{
+  height: 2rem;
+}
+
+.h-\[150px\]{
+  height: 150px;
 }
 
 .h-\[200px\]{
@@ -96,6 +108,14 @@
 
 .w-\[120px\]{
   width: 120px;
+}
+
+.w-\[150px\]{
+  width: 150px;
+}
+
+.w-auto{
+  width: auto;
 }
 
 .w-full{
@@ -122,6 +142,18 @@
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
+.grid-cols-4{
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.grid-cols-3{
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.flex-row{
+  flex-direction: row;
+}
+
 .flex-col{
   flex-direction: column;
 }
@@ -130,8 +162,28 @@
   flex-wrap: wrap;
 }
 
+.items-start{
+  align-items: flex-start;
+}
+
+.items-end{
+  align-items: flex-end;
+}
+
 .items-center{
   align-items: center;
+}
+
+.justify-start{
+  justify-content: flex-start;
+}
+
+.justify-end{
+  justify-content: flex-end;
+}
+
+.justify-between{
+  justify-content: space-between;
 }
 
 .justify-items-center{
@@ -142,12 +194,32 @@
   gap: 4rem;
 }
 
+.gap-8{
+  gap: 2rem;
+}
+
 .gap-\[5px\]{
   gap: 5px;
 }
 
-.self-center{
-  align-self: center;
+.gap-4{
+  gap: 1rem;
+}
+
+.self-start{
+  align-self: flex-start;
+}
+
+.self-end{
+  align-self: flex-end;
+}
+
+.justify-self-start{
+  justify-self: start;
+}
+
+.justify-self-end{
+  justify-self: end;
 }
 
 .justify-self-center{
@@ -346,24 +418,8 @@
   text-align: center;
 }
 
-.text-6xl{
-  font-size: 3.75rem;
-  line-height: 1;
-}
-
-.font-bold{
-  font-weight: 700;
-}
-
-.text-black{
-  --tw-text-opacity: 1;
-  color: rgb(0 0 0 / var(--tw-text-opacity));
-}
-
-.brightness-50{
-  --tw-brightness: brightness(.5);
-  -webkit-filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
-          filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
+.leading-8{
+  line-height: 2rem;
 }
 
 body {
@@ -410,16 +466,16 @@ footer {
 }
 
 @media not all and (min-width: 768px){
-  .max-md\:hidden{
-    display: none;
-  }
-
   .max-md\:w-\[90\%\]{
     width: 90%;
   }
 
   .max-md\:grid-cols-1{
     grid-template-columns: repeat(1, minmax(0, 1fr));
+  }
+
+  .max-md\:flex-col{
+    flex-direction: column;
   }
 
   .max-md\:p-0{

@@ -1,35 +1,25 @@
 import React from "react"
-import styled from "styled-components"
 import { STAT_ICONS } from "../constants/statIcons"
 
 interface Props {
   name: string
   icon: string
+  statValue: number
   children: JSX.Element
 }
 
-const Container = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 2fr;
-  align-items: center;
-`
-
-const Span = styled.span`
-  align-items: center;
-  display: flex;
-  font-family: Kadwa;
-`
-
-const StatIcon = ({ name, icon, children }: Props): JSX.Element => (
-  <Container>
-    {
-      <Span>
+const StatIcon = ({ name, icon, statValue, children }: Props): JSX.Element => (
+  <div className="grid grid-cols-3 items-center gap-4">
+    <div className="col-span-1 flex items-center justify-between">
+      <div className="flex items-center">
         {React.createElement(STAT_ICONS[icon], null)}
         {name.toUpperCase()}
-      </Span>
-    }
-    {children}
-  </Container>
+      </div>
+      <div>{statValue}</div>
+    </div>
+
+    <div className="col-span-2 flex items-center">{children}</div>
+  </div>
 )
 
 export default StatIcon

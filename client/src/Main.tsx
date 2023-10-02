@@ -216,7 +216,11 @@ const Main = (): JSX.Element => {
                   <TabPanel className="w-3/4" value="1">
                     {pokemonStats.map((stat) => (
                       <div key={stat.stat.name}>
-                        <StatIcon name={stat.stat.name} icon={stat.stat.name}>
+                        <StatIcon
+                          name={stat.stat.name}
+                          icon={stat.stat.name}
+                          statValue={stat.base_stat}
+                        >
                           <StatBar
                             value={stat.base_stat}
                             rangeColor={getColorRange(stat.base_stat)}
