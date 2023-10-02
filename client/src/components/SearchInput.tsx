@@ -10,12 +10,6 @@ const Form = styled.form`
   margin: 0 auto;
 `
 
-const InputGroup = styled.div`
-  align-items: center;
-  display: flex;
-  width: 100%;
-`
-
 const Input = styled.input`
   border-right: 3px solid ${(props) => props.theme["primary--darker"]};
   font-family: "Kadwa";
@@ -23,13 +17,6 @@ const Input = styled.input`
   height: 2rem;
   line-height: 2rem;
   width: 100%;
-`
-
-const Button = styled.button`
-  height: 2rem;
-  line-height: 2rem;
-  box-sizing: content-box;
-  width: auto;
 `
 
 interface Props {
@@ -51,7 +38,7 @@ const SearchInput = ({ handleOnSubmit }: Props): JSX.Element => {
         handleOnSubmit(inputValue)
       }}
     >
-      <InputGroup>
+      <div className="flex w-full items-center">
         <Input
           type="text"
           name="search"
@@ -59,10 +46,14 @@ const SearchInput = ({ handleOnSubmit }: Props): JSX.Element => {
           placeholder="Search for a pokémon..."
           onInput={handleOnInput}
         />
-        <Button onClick={() => handleOnSubmit} aria-label="Search">
+        <button
+          className="box-content h-8 w-auto leading-8"
+          onClick={() => handleOnSubmit}
+          aria-label="Search"
+        >
           <IconSearch />
-        </Button>
-      </InputGroup>
+        </button>
+      </div>
     </Form>
   )
 }
