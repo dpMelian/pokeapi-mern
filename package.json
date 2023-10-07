@@ -27,5 +27,6 @@
   "bugs": {
     "url": "https://github.com/dpMelian/pokeapi-mern/issues"
   },
-  "homepage": "https://github.com/dpMelian/pokeapi-mern#readme"
+  "homepage": "https://github.com/dpMelian/pokeapi-mern#readme",
+  "version": "0.1.0"
 }
