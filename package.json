@@ -7,14 +7,17 @@
     "cors": "^2.8.5",
     "dotenv": "^16.0.3"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "release-it": "^16.2.1"
+  },
   "scripts": {
     "install-server": "cd server && npm install",
     "start-server": "cd server/src && node server.js",
     "install-client": "cd client && npm install",
     "build-client": "cd client && npm run build",
     "start-client": "cd client && npm run start",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "release": "release-it"
   },
   "repository": {
     "type": "git",
