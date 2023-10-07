@@ -1,6 +1,5 @@
 {
   "name": "pokeapi-mern",
-  "version": "0.1.0",
   "description": "PokeAPI MERN project",
   "main": "index.jsx",
   "dependencies": {
