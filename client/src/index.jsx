@@ -11,7 +11,7 @@ import SignUp from "./pages/SignUp"
 import ThemeProviderWrapper from "./providers/ThemeProviderWrapper"
 
 import { DarkModeContextProvider } from "./contexts/DarkModeContext"
-import { MUI_THEME } from "./constants/muiTheme"
+import MUI_THEME from "./constants/muiTheme"
 
 import "./index.css"
 
@@ -44,7 +44,7 @@ root.render(
         </ThemeProviderWrapper>
       </DarkModeContextProvider>
     </ThemeProvider>
-  </QueryClientProvider>
+  </QueryClientProvider>,
 )
 
 // If you want to start measuring performance in your app, pass a function
