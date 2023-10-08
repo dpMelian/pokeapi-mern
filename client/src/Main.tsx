@@ -53,13 +53,13 @@ const Main = (): JSX.Element => {
   // const { data: favoritePokemonId } = useGetTrainerFavorite()
 
   const tabOptions = [
+    "Evolutions",
     "Stats",
-    "Abilities",
     "Types",
+    "Sprite",
+    "Abilities",
     "Weight",
     "Height",
-    "Sprite",
-    "Evolutions",
   ]
 
   const handleOnSubmit = (searchInputValue: string): void => {
@@ -185,14 +185,14 @@ const Main = (): JSX.Element => {
 
               <div className="flex w-full flex-col flex-wrap items-center gap-4 p-4">
                 <Tab.Group>
-                  <Tab.List className="bg-secondary-600 flex flex-wrap gap-4 rounded-xl border-2 border-solid border-black p-2 shadow">
+                  <Tab.List className="flex flex-wrap gap-4 rounded-xl border-2 border-solid border-black bg-secondary-600 p-2 shadow">
                     {tabOptions.map((tabOption) => (
                       <Tab
                         className={({ selected }) =>
                           classNames(
                             "rounded-lg border-2 border-solid border-black bg-primary p-2 font-sans text-sm hover:bg-primary--darker dark:border-primary dark:bg-slate-700 dark:text-primary",
                             selected
-                              ? "hover:bg-secondary-700 bg-secondary text-primary shadow"
+                              ? "bg-secondary text-primary shadow hover:bg-secondary-700"
                               : "",
                           )
                         }
@@ -203,6 +203,9 @@ const Main = (): JSX.Element => {
                     ))}
                   </Tab.List>
                   <Tab.Panels>
+                    <Tab.Panel>
+                      <EvolutionChainTab pokemonSpecies={pokemonSpecies} />
+                    </Tab.Panel>
                     <Tab.Panel>
                       {pokemonStats.map((stat) => (
                         <div key={stat.stat.name}>
@@ -220,35 +223,11 @@ const Main = (): JSX.Element => {
                       ))}
                     </Tab.Panel>
                     <Tab.Panel>
-                      <ul>
-                        {pokemonAbilities.map(
-                          ({ ability, is_hidden: isHidden }) => (
-                            <li key={ability.name}>
-                              {firstLetterToUpperCase(ability.name)}
-                              {isHidden && " (hidden ability)"}
-                            </li>
-                          ),
-                        )}
-                      </ul>
-                    </Tab.Panel>
-                    <Tab.Panel>
                       <div className="grid gap-[5px]">
                         {pokemonTypes.map(({ type }) => (
                           <TypeBadge key={type.name} type={type.name} />
                         ))}
                       </div>
-                    </Tab.Panel>
-                    <Tab.Panel>
-                      <h2>
-                        <IconWeight />
-                        {pokemonWeight}
-                      </h2>
-                    </Tab.Panel>
-                    <Tab.Panel>
-                      <h2>
-                        <IconRuler2 />
-                        {pokemonHeight}
-                      </h2>
                     </Tab.Panel>
                     <Tab.Panel>
                       {spriteOptions.length > 0 && (
@@ -285,7 +264,28 @@ const Main = (): JSX.Element => {
                       )}
                     </Tab.Panel>
                     <Tab.Panel>
-                      <EvolutionChainTab pokemonSpecies={pokemonSpecies} />
+                      <ul>
+                        {pokemonAbilities.map(
+                          ({ ability, is_hidden: isHidden }) => (
+                            <li key={ability.name}>
+                              {firstLetterToUpperCase(ability.name)}
+                              {isHidden && " (hidden ability)"}
+                            </li>
+                          ),
+                        )}
+                      </ul>
+                    </Tab.Panel>
+                    <Tab.Panel>
+                      <h2>
+                        <IconWeight />
+                        {pokemonWeight}
+                      </h2>
+                    </Tab.Panel>
+                    <Tab.Panel>
+                      <h2>
+                        <IconRuler2 />
+                        {pokemonHeight}
+                      </h2>
                     </Tab.Panel>
                   </Tab.Panels>
                 </Tab.Group>
