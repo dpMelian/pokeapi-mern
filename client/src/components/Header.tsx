@@ -1,37 +1,9 @@
 import React, { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
-import styled from "styled-components"
+
+import DarkModeToggle from "./DarkModeToggle"
 import useGetLoggedTrainerName from "../hooks/useGetLoggedTrainerName"
 import useLogout from "../hooks/useLogout"
-import DarkModeToggle from "./DarkModeToggle"
-
-const Container = styled.div`
-  display: flex;
-  justify-content: space-between;
-  width: 80%;
-  margin: 0 auto;
-  padding: 1rem 0;
-`
-
-const H1 = styled.h1`
-  margin: 0px;
-`
-
-const LogOutH1 = styled.h1`
-  cursor: pointer;
-  margin: 0px;
-`
-
-const LinkNoStyle = styled(Link)`
-  text-decoration: none;
-  color: ${(props) => props.theme["primary--darker"]};
-`
-
-const RightBox = styled.div`
-  display: flex;
-  flex-direction: row;
-  gap: 2rem;
-`
 
 const Header = (): JSX.Element => {
   const { data } = useGetLoggedTrainerName()
@@ -46,19 +18,20 @@ const Header = (): JSX.Element => {
 
   return (
     <nav className="flex border-x-0 border-b-2 border-t-0 border-solid border-black bg-secondary dark:border-primary dark:bg-slate-900">
-      <Container>
-        <LinkNoStyle to="/">
-          <H1>PokéAPI MERN project</H1>
-        </LinkNoStyle>
+      <div className="mx-auto my-0 flex w-4/5 justify-between px-0 py-4">
+        <Link className="text-black no-underline dark:text-primary" to="/">
+          <h1 className="m-0">PokéAPI MERN project</h1>
+        </Link>
         {showHelloMessage && data != null && (
           <>
-            <H1>{`Hello ${JSON.stringify(data)}!`}</H1>
+            <h1 className="m-0">{`Hello ${JSON.stringify(data)}!`}</h1>
           </>
         )}
         <DarkModeToggle />
-        <RightBox>
+        <div className="flex flex-row gap-8">
           {token != null ? (
-            <LogOutH1
+            <h1
+              className="m-0 cursor-pointer"
               onClick={() => {
                 logout.mutate(localStorage.getItem("token"), {
                   onSuccess: async () => {
@@ -69,17 +42,23 @@ const Header = (): JSX.Element => {
               }}
             >
               Log Out
-            </LogOutH1>
+            </h1>
           ) : (
-            <LinkNoStyle to="/login">
-              <H1>Log In</H1>
-            </LinkNoStyle>
+            <Link
+              className="text-black no-underline dark:text-primary"
+              to="/login"
+            >
+              <h1 className="m-0">Log In</h1>
+            </Link>
           )}
-          <LinkNoStyle to="/sign-up">
-            <H1>Sign Up</H1>
-          </LinkNoStyle>
-        </RightBox>
-      </Container>
+          <Link
+            className="text-black no-underline dark:text-primary"
+            to="/sign-up"
+          >
+            <h1 className="m-0">Sign Up</h1>
+          </Link>
+        </div>
+      </div>
     </nav>
   )
 }
