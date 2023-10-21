@@ -27,6 +27,7 @@ import getAvailableSpriteOptions from "./helpers/getAvailableSpriteOptions"
 import useAddFavoritePokemon from "./hooks/useAddFavoritePokemon"
 import useGetPokemonByName from "./hooks/useGetPokemonByName"
 import useGetPokemonSpeciesByName from "./hooks/useGetPokemonSpeciesByName"
+import Footer from "./components/Footer"
 // import useGetTrainerFavorite from "./hooks/useGetTrainerFavorite"
 
 const Main = (): JSX.Element => {
@@ -122,9 +123,9 @@ const Main = (): JSX.Element => {
   }
 
   return (
-    <div className="bg-primary dark:bg-slate-700 dark:text-primary">
+    <div className="flex h-screen flex-col justify-between bg-primary dark:bg-slate-700 dark:text-primary">
       <Header />
-      <main className="mx-auto my-4 w-4/5">
+      <main className="mx-auto mb-auto mt-4 w-4/5">
         <h1>Discover the World of Pokémon with PokéAPI MERN</h1>
         <p>
           With our intuitive user interface and powerful search capabilities,
@@ -204,7 +205,9 @@ const Main = (): JSX.Element => {
                   </Tab.List>
                   <Tab.Panels>
                     <Tab.Panel>
-                      <EvolutionChainTab pokemonSpecies={pokemonSpecies} />
+                      {pokemonSpecies && (
+                        <EvolutionChainTab pokemonSpecies={pokemonSpecies} />
+                      )}
                     </Tab.Panel>
                     <Tab.Panel>
                       {pokemonStats.map((stat) => (
@@ -294,6 +297,7 @@ const Main = (): JSX.Element => {
           )}
         </div>
       </main>
+      <Footer />
     </div>
   )
 }

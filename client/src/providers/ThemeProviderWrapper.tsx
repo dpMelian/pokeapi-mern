@@ -11,9 +11,13 @@ const ThemeProviderWrapper = ({
   const { isDarkMode } = useContext(Context)
 
   useEffect(() => {
-    isDarkMode
-      ? document.body.classList.add("dark")
-      : document.body.classList.remove("dark")
+    if (isDarkMode) {
+      document.body.classList.add("dark")
+      document.body.classList.add("bg-slate-700") // Tailwind's dark feature doesn't work at body tag level
+    } else {
+      document.body.classList.remove("dark")
+      document.body.classList.remove("bg-slate-700")
+    }
   }, [isDarkMode])
 
   return (

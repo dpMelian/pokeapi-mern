@@ -66,6 +66,14 @@
   margin-top: 2rem;
 }
 
+.mb-auto{
+  margin-bottom: auto;
+}
+
+.mt-4{
+  margin-top: 1rem;
+}
+
 .box-content{
   box-sizing: content-box;
 }
@@ -98,6 +106,10 @@
   height: 200px;
 }
 
+.h-screen{
+  height: 100vh;
+}
+
 .w-3\/5{
   width: 60%;
 }
@@ -120,6 +132,22 @@
 
 .w-full{
   width: 100%;
+}
+
+.flex-1{
+  flex: 1 1 0%;
+}
+
+.flex-shrink-0{
+  flex-shrink: 0;
+}
+
+.shrink-0{
+  flex-shrink: 0;
+}
+
+.flex-grow-0{
+  flex-grow: 0;
 }
 
 .scale-150{
@@ -235,9 +263,8 @@
   border-width: 4px;
 }
 
-.border-x-0{
-  border-left-width: 0px;
-  border-right-width: 0px;
+.border-\[0\]{
+  border-width: 0;
 }
 
 .border-b-2{
@@ -252,8 +279,8 @@
   border-right-width: 2px;
 }
 
-.border-t-0{
-  border-top-width: 0px;
+.border-t-2{
+  border-top-width: 2px;
 }
 
 .border-solid{
@@ -380,6 +407,11 @@
   background-color: rgb(201 22 22 / var(--tw-bg-opacity));
 }
 
+.bg-slate-700{
+  --tw-bg-opacity: 1;
+  background-color: rgb(51 65 85 / var(--tw-bg-opacity));
+}
+
 .bg-steel{
   --tw-bg-opacity: 1;
   background-color: rgb(184 184 208 / var(--tw-bg-opacity));
@@ -488,13 +520,6 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
-}
-
-footer {
-  margin-top: auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
 }
 
 .hover\:bg-primary--darker:hover{

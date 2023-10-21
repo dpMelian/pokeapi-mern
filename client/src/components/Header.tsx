@@ -17,7 +17,7 @@ const Header = (): JSX.Element => {
   }, [data])
 
   return (
-    <nav className="flex border-x-0 border-b-2 border-t-0 border-solid border-black bg-secondary dark:border-primary dark:bg-slate-900">
+    <nav className="flex border-[0] border-b-2 border-solid border-black bg-secondary dark:border-primary dark:bg-slate-900">
       <div className="mx-auto my-0 flex w-4/5 justify-between px-0 py-4">
         <Link className="text-black no-underline dark:text-primary" to="/">
           <h1 className="m-0">PokéAPI MERN project</h1>
