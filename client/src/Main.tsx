@@ -179,7 +179,7 @@ const Main = (): JSX.Element => {
                     </span>
                   )}
                 </h1>
-                <div className="col-span-2 mx-auto my-4 w-3/5">
+                <div className="col-span-2 mx-auto my-4 w-3/5 max-md:col-span-1">
                   <SearchInput handleOnSubmit={handleOnSubmit} />
                 </div>
               </div>
