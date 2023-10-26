@@ -1,23 +1,5 @@
 import React, { useState } from "react"
-import styled from "styled-components"
 import { IconSearch } from "@tabler/icons-react"
-
-const Form = styled.form`
-  border: 3px solid ${(props) => props.theme["primary--darker"]};
-  border-radius: 5px;
-  display: flex;
-  justify-content: center;
-  margin: 0 auto;
-`
-
-const Input = styled.input`
-  border-right: 3px solid ${(props) => props.theme["primary--darker"]};
-  font-family: "Kadwa";
-  font-size: 16px;
-  height: 2rem;
-  line-height: 2rem;
-  width: 100%;
-`
 
 interface Props {
   handleOnSubmit: (searchInputValue: string) => void
@@ -31,7 +13,8 @@ const SearchInput = ({ handleOnSubmit }: Props): JSX.Element => {
   }
 
   return (
-    <Form
+    <form
+      className="mx-auto my-0 flex justify-center rounded-md border-2 border-solid border-black dark:border-primary"
       onSubmit={(e) => {
         if (inputValue === "") return
         e.preventDefault()
@@ -39,11 +22,12 @@ const SearchInput = ({ handleOnSubmit }: Props): JSX.Element => {
       }}
     >
       <div className="flex w-full items-center">
-        <Input
+        <input
+          className="leading- h-8 w-full border-r-2 border-solid border-black font-sans text-base dark:border-primary"
           type="text"
           name="search"
           id="search"
-          placeholder="Search for a pokémon..."
+          placeholder="Search..."
           onInput={handleOnInput}
         />
         <button
@@ -54,7 +38,7 @@ const SearchInput = ({ handleOnSubmit }: Props): JSX.Element => {
           <IconSearch />
         </button>
       </div>
-    </Form>
+    </form>
   )
 }
 

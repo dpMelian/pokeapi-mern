@@ -7,5 +7,6 @@
   },
   "npm": {
     "publish": false
-  }
+  },
+  "increment": "minor"
 }

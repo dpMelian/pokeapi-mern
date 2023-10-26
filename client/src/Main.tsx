@@ -6,12 +6,8 @@ import {
   IconStar,
   IconStarFilled,
 } from "@tabler/icons-react"
-import Box from "@mui/material/Box/Box"
 import Skeleton from "@mui/material/Skeleton"
-import Tab from "@mui/material/Tab/Tab"
-import TabContext from "@mui/lab/TabContext"
-import TabList from "@mui/lab/TabList/TabList"
-import TabPanel from "@mui/lab/TabPanel/TabPanel"
+import { Tab } from "@headlessui/react"
 
 import EvolutionChainTab from "./components/EvolutionChainTab"
 import Header from "./components/Header"
@@ -19,6 +15,7 @@ import SearchInput from "./components/SearchInput"
 import StatBar from "./components/StatBar"
 import StatIcon from "./components/StatIcon"
 import TypeBadge from "./components/TypeBadge"
+import { classNames } from "./helpers/classNames"
 import { cn } from "./helpers/cn"
 import { firstLetterToUpperCase } from "./helpers/firstLetterToUpperCase"
 import { getColorRange } from "./helpers/getColorRange"
@@ -30,6 +27,7 @@ import getAvailableSpriteOptions from "./helpers/getAvailableSpriteOptions"
 import useAddFavoritePokemon from "./hooks/useAddFavoritePokemon"
 import useGetPokemonByName from "./hooks/useGetPokemonByName"
 import useGetPokemonSpeciesByName from "./hooks/useGetPokemonSpeciesByName"
+import Footer from "./components/Footer"
 // import useGetTrainerFavorite from "./hooks/useGetTrainerFavorite"
 
 const Main = (): JSX.Element => {
@@ -39,7 +37,6 @@ const Main = (): JSX.Element => {
 
   const [selectedSprite, setSelectedSprite] = useState("")
   const [isPokemonFavorited, setIsPokemonFavorited] = useState(false)
-  const [tabValue, setTabValue] = useState("1")
 
   const { data, isLoading, isError } = useGetPokemonByName(
     searchValue,
@@ -56,12 +53,15 @@ const Main = (): JSX.Element => {
   const addFavoritePokemon = useAddFavoritePokemon()
   // const { data: favoritePokemonId } = useGetTrainerFavorite()
 
-  const handleTabChange = (
-    _e: React.ChangeEvent<unknown>,
-    value: string,
-  ): void => {
-    setTabValue(value)
-  }
+  const tabOptions = [
+    "Evolutions",
+    "Stats",
+    "Types",
+    "Sprite",
+    "Abilities",
+    "Weight",
+    "Height",
+  ]
 
   const handleOnSubmit = (searchInputValue: string): void => {
     setSearchValue(searchInputValue.toLowerCase())
@@ -123,9 +123,9 @@ const Main = (): JSX.Element => {
   }
 
   return (
-    <div className="bg-primary dark:bg-slate-700 dark:text-primary">
+    <div className="flex h-screen flex-col justify-between bg-primary dark:bg-slate-700 dark:text-primary">
       <Header />
-      <main className="mx-auto my-4 w-4/5">
+      <main className="mx-auto mb-auto mt-4 w-4/5">
         <h1>Discover the World of Pokémon with PokéAPI MERN</h1>
         <p>
           With our intuitive user interface and powerful search capabilities,
@@ -133,12 +133,12 @@ const Main = (): JSX.Element => {
           abilities, types, stats and more!
         </p>
 
-        <div className="relative mx-auto my-8 flex w-3/5 flex-col items-center rounded-[10px] border-[5px] border-solid border-black bg-primary--darker dark:bg-slate-700 max-md:w-[90%]">
+        <div className="relative mx-auto my-8 flex w-3/5 flex-col items-center rounded-[10px] border-4 border-solid border-black bg-primary--darker dark:bg-slate-700 max-md:w-[90%]">
           {!isError && !isLoading && (
             <>
               <div
                 className={cn(
-                  "relative z-0 grid w-full grid-cols-2 gap-16 border-b-[5px] border-solid border-b-black max-md:grid-cols-1",
+                  "relative z-0 grid w-full grid-cols-2 gap-16 rounded-t-md border-0 border-b-4 border-solid border-b-black max-md:grid-cols-1",
                   typeColors,
                 )}
               >
@@ -179,130 +179,125 @@ const Main = (): JSX.Element => {
                     </span>
                   )}
                 </h1>
-                <div className="col-span-2 mx-auto my-4 w-3/5">
+                <div className="col-span-2 mx-auto my-4 w-3/5 max-md:col-span-1">
                   <SearchInput handleOnSubmit={handleOnSubmit} />
                 </div>
               </div>
 
-              <div className="md-justify-start grid w-full grid-cols-1 justify-items-center p-4 md:grid md:grid-cols-1">
-                <TabContext value={tabValue}>
-                  <Box
-                    sx={{
-                      borderBottom: 5,
-                      borderColor: "black",
-                    }}
-                  >
-                    <TabList
-                      aria-label="Pokémon data tabs"
-                      onChange={handleTabChange}
-                      sx={{
-                        "& .MuiTabs-scroller": {
-                          "& .MuiTabs-flexContainer": {
-                            flexWrap: "wrap",
-                          },
-                        },
-                      }}
-                    >
-                      <Tab label="Stats" value="1" />
-                      <Tab label="Abilities" value="2" />
-                      <Tab label="Types" value="3" />
-                      <Tab label="Weight" value="4" />
-                      <Tab label="Height" value="5" />
-                      <Tab label="Sprite" value="6" />
-                      <Tab label="Evolutions" value="7" />
-                    </TabList>
-                  </Box>
-
-                  <TabPanel className="w-3/4" value="1">
-                    {pokemonStats.map((stat) => (
-                      <div key={stat.stat.name}>
-                        <StatIcon
-                          name={stat.stat.name}
-                          icon={stat.stat.name}
-                          statValue={stat.base_stat}
-                        >
-                          <StatBar
-                            value={stat.base_stat}
-                            rangeColor={getColorRange(stat.base_stat)}
-                          />
-                        </StatIcon>
-                      </div>
+              <div className="flex w-full flex-col flex-wrap items-center gap-4 p-4">
+                <Tab.Group>
+                  <Tab.List className="border-black-600 flex flex-wrap gap-4 rounded-xl border-2 border-solid p-2 shadow">
+                    {tabOptions.map((tabOption) => (
+                      <Tab
+                        className={({ selected }) =>
+                          classNames(
+                            "rounded-lg border-2 border-solid border-black bg-primary p-2 font-sans text-sm hover:bg-primary--darker dark:border-primary dark:bg-slate-700 dark:text-primary",
+                            selected
+                              ? "bg-secondary text-primary shadow hover:bg-secondary-700"
+                              : "",
+                          )
+                        }
+                        key={tabOption}
+                      >
+                        {tabOption}
+                      </Tab>
                     ))}
-                  </TabPanel>
-                  <TabPanel value="2">
-                    <ul>
-                      {pokemonAbilities.map(
-                        ({ ability, is_hidden: isHidden }) => (
-                          <li key={ability.name}>
-                            {firstLetterToUpperCase(ability.name)}
-                            {isHidden && " (hidden ability)"}
-                          </li>
-                        ),
+                  </Tab.List>
+                  <Tab.Panels>
+                    <Tab.Panel>
+                      {pokemonSpecies && (
+                        <EvolutionChainTab pokemonSpecies={pokemonSpecies} />
                       )}
-                    </ul>
-                  </TabPanel>
-                  <TabPanel value="3">
-                    <div className="grid gap-[5px]">
-                      {pokemonTypes.map(({ type }) => (
-                        <TypeBadge key={type.name} type={type.name} />
+                    </Tab.Panel>
+                    <Tab.Panel>
+                      {pokemonStats.map((stat) => (
+                        <div key={stat.stat.name}>
+                          <StatIcon
+                            name={stat.stat.name}
+                            icon={stat.stat.name}
+                            statValue={stat.base_stat}
+                          >
+                            <StatBar
+                              value={stat.base_stat}
+                              rangeColor={getColorRange(stat.base_stat)}
+                            />
+                          </StatIcon>
+                        </div>
                       ))}
-                    </div>
-                  </TabPanel>
-                  <TabPanel value="4">
-                    <h2>
-                      <IconWeight />
-                      {pokemonWeight}
-                    </h2>
-                  </TabPanel>
-                  <TabPanel value="5">
-                    <h2>
-                      <IconRuler2 />
-                      {pokemonHeight}
-                    </h2>
-                  </TabPanel>
-                  <TabPanel value="6">
-                    {spriteOptions.length > 0 && (
-                      <>
-                        <img
-                          className="scale-150 transform px-8 py-0"
-                          src={
-                            selectedSprite.length > 0
-                              ? selectedSprite
-                              : pokemonSprites.versions[
-                                  firstAvailableGeneration
-                                ][
-                                  POKEMON_GENERATION_RANGES[
+                    </Tab.Panel>
+                    <Tab.Panel>
+                      <div className="grid gap-[5px]">
+                        {pokemonTypes.map(({ type }) => (
+                          <TypeBadge key={type.name} type={type.name} />
+                        ))}
+                      </div>
+                    </Tab.Panel>
+                    <Tab.Panel>
+                      {spriteOptions.length > 0 && (
+                        <>
+                          <img
+                            className="scale-150 transform px-8 py-0"
+                            src={
+                              selectedSprite.length > 0
+                                ? selectedSprite
+                                : pokemonSprites.versions[
                                     firstAvailableGeneration
-                                  ].version
-                                ].front_default
-                          }
-                          alt="pokemon sprite"
-                        />
+                                  ][
+                                    POKEMON_GENERATION_RANGES[
+                                      firstAvailableGeneration
+                                    ].version
+                                  ].front_default
+                            }
+                            alt="pokemon sprite"
+                          />
 
-                        <Select
-                          options={spriteOptions}
-                          onChange={(e) => {
-                            updateSelectedSprite(e)
-                          }}
-                          styles={{
-                            control: (baseStyles) => ({
-                              ...baseStyles,
-                              width: "20rem",
-                            }),
-                          }}
-                        />
-                      </>
-                    )}
-                  </TabPanel>
-                  <TabPanel value="7">
-                    <EvolutionChainTab pokemonSpecies={pokemonSpecies} />
-                  </TabPanel>
-                </TabContext>
+                          <Select
+                            options={spriteOptions}
+                            onChange={(e) => {
+                              updateSelectedSprite(e)
+                            }}
+                            styles={{
+                              control: (baseStyles) => ({
+                                ...baseStyles,
+                                width: "20rem",
+                              }),
+                            }}
+                          />
+                        </>
+                      )}
+                    </Tab.Panel>
+                    <Tab.Panel>
+                      <ul>
+                        {pokemonAbilities.map(
+                          ({ ability, is_hidden: isHidden }) => (
+                            <li key={ability.name}>
+                              {firstLetterToUpperCase(ability.name)}
+                              {isHidden && " (hidden ability)"}
+                            </li>
+                          ),
+                        )}
+                      </ul>
+                    </Tab.Panel>
+                    <Tab.Panel>
+                      <h2>
+                        <IconWeight />
+                        {pokemonWeight}
+                      </h2>
+                    </Tab.Panel>
+                    <Tab.Panel>
+                      <h2>
+                        <IconRuler2 />
+                        {pokemonHeight}
+                      </h2>
+                    </Tab.Panel>
+                  </Tab.Panels>
+                </Tab.Group>
               </div>
             </>
           )}
         </div>
       </main>
+      <Footer />
     </div>
   )
 }

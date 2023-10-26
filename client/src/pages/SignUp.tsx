@@ -10,118 +10,8 @@ import {
 } from "@tabler/icons-react"
 import Header from "../components/Header"
 import useCreateTrainer from "../hooks/useCreateTrainer"
-
-interface InputProps {
-  isError?: boolean
-}
-
-interface MessageProps {
-  type: string
-}
-
-const BaseDiv = styled.div`
-  background-color: ${(props) => props.theme.secondary};
-  color: ${(props) => props.theme["primary--darker"]};
-`
-
-const Container = styled.main`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  margin: 1rem auto;
-  width: 80%;
-`
-
-const H2 = styled.h2`
-  margin: 0 auto;
-`
-
-const Form = styled.form`
-  display: flex;
-  flex-direction: column;
-  margin: 0 auto;
-  padding: 2rem;
-  row-gap: 1rem;
-  width: 30%;
-`
-
-const InputContainer = styled.div`
-  position: relative;
-`
-
-const Input = styled.input<InputProps>`
-  background-color: ${(props) => props.theme.secondary};
-  border-radius: 4px;
-  border: 2px solid
-    ${(props) =>
-      props.isError ?? false ? "red" : props.theme["primary--darker"]};
-  box-sizing: border-box;
-  height: 3rem;
-  padding-left: 40px;
-  width: 100%;
-`
-
-const InputIconUser = styled(IconUser)`
-  left: 10px;
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-`
-
-const InputIconMail = styled(IconMail)`
-  left: 10px;
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-`
-
-const InputIconLock = styled(IconLock)`
-  left: 10px;
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-`
-
-const InputIconEyeOff = styled(IconEyeOff)`
-  cursor: pointer;
-  right: 10px;
-  position: absolute;
-  transform: translateY(50%);
-`
-
-const InputIconEye = styled(IconEye)`
-  cursor: pointer;
-  right: 10px;
-  position: absolute;
-  transform: translateY(50%);
-`
-
-const Button = styled.button`
-  background-color: ${(props) => props.theme.primary};
-  border-radius: 4px;
-  border: 2px solid ${(props) => props.theme["primary--darker"]};
-  box-sizing: border-box;
-  cursor: pointer;
-  height: 3rem;
-  margin-top: 2rem;
-  width: 100%;
-`
-
-const TextColor = styled.span`
-  color: ${(props) => props.theme["primary--darker"]};
-  font-family: "Kadwa";
-  font-size: large;
-`
-
-const Message = styled.p<MessageProps>`
-  border-radius: 5px;
-  border: 2px solid ${(props) => (props.type === "error" ? "red" : "green")};
-  margin: 0 auto;
-  height: 2.5rem;
-  width: 30%;
-  text-align: center;
-  box-sizing: border-box;
-`
+import Footer from "../components/Footer"
+import { cn } from "../helpers/cn"
 
 const Spinner = styled(IconLoader2)`
   margin: 0 auto;
@@ -164,14 +54,22 @@ const SignUp = (): JSX.Element => {
 
   const [values, setValues] = useState(initialValues)
   const [messageText, setMessageText] = useState({ type: "", message: "" })
+  const [nameInputErrorMessage, setNameInputErrorMessage] = useState("")
   const [emailInputErrorMessage, setEmailInputErrorMessage] = useState("")
   const [passwordInputErrorMessage, setPasswordInputErrorMessage] = useState("")
   const [showPassword, setShowPassword] = useState(false)
 
+  const handleOnNameBlur = (): void => {
+    if (values.name.length === 0) {
+      setNameInputErrorMessage("Name is required")
+    } else {
+      setNameInputErrorMessage("")
+    }
+  }
+
   const handleOnEmailBlur = (): void => {
     const emailRegexp = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-    console.log(values.email)
-    console.log(emailRegexp.test(values.email))
+
     if (values.email.length === 0) {
       setEmailInputErrorMessage("Email is required")
     } else if (!emailRegexp.test(values.email)) {
@@ -219,28 +117,46 @@ const SignUp = (): JSX.Element => {
   }
 
   return (
-    <BaseDiv>
+    <div className="flex h-screen flex-col bg-primary dark:bg-slate-700 dark:text-white">
       <Header />
-      <Container>
-        <H2>Create account</H2>
-        <Form onSubmit={handleOnSubmit}>
+      <main className="mx-auto mb-auto mt-4 flex w-4/5 flex-col justify-center">
+        <h2 className="mx-auto my-0">Create account</h2>
+        <form
+          className="mx-auto my-0 flex w-[30%] flex-col gap-4 p-8"
+          onSubmit={handleOnSubmit}
+        >
           <label htmlFor="name">Name</label>
-          <InputContainer>
-            <Input
+          <div className="relative">
+            <input
+              className={cn(
+                "box-border h-12 w-full rounded-md border-2 border-solid pl-10 dark:bg-slate-700",
+                nameInputErrorMessage.length > 0
+                  ? "border-secondary dark:border-secondary"
+                  : "border-black dark:border-primary",
+              )}
               autoFocus
               name="name"
+              onBlur={handleOnNameBlur}
               onInput={handleOnInput}
               placeholder="Type a name"
               required
               type="text"
               value={values.name}
             />
-            <InputIconUser />
-          </InputContainer>
+            <IconUser className="absolute left-3 top-3" />
+          </div>
+          {nameInputErrorMessage.length > 0 && (
+            <span>{nameInputErrorMessage}</span>
+          )}
           <label htmlFor="email">Email</label>
-          <InputContainer>
-            <Input
-              isError={emailInputErrorMessage.length > 0}
+          <div className="relative">
+            <input
+              className={cn(
+                "box-border h-12 w-full rounded-md border-2 border-solid pl-10 dark:bg-slate-700",
+                emailInputErrorMessage.length > 0
+                  ? "border-secondary dark:border-secondary"
+                  : "border-black dark:border-primary",
+              )}
               name="email"
               onBlur={handleOnEmailBlur}
               onInput={handleOnInput}
@@ -249,15 +165,20 @@ const SignUp = (): JSX.Element => {
               type="email"
               value={values.email}
             />
-            <InputIconMail />
-          </InputContainer>
+            <IconMail className="absolute left-3 top-3" />
+          </div>
           {emailInputErrorMessage.length > 0 && (
             <span>{emailInputErrorMessage}</span>
           )}
           <label htmlFor="password">Password</label>
-          <InputContainer>
-            <Input
-              isError={passwordInputErrorMessage.length > 0}
+          <div className="relative">
+            <input
+              className={cn(
+                "box-border h-12 w-full rounded-md border-2 border-solid pl-10 dark:bg-slate-700",
+                passwordInputErrorMessage.length > 0
+                  ? "border-secondary dark:border-secondary"
+                  : "border-black dark:border-primary",
+              )}
               minLength={8}
               name="password"
               onBlur={handleOnPasswordBlur}
@@ -267,34 +188,49 @@ const SignUp = (): JSX.Element => {
               type={showPassword ? "text" : "password"}
               value={values.password}
             />
-            <InputIconLock />
+            <IconLock className="absolute left-3 top-3" />
             {showPassword ? (
-              <InputIconEye
+              <IconEye
+                className="absolute right-3 top-3 cursor-pointer"
                 onClick={() => {
                   setShowPassword(false)
                 }}
               />
             ) : (
-              <InputIconEyeOff
+              <IconEyeOff
+                className="absolute right-3 top-3 cursor-pointer"
                 onClick={() => {
                   setShowPassword(true)
                 }}
               />
             )}
-          </InputContainer>
+          </div>
           {passwordInputErrorMessage.length > 0 && (
             <span>{passwordInputErrorMessage}</span>
           )}
-          <Button type="submit">
-            <TextColor>Create account</TextColor>
-          </Button>
-        </Form>
+          <button
+            className="mt-8 box-border h-12 w-full cursor-pointer rounded-md border-2 border-solid border-black bg-secondary dark:border-primary dark:bg-slate-900"
+            type="submit"
+          >
+            <span className="font-sans text-lg dark:text-primary">
+              Create account
+            </span>
+          </button>
+        </form>
         {createTrainer.isLoading && <Spinner />}
         {messageText.message.length > 0 && (
-          <Message type={messageText.type}>{messageText.message}</Message>
+          <p
+            className={cn(
+              "mx-auto my-0 box-border h-10 w-[30%] rounded-md border-2 border-solid text-center text-sm",
+              messageText.type === "error" ? "border-red" : "border-green-500",
+            )}
+          >
+            {messageText.message}
+          </p>
         )}
-      </Container>
-    </BaseDiv>
+      </main>
+      <Footer />
+    </div>
   )
 }
 
