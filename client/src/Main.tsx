@@ -186,7 +186,7 @@ const Main = (): JSX.Element => {
 
               <div className="flex w-full flex-col flex-wrap items-center gap-4 p-4">
                 <Tab.Group>
-                  <Tab.List className="flex flex-wrap gap-4 rounded-xl border-2 border-solid border-black bg-secondary-600 p-2 shadow">
+                  <Tab.List className="border-black-600 flex flex-wrap gap-4 rounded-xl border-2 border-solid p-2 shadow">
                     {tabOptions.map((tabOption) => (
                       <Tab
                         className={({ selected }) =>
