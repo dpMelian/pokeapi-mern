@@ -23,6 +23,11 @@ jobs:
           service-id: ${{ secrets.MY_RENDER_SERVICE_ID_SERVER }}
           api-key: ${{ secrets.MY_RENDER_API_KEY }}
 
+      - name: Configure Git identity
+        run: |
+          git config --global user.email "astrodaniel1234@gmail.com"
+          git config --global user.name "dpMelian"
+
       - name: Checkout code
         uses: actions/checkout@v2
 
