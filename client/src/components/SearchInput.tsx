@@ -27,7 +27,7 @@ const SearchInput = ({ handleOnSubmit }: Props): JSX.Element => {
           type="text"
           name="search"
           id="search"
-          placeholder="Search for a pokémon..."
+          placeholder="Search..."
           onInput={handleOnInput}
         />
         <button
