@@ -23,6 +23,10 @@ jobs:
           service-id: ${{ secrets.MY_RENDER_SERVICE_ID_SERVER }}
           api-key: ${{ secrets.MY_RENDER_API_KEY }}
 
+      - name: Debug package.json location
+        run: ls ./
+        
+
       - name: Run release script
         run: npm run release
         env:
