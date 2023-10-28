@@ -1,8 +1,6 @@
-name: Render.com deployment
+name: Bump minor version
 
 on:
-  push:
-    branches: [master]
   pull_request:
     branches: [master]
 
@@ -11,18 +9,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Deploy client to production
-        uses: johnbeynon/render-deploy-action@v0.0.8
-        with:
-          service-id: ${{ secrets.MY_RENDER_SERVICE_ID }}
-          api-key: ${{ secrets.MY_RENDER_API_KEY }}
-
-      - name: Deploy server to production
-        uses: johnbeynon/render-deploy-action@v0.0.8
-        with:
-          service-id: ${{ secrets.MY_RENDER_SERVICE_ID_SERVER }}
-          api-key: ${{ secrets.MY_RENDER_API_KEY }}
-
       - name: Configure Git identity
         run: |
           git config --global user.email "astrodaniel1234@gmail.com"
