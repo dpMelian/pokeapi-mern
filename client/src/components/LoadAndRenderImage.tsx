@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import Skeleton from "@mui/material/Skeleton"
 
 import useGetPokemonByName from "../hooks/useGetPokemonByName"
