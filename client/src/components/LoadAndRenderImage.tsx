@@ -36,13 +36,11 @@ const LoadAndRenderImage = ({ name }: Props): JSX.Element => {
         />
       )}
       {!isLoading && (
-        <a href={artworkImage} target="_blank" rel="noreferrer">
-          <img
-            className="h-[150px] w-[150px] object-contain"
-            src={artworkImage}
-            alt={`artwork image of pokémon ${name}`}
-          />
-        </a>
+        <img
+          className="h-[150px] w-[150px] object-contain"
+          src={artworkImage}
+          alt={`artwork image of pokémon ${name}`}
+        />
       )}
     </>
   )
