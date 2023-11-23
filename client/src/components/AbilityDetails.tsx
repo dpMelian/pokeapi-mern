@@ -1,6 +1,7 @@
 import { useState } from "react"
 import { useGetAbilityDetails } from "../hooks/useGetAbilityDetails"
 import { Button } from "@/components/ui/button"
+import { ChevronDown } from "lucide-react"
 
 type Props = {
   url: string
@@ -13,11 +14,14 @@ const AbilityDetails = ({ url }: Props) => {
   return (
     <div className="flex flex-col">
       <Button
+        className="w-fit"
+        variant="link"
         onClick={() => {
           setAreDetailsVisible(!areDetailsVisible)
         }}
       >
-        Show more...
+        Show More
+        <ChevronDown />
       </Button>
       {areDetailsVisible && (
         <p className="text-sm">
