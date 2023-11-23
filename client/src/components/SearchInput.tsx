@@ -1,11 +1,15 @@
 import React, { useState } from "react"
-import { IconSearch } from "@tabler/icons-react"
+import { Dices, Search } from "lucide-react"
 
 interface Props {
   handleOnSubmit: (searchInputValue: string) => void
+  setSearchValue: React.Dispatch<React.SetStateAction<string | number>>
 }
 
-const SearchInput = ({ handleOnSubmit }: Props): JSX.Element => {
+const SearchInput = ({
+  handleOnSubmit,
+  setSearchValue,
+}: Props): JSX.Element => {
   const [inputValue, setInputValue] = useState("")
 
   const handleOnInput = (e: React.ChangeEvent<HTMLInputElement>): void => {
@@ -23,7 +27,7 @@ const SearchInput = ({ handleOnSubmit }: Props): JSX.Element => {
     >
       <div className="flex w-full items-center">
         <input
-          className="leading- h-8 w-full border-r-2 border-solid border-black font-sans text-base dark:border-primary"
+          className="h-8 w-full border-r-2 border-solid border-black font-sans text-base dark:border-primary"
           type="text"
           name="search"
           id="search"
@@ -31,11 +35,22 @@ const SearchInput = ({ handleOnSubmit }: Props): JSX.Element => {
           onInput={handleOnInput}
         />
         <button
-          className="box-content h-8 w-auto leading-8"
+          className="box-content h-8 w-auto border-r-2 border-solid border-black px-2 leading-8"
           onClick={() => handleOnSubmit}
           aria-label="Search"
+          title="Search Pokémon"
         >
-          <IconSearch />
+          <Search />
+        </button>
+        <button
+          className="box-content h-8 w-auto px-2 leading-8"
+          onClick={() =>
+            setSearchValue(Math.floor(Math.random() * (1010 - 1) + 1))
+          }
+          aria-label="Random"
+          title="Search random Pokémon"
+        >
+          <Dices />
         </button>
       </div>
     </form>
