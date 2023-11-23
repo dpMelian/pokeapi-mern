@@ -9,9 +9,13 @@ import { type PokemonSpecies } from "../interfaces/pokemonSpecies"
 
 interface Props {
   pokemonSpecies: PokemonSpecies
+  setSearchValue: React.Dispatch<React.SetStateAction<string | number>>
 }
 
-const EvolutionChainTab = ({ pokemonSpecies }: Props): JSX.Element => {
+const EvolutionChainTab = ({
+  pokemonSpecies,
+  setSearchValue,
+}: Props): JSX.Element => {
   const { data: evolutionChain, isLoading } = useGetEvolutionChain(
     pokemonSpecies?.evolution_chain.url,
   ) as unknown as { data: EvolutionChain; isLoading: boolean }
@@ -39,7 +43,11 @@ const EvolutionChainTab = ({ pokemonSpecies }: Props): JSX.Element => {
       {evolutionChainSpeciesNames.length > 1 && (
         <div className="flex flex-row flex-wrap items-center gap-8 max-md:flex-col">
           {evolutionChainSpeciesNames.map((elem, index) => (
-            <div className="flex flex-col items-center" key={index}>
+            <div
+              className="flex flex-col items-center hover:cursor-pointer"
+              key={index}
+              onClick={() => setSearchValue(elem)}
+            >
               <LoadAndRenderImage name={elem} />
               <p>{firstLetterToUpperCase(elem)}</p>
             </div>
