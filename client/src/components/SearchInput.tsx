@@ -35,7 +35,7 @@ const SearchInput = ({
           onInput={handleOnInput}
         />
         <button
-          className="box-content h-8 w-auto border-r-2 border-solid border-black px-2 leading-8"
+          className="box-content h-8 w-auto border-r-2 border-solid border-black px-2 leading-8 dark:border-white"
           onClick={() => handleOnSubmit}
           aria-label="Search"
           title="Search Pokémon"

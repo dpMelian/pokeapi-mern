@@ -820,10 +820,6 @@ p{
   width: 2.5rem;
 }
 
-.w-3\/4{
-  width: 75%;
-}
-
 .w-3\/5{
   width: 60%;
 }
@@ -848,22 +844,14 @@ p{
   width: auto;
 }
 
-.w-full{
-  width: 100%;
-}
-
-.w-\[400px\]{
-  width: 400px;
-}
-
 .w-fit{
   width: -webkit-fit-content;
   width: -moz-fit-content;
   width: fit-content;
 }
 
-.max-w-md{
-  max-width: 28rem;
+.w-full{
+  width: 100%;
 }
 
 .scale-150{
@@ -1188,6 +1176,11 @@ p{
   padding-right: 0px;
 }
 
+.px-2{
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
+
 .px-3{
   padding-left: 0.75rem;
   padding-right: 0.75rem;
@@ -1221,11 +1214,6 @@ p{
 .py-4{
   padding-top: 1rem;
   padding-bottom: 1rem;
-}
-
-.px-2{
-  padding-left: 0.5rem;
-  padding-right: 0.5rem;
 }
 
 .pl-10{
@@ -1276,11 +1264,6 @@ p{
   color: hsl(var(--muted-foreground));
 }
 
-.text-primary{
-  --tw-text-opacity: 1;
-  color: rgb(255 255 255 / var(--tw-text-opacity));
-}
-
 .no-underline{
   text-decoration-line: none;
 }
@@ -1311,10 +1294,6 @@ p{
 
 .ease-in-out{
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.ease-in{
-  transition-timing-function: cubic-bezier(0.4, 0, 1, 1);
 }
 
 @-webkit-keyframes enter{
@@ -1352,11 +1331,6 @@ p{
 .ease-in-out{
   -webkit-animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
           animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.ease-in{
-  -webkit-animation-timing-function: cubic-bezier(0.4, 0, 1, 1);
-          animation-timing-function: cubic-bezier(0.4, 0, 1, 1);
 }
 
 body {
@@ -1454,6 +1428,11 @@ code {
   border-color: rgb(251 27 27 / var(--tw-border-opacity));
 }
 
+:is(.dark .dark\:border-white){
+  --tw-border-opacity: 1;
+  border-color: rgb(255 255 255 / var(--tw-border-opacity));
+}
+
 :is(.dark .dark\:bg-slate-700){
   --tw-bg-opacity: 1;
   background-color: rgb(51 65 85 / var(--tw-bg-opacity));
@@ -1480,18 +1459,6 @@ code {
   }
 }
 
-@media not all and (min-width: 1280px){
-  .max-xl\:w-full{
-    width: 100%;
-  }
-}
-
-@media not all and (min-width: 1024px){
-  .max-lg\:w-full{
-    width: 100%;
-  }
-}
-
 @media not all and (min-width: 768px){
   .max-md\:col-span-1{
     grid-column: span 1 / span 1;
@@ -1499,10 +1466,6 @@ code {
 
   .max-md\:w-\[90\%\]{
     width: 90%;
-  }
-
-  .max-md\:w-full{
-    width: 100%;
   }
 
   .max-md\:grid-cols-1{

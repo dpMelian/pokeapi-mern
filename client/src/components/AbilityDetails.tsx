@@ -14,7 +14,7 @@ const AbilityDetails = ({ url }: Props) => {
   return (
     <div className="flex flex-col">
       <Button
-        className="w-fit"
+        className="w-fit dark:text-white"
         variant="link"
         onClick={() => {
           setAreDetailsVisible(!areDetailsVisible)
