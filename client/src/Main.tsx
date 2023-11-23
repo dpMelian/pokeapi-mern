@@ -1,11 +1,7 @@
 import { useState } from "react"
 import Select, { type SingleValue } from "react-select"
-import {
-  IconRuler2,
-  IconWeight,
-  IconStar,
-  IconStarFilled,
-} from "@tabler/icons-react"
+import { IconStar, IconStarFilled } from "@tabler/icons-react"
+import { Ruler, Weight } from "lucide-react"
 import Skeleton from "@mui/material/Skeleton"
 
 import AbilityDetails from "./components/AbilityDetails"
@@ -127,7 +123,7 @@ const Main = (): JSX.Element => {
   }
 
   return (
-    <div className="flex h-screen flex-col justify-between bg-primary dark:bg-slate-700 dark:text-primary">
+    <div className="flex h-screen flex-col justify-between bg-primary transition-all ease-in-out dark:bg-slate-700 dark:text-primary">
       <Header />
       <main className="mx-auto mb-auto mt-4 w-4/5">
         <h1>Discover the World of Pokémon with PokéAPI MERN</h1>
@@ -137,7 +133,7 @@ const Main = (): JSX.Element => {
           abilities, types, stats and more!
         </p>
 
-        <div className="relative mx-auto my-8 flex w-3/5 flex-col items-center rounded-[10px] border-4 border-solid border-black bg-primary--darker dark:bg-slate-700 max-md:w-[90%]">
+        <div className="relative mx-auto my-8 flex w-3/5 flex-col items-center rounded-[10px] border-4 border-solid border-black bg-primary--darker transition-all ease-in-out dark:bg-slate-700 max-md:w-[90%]">
           {!isError && !isLoading && (
             <>
               <div
@@ -184,12 +180,18 @@ const Main = (): JSX.Element => {
                   )}
                 </h1>
                 <div className="col-span-2 mx-auto my-4 w-3/5 max-md:col-span-1">
-                  <SearchInput handleOnSubmit={handleOnSubmit} />
+                  <SearchInput
+                    handleOnSubmit={handleOnSubmit}
+                    setSearchValue={setSearchValue}
+                  />
                 </div>
               </div>
 
               <div className="flex w-full flex-col flex-wrap items-center gap-4 p-4">
-                <Tabs className="w-3/5" defaultValue={tabOptions[0]}>
+                <Tabs
+                  className="w-3/5 max-2xl:w-full"
+                  defaultValue={tabOptions[0]}
+                >
                   <TabsList className="grid w-full grid-cols-7">
                     {tabOptions.map((tabOption) => (
                       <TabsTrigger key={tabOption} value={tabOption}>
@@ -199,7 +201,10 @@ const Main = (): JSX.Element => {
                   </TabsList>
                   <TabsContent value={tabOptions[0]}>
                     {pokemonSpecies && (
-                      <EvolutionChainTab pokemonSpecies={pokemonSpecies} />
+                      <EvolutionChainTab
+                        pokemonSpecies={pokemonSpecies}
+                        setSearchValue={setSearchValue}
+                      />
                     )}
                   </TabsContent>
                   <TabsContent value={tabOptions[1]}>
@@ -259,10 +264,7 @@ const Main = (): JSX.Element => {
                       </>
                     )}
                   </TabsContent>
-                  <TabsContent
-                    className="flex w-3/4 max-w-md justify-center"
-                    value={tabOptions[4]}
-                  >
+                  <TabsContent value={tabOptions[4]}>
                     <ul>
                       {pokemonAbilities.map(
                         ({ ability, is_hidden: isHidden }) => (
@@ -279,13 +281,13 @@ const Main = (): JSX.Element => {
                   </TabsContent>
                   <TabsContent value={tabOptions[5]}>
                     <h2>
-                      <IconWeight />
+                      <Weight />
                       {pokemonWeight}
                     </h2>
                   </TabsContent>
                   <TabsContent value={tabOptions[6]}>
                     <h2>
-                      <IconRuler2 />
+                      <Ruler />
                       {pokemonHeight}
                     </h2>
                   </TabsContent>
