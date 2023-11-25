@@ -2,7 +2,8 @@ name: Bump minor version
 
 on:
   pull_request:
-    branches: [master]
+    types:
+      - opened
 
 jobs:
   build:
