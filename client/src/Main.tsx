@@ -282,13 +282,13 @@ const Main = (): JSX.Element => {
                   <TabsContent value={tabOptions[5]}>
                     <h2>
                       <Weight />
-                      {pokemonWeight}
+                      {pokemonWeight / 10} kg {/* Weight is in hectograms */}
                     </h2>
                   </TabsContent>
                   <TabsContent value={tabOptions[6]}>
                     <h2>
                       <Ruler />
-                      {pokemonHeight}
+                      {pokemonHeight / 10} m {/* Height is in decimeters */}
                     </h2>
                   </TabsContent>
                 </Tabs>
