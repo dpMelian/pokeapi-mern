@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import Skeleton from "@mui/material/Skeleton"
 
-import useGetPokemonByName from "../hooks/useGetPokemonByName"
+import useGetPokemons from "@/hooks/useGetPokemons"
 import { type Pokemon } from "../interfaces/pokemon"
 
 interface Props {
@@ -10,18 +10,18 @@ interface Props {
 
 const LoadAndRenderImage = ({ name }: Props): JSX.Element => {
   const [artworkImage, setArtworkImage] = useState("")
-  const { data: pokemon, isLoading } = useGetPokemonByName(name) as unknown as {
+  const { data: pokemon, isLoading } = useGetPokemons([name]) as unknown as {
     data: Pokemon
     isLoading: boolean
   }
 
   useEffect(() => {
-    if (pokemon == null) return
+    if (!pokemon) return
 
-    if (pokemon.sprites.other["official-artwork"].front_default != null) {
+    if (pokemon.sprites?.other["official-artwork"].front_default != null) {
       setArtworkImage(pokemon.sprites.other["official-artwork"].front_default)
     } else {
-      setArtworkImage(pokemon.sprites.other.dream_world.front_default)
+      setArtworkImage(pokemon.sprites?.other.dream_world.front_default)
     }
   }, [pokemon])
 

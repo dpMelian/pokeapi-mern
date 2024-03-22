@@ -5,7 +5,7 @@ import LoadAndRenderImage from "./LoadAndRenderImage"
 import useGetEvolutionChain from "../hooks/useGetEvolutionChain"
 import { firstLetterToUpperCase } from "../helpers/firstLetterToUpperCase"
 import { type Chain, type EvolutionChain } from "../interfaces/evolutionChain"
-import { type PokemonSpecies } from "../interfaces/pokemonSpecies"
+import { PokemonSpecies } from "@/types/pokemonSpecies"
 
 interface Props {
   pokemonSpecies: PokemonSpecies

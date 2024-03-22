@@ -6,6 +6,10 @@ export interface Pokemon {
   height: number
   name: string
   id: number
+  species: {
+    name: string
+    url: string
+  }
   sprites: {
     other: {
       dream_world: {
