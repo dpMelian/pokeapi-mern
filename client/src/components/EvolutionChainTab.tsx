@@ -5,17 +5,14 @@ import LoadAndRenderImage from "./LoadAndRenderImage"
 import useGetEvolutionChain from "../hooks/useGetEvolutionChain"
 import { firstLetterToUpperCase } from "../helpers/firstLetterToUpperCase"
 import { type Chain, type EvolutionChain } from "../interfaces/evolutionChain"
-import { type PokemonSpecies } from "../interfaces/pokemonSpecies"
+import { PokemonSpecies } from "@/types/pokemonSpecies"
 
 interface Props {
   pokemonSpecies: PokemonSpecies
   setSearchValue: React.Dispatch<React.SetStateAction<string | number>>
 }
 
-const EvolutionChainTab = ({
-  pokemonSpecies,
-  setSearchValue,
-}: Props): JSX.Element => {
+const EvolutionChainTab = ({ pokemonSpecies, setSearchValue }: Props) => {
   const { data: evolutionChain, isLoading } = useGetEvolutionChain(
     pokemonSpecies?.evolution_chain.url,
   ) as unknown as { data: EvolutionChain; isLoading: boolean }
@@ -23,15 +20,17 @@ const EvolutionChainTab = ({
   const [evolutionChainSpeciesNames, setEvolutionChainSpeciesNames] = useState(
     [] as string[],
   )
+  const [evolutionChainSpeciesURLs, setEvolutionChainSpeciesURLs] = useState(
+    [] as string[],
+  )
 
   useEffect(() => {
     if (evolutionChain?.chain.species.name.length > 0) {
       const { chain } = evolutionChain as unknown as { chain: Chain }
-      const evolutionChainSpeciesNames = getEvolutionChainSpeciesNames(
-        chain,
-        [],
-      )
+      const { evolutionChainSpeciesNames, evolutionChainSpeciesURLs } =
+        getEvolutionChainSpeciesNames(chain, [], [])
       setEvolutionChainSpeciesNames(evolutionChainSpeciesNames)
+      setEvolutionChainSpeciesURLs(evolutionChainSpeciesURLs)
     }
   }, [evolutionChain])
 
@@ -48,7 +47,9 @@ const EvolutionChainTab = ({
               key={index}
               onClick={() => setSearchValue(elem)}
             >
-              <LoadAndRenderImage name={elem} />
+              <LoadAndRenderImage
+                identifier={evolutionChainSpeciesURLs[index]}
+              />
               <p>{firstLetterToUpperCase(elem)}</p>
             </div>
           ))}

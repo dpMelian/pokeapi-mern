@@ -1,13 +1,13 @@
-import { useState } from "react"
-import Select, { type SingleValue } from "react-select"
 import { IconStar, IconStarFilled } from "@tabler/icons-react"
 import { Ruler, Weight } from "lucide-react"
+import { useState } from "react"
+import Select, { type SingleValue } from "react-select"
 import Skeleton from "@mui/material/Skeleton"
 
 import AbilityDetails from "./components/AbilityDetails"
 import EvolutionChainTab from "./components/EvolutionChainTab"
-import Header from "./components/Header"
 import Footer from "./components/Footer"
+import Header from "./components/Header"
 import SearchInput from "./components/SearchInput"
 import StatBar from "./components/StatBar"
 import StatIcon from "./components/StatIcon"
@@ -22,11 +22,11 @@ import { TYPES } from "./constants/pokemonTypes"
 
 import getAvailableSpriteOptions from "./helpers/getAvailableSpriteOptions"
 import useAddFavoritePokemon from "./hooks/useAddFavoritePokemon"
-import useGetPokemonByName from "./hooks/useGetPokemonByName"
-import useGetPokemonSpeciesByName from "./hooks/useGetPokemonSpeciesByName"
+import useGetPokemons from "./hooks/useGetPokemons"
+import useGetPokemonSpecies from "./hooks/useGetPokemonSpecies"
 
+import { PokemonSpecies } from "./types/pokemonSpecies"
 import { type Pokemon } from "./interfaces/pokemon"
-import { type PokemonSpecies } from "./interfaces/pokemonSpecies"
 
 // import useGetTrainerFavorite from "./hooks/useGetTrainerFavorite"
 
@@ -37,18 +37,21 @@ const Main = (): JSX.Element => {
 
   const [selectedSprite, setSelectedSprite] = useState("")
   const [isPokemonFavorited, setIsPokemonFavorited] = useState(false)
+  const [selectedVariant, setSelectedVariant] = useState(0)
 
-  const { data, isLoading, isError } = useGetPokemonByName(
-    searchValue,
-  ) as unknown as {
-    data: Pokemon
+  const {
+    data: pokemonSpecies,
+    isLoading,
+    isError,
+  } = useGetPokemonSpecies(searchValue) as unknown as {
+    data: PokemonSpecies
     isLoading: boolean
     isError: boolean
   }
 
-  const { data: pokemonSpecies } = useGetPokemonSpeciesByName(
-    searchValue,
-  ) as unknown as { data: PokemonSpecies }
+  const { data: pokemons, isLoading: isPokemonsLoading } = useGetPokemons(
+    pokemonSpecies?.varieties.map(({ pokemon }) => pokemon.name) ?? [],
+  ) as unknown as { data: Pokemon[]; isLoading: boolean }
 
   const addFavoritePokemon = useAddFavoritePokemon()
   // const { data: favoritePokemonId } = useGetTrainerFavorite()
@@ -101,12 +104,15 @@ const Main = (): JSX.Element => {
     stats: pokemonStats,
     types: pokemonTypes,
     weight: pokemonWeight,
-  } = data
+  } = pokemons?.[selectedVariant] ?? {}
 
-  const typeColors = TYPES[pokemonTypes[0]?.type.name ?? "default"]
+  const typeColors =
+    pokemonTypes && pokemonTypes[0]
+      ? TYPES[pokemonTypes[0]?.type.name]
+      : TYPES.default
 
   const { firstAvailableGeneration, spriteOptions } = getAvailableSpriteOptions(
-    pokemonSprites.versions,
+    pokemonSprites?.versions ?? {},
   )
 
   const updateSelectedSprite = (
@@ -144,8 +150,8 @@ const Main = (): JSX.Element => {
               >
                 <a
                   href={
-                    pokemonSprites.other["official-artwork"].front_default ??
-                    pokemonSprites.other.dream_world.front_default
+                    pokemonSprites?.other["official-artwork"].front_default ??
+                    pokemonSprites?.other.dream_world.front_default
                   }
                   target="_blank"
                   rel="noreferrer"
@@ -153,14 +159,37 @@ const Main = (): JSX.Element => {
                   <img
                     className="relative z-[2] h-[200px] w-full object-contain p-4 max-md:p-0"
                     src={
-                      pokemonSprites.other["official-artwork"].front_default ??
-                      pokemonSprites.other.dream_world.front_default
+                      pokemonSprites?.other["official-artwork"].front_default ??
+                      pokemonSprites?.other.dream_world.front_default
                     }
                     alt="pokemon artwork image"
                   />
                 </a>
-                <h1 className="relative z-[2] w-full text-center">
-                  {`${firstLetterToUpperCase(pokemonName)} #${pokemonId}`}
+                <div className="relative z-[2] w-full text-center">
+                  {!isPokemonsLoading && (
+                    <Select
+                      defaultValue={{
+                        value: pokemons?.[0].id,
+                        label: `${firstLetterToUpperCase(pokemons?.[0].name)}`,
+                      }}
+                      options={pokemons?.map((pokemon) => ({
+                        value: pokemon.id,
+                        label: `${firstLetterToUpperCase(pokemon.name)}`,
+                      }))}
+                      onChange={(e) => {
+                        if (e === null) return
+                        const newSearchPokemon = pokemons?.find(
+                          (pokemon, index) => {
+                            if (pokemon.id === e.value) {
+                              setSelectedVariant(index)
+                              return true
+                            }
+                          },
+                        )
+                        setSearchValue(newSearchPokemon?.species.name ?? "")
+                      }}
+                    />
+                  )}
                   {isPokemonFavorited ? (
                     <span className="absolute right-[5px] top-[5px]">
                       <IconStarFilled />
@@ -178,7 +207,10 @@ const Main = (): JSX.Element => {
                       />
                     </span>
                   )}
-                </h1>
+                  <div
+                    className={cn(isPokemonsLoading && "hidden")}
+                  >{`#${pokemons?.[0].id}`}</div>
+                </div>
                 <div className="col-span-2 mx-auto my-4 w-3/5 max-md:col-span-1">
                   <SearchInput
                     handleOnSubmit={handleOnSubmit}
@@ -208,7 +240,7 @@ const Main = (): JSX.Element => {
                     )}
                   </TabsContent>
                   <TabsContent value={tabOptions[1]}>
-                    {pokemonStats.map((stat) => (
+                    {pokemonStats?.map((stat) => (
                       <div key={stat.stat.name}>
                         <StatIcon
                           name={stat.stat.name}
@@ -225,7 +257,7 @@ const Main = (): JSX.Element => {
                   </TabsContent>
                   <TabsContent value={tabOptions[2]}>
                     <div className="grid gap-[5px]">
-                      {pokemonTypes.map(({ type }) => (
+                      {pokemonTypes?.map(({ type }) => (
                         <TypeBadge key={type.name} type={type.name} />
                       ))}
                     </div>
@@ -266,7 +298,7 @@ const Main = (): JSX.Element => {
                   </TabsContent>
                   <TabsContent value={tabOptions[4]}>
                     <ul>
-                      {pokemonAbilities.map(
+                      {pokemonAbilities?.map(
                         ({ ability, is_hidden: isHidden }) => (
                           <div key={ability.name}>
                             <li>
@@ -282,13 +314,13 @@ const Main = (): JSX.Element => {
                   <TabsContent value={tabOptions[5]}>
                     <h2>
                       <Weight />
-                      {pokemonWeight / 10} kg {/* Weight is in hectograms */}
+                      {pokemonWeight / 10} kg
                     </h2>
                   </TabsContent>
                   <TabsContent value={tabOptions[6]}>
                     <h2>
                       <Ruler />
-                      {pokemonHeight / 10} m {/* Height is in decimeters */}
+                      {pokemonHeight / 10} m
                     </h2>
                   </TabsContent>
                 </Tabs>

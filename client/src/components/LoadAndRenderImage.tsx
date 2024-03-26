@@ -1,33 +1,43 @@
 import { useEffect, useState } from "react"
 import Skeleton from "@mui/material/Skeleton"
 
-import useGetPokemonByName from "../hooks/useGetPokemonByName"
+import useGetPokemons from "@/hooks/useGetPokemons"
 import { type Pokemon } from "../interfaces/pokemon"
+import useGetPokemonSpecies from "@/hooks/useGetPokemonSpecies"
+import { PokemonSpecies } from "@/types/pokemonSpecies"
 
 interface Props {
-  name: string
+  identifier: string
 }
 
-const LoadAndRenderImage = ({ name }: Props): JSX.Element => {
+const LoadAndRenderImage = ({ identifier }: Props) => {
   const [artworkImage, setArtworkImage] = useState("")
-  const { data: pokemon, isLoading } = useGetPokemonByName(name) as unknown as {
-    data: Pokemon
-    isLoading: boolean
-  }
+  const { data: pokemonSpecies, isLoading: isPokemonSpeciesLoading } =
+    useGetPokemonSpecies(identifier) as unknown as {
+      data: PokemonSpecies
+      isLoading: boolean
+      isError: boolean
+    }
+
+  const { data: pokemons, isLoading: isPokemonsLoading } = useGetPokemons(
+    pokemonSpecies?.varieties.map(({ pokemon }) => pokemon.name) ?? [],
+  ) as unknown as { data: Pokemon[]; isLoading: boolean }
 
   useEffect(() => {
-    if (pokemon == null) return
+    if (!pokemons) return
 
-    if (pokemon.sprites.other["official-artwork"].front_default != null) {
-      setArtworkImage(pokemon.sprites.other["official-artwork"].front_default)
+    if (pokemons[0]?.sprites?.other["official-artwork"].front_default != null) {
+      setArtworkImage(
+        pokemons[0]?.sprites.other["official-artwork"].front_default,
+      )
     } else {
-      setArtworkImage(pokemon.sprites.other.dream_world.front_default)
+      setArtworkImage(pokemons[0]?.sprites?.other.dream_world.front_default)
     }
-  }, [pokemon])
+  }, [pokemons])
 
   return (
     <>
-      {isLoading && (
+      {(isPokemonSpeciesLoading || isPokemonsLoading) && (
         <Skeleton
           variant="rectangular"
           height={"150px"}
@@ -35,11 +45,11 @@ const LoadAndRenderImage = ({ name }: Props): JSX.Element => {
           animation="wave"
         />
       )}
-      {!isLoading && (
+      {!(isPokemonSpeciesLoading || isPokemonsLoading) && (
         <img
           className="h-[150px] w-[150px] object-contain"
           src={artworkImage}
-          alt={`artwork image of pokémon ${name}`}
+          alt={`artwork image of pokémon ${identifier}`}
         />
       )}
     </>
