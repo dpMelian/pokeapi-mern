@@ -1,13 +1,13 @@
-import { useState } from "react"
-import Select, { type SingleValue } from "react-select"
 import { IconStar, IconStarFilled } from "@tabler/icons-react"
 import { Ruler, Weight } from "lucide-react"
+import { useState } from "react"
+import Select, { type SingleValue } from "react-select"
 import Skeleton from "@mui/material/Skeleton"
 
 import AbilityDetails from "./components/AbilityDetails"
 import EvolutionChainTab from "./components/EvolutionChainTab"
-import Header from "./components/Header"
 import Footer from "./components/Footer"
+import Header from "./components/Header"
 import SearchInput from "./components/SearchInput"
 import StatBar from "./components/StatBar"
 import StatIcon from "./components/StatIcon"
@@ -25,8 +25,8 @@ import useAddFavoritePokemon from "./hooks/useAddFavoritePokemon"
 import useGetPokemons from "./hooks/useGetPokemons"
 import useGetPokemonSpecies from "./hooks/useGetPokemonSpecies"
 
-import { type Pokemon } from "./interfaces/pokemon"
 import { PokemonSpecies } from "./types/pokemonSpecies"
+import { type Pokemon } from "./interfaces/pokemon"
 
 // import useGetTrainerFavorite from "./hooks/useGetTrainerFavorite"
 
@@ -38,14 +38,6 @@ const Main = (): JSX.Element => {
   const [selectedSprite, setSelectedSprite] = useState("")
   const [isPokemonFavorited, setIsPokemonFavorited] = useState(false)
   const [selectedVariant, setSelectedVariant] = useState(0)
-
-  // const { data, isLoading, isError } = useGetPokemon(
-  //   searchValue,
-  // ) as unknown as {
-  //   data: Pokemon
-  //   isLoading: boolean
-  //   isError: boolean
-  // }
 
   const {
     data: pokemonSpecies,
@@ -173,24 +165,19 @@ const Main = (): JSX.Element => {
                     alt="pokemon artwork image"
                   />
                 </a>
-                <h1 className="relative z-[2] w-full text-center">
+                <div className="relative z-[2] w-full text-center">
                   {!isPokemonsLoading && (
                     <Select
                       defaultValue={{
                         value: pokemons?.[0].id,
-                        label: `${firstLetterToUpperCase(
-                          pokemons?.[0].name,
-                        )} #${pokemons?.[0].id}`,
+                        label: `${firstLetterToUpperCase(pokemons?.[0].name)}`,
                       }}
                       options={pokemons?.map((pokemon) => ({
                         value: pokemon.id,
-                        label: `${firstLetterToUpperCase(pokemon.name)} #${
-                          pokemon.id
-                        }`,
+                        label: `${firstLetterToUpperCase(pokemon.name)}`,
                       }))}
                       onChange={(e) => {
                         if (e === null) return
-                        console.log({ e })
                         const newSearchPokemon = pokemons?.find(
                           (pokemon, index) => {
                             if (pokemon.id === e.value) {
@@ -220,7 +207,10 @@ const Main = (): JSX.Element => {
                       />
                     </span>
                   )}
-                </h1>
+                  <div
+                    className={cn(isPokemonsLoading && "hidden")}
+                  >{`#${pokemons?.[0].id}`}</div>
+                </div>
                 <div className="col-span-2 mx-auto my-4 w-3/5 max-md:col-span-1">
                   <SearchInput
                     handleOnSubmit={handleOnSubmit}
