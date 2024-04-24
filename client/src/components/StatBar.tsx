@@ -17,12 +17,12 @@ const MAX_BAR_WIDTH_PERCENTAGE = 100
 const Bar = styled.span<BarProps>`
   display: flex;
   border: 2px solid;
-  border-radius: 5px;
+  border-radius: 25px;
   background-color: ${(props: ThemedStyledProps<BarProps, any>) =>
     props.rangeColor};
   width: ${(props) =>
     `calc(${props.value / MAX_STAT_VALUE} * ${MAX_BAR_WIDTH_PERCENTAGE}%)`};
-  height: 20px;
+  height: 15px;
 `
 
 const StatBar = ({ value, rangeColor }: Props): JSX.Element => (

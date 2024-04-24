@@ -18,7 +18,7 @@ const SearchInput = ({
 
   return (
     <form
-      className="mx-auto my-0 flex justify-center rounded-md border-2 border-solid border-black dark:border-primary"
+      className="mx-16 my-0 mt-4 flex max-w-lg justify-center rounded-md border-2 border-solid border-black dark:border-primary"
       onSubmit={(e) => {
         if (inputValue === "") return
         e.preventDefault()
