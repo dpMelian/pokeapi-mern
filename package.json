@@ -28,6 +28,9 @@
   "bugs": {
     "url": "https://github.com/dpMelian/pokeapi-mern/issues"
   },
+  "engines": {
+    "node": "lts"
+  },
   "homepage": "https://github.com/dpMelian/pokeapi-mern#readme",
   "version": "0.6.0"
 }
