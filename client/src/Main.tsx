@@ -11,11 +11,19 @@ import SearchInput from "./components/SearchInput"
 import StatBar from "./components/StatBar"
 import StatIcon from "./components/StatIcon"
 
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "./components/ui/accordion"
 import { Badge } from "./components/ui/badge"
 import { cn } from "./helpers/cn"
 import { firstLetterToUpperCase } from "./helpers/firstLetterToUpperCase"
 import { getColorRange } from "./helpers/getColorRange"
 import { PokemonSpecies } from "./types/pokemonSpecies"
+import { Progress } from "./components/ui/progress"
+import { stats } from "./constants/stats"
 import { type Pokemon } from "./interfaces/pokemon"
 import { TYPES_PASTEL } from "./constants/pokemonTypesPastel"
 import {
@@ -31,6 +39,7 @@ import {
 import useAddFavoritePokemon from "./hooks/useAddFavoritePokemon"
 import useGetPokemons from "./hooks/useGetPokemons"
 import useGetPokemonSpecies from "./hooks/useGetPokemonSpecies"
+import { typeIcons } from "./constants/typeIcons"
 
 // import useGetTrainerFavorite from "./hooks/useGetTrainerFavorite"
 
@@ -70,6 +79,7 @@ const Main = (): JSX.Element => {
   ]
 
   const handleOnSubmit = (searchInputValue: string): void => {
+    setSelectedVariant(0)
     setSearchValue(searchInputValue.toLowerCase())
   }
 
@@ -124,25 +134,26 @@ const Main = (): JSX.Element => {
             setSearchValue={setSearchValue}
           />
           <main className="mb-auto flex w-full flex-col px-16 pt-4 md:flex-row">
-            <div className="w-full md:grid md:grid-cols-4">
+            <div className="w-full md:grid md:grid-cols-3">
               <div className="space-y-4 md:col-span-1">
                 <div>
                   {pokemons?.[selectedVariant].types.map(({ type }, index) => (
                     <Badge
                       className={cn(
-                        `bg-${type.name} text-sm`,
+                        `bg-${type.name} items-center gap-1 text-sm`,
                         index < pokemons[selectedVariant].types.length - 1 &&
                           "mr-2",
                       )}
                       key={`${pokemons[selectedVariant].id}-${type.name}`}
                     >
+                      {typeIcons[type.name.toUpperCase()]}
                       {firstLetterToUpperCase(type.name)}
                     </Badge>
                   ))}
                 </div>
                 <div>
                   <span className="text-4xl md:text-6xl">
-                    {firstLetterToUpperCase(pokemons?.[0].name)}
+                    {firstLetterToUpperCase(pokemonSpecies?.name)}
                   </span>
                   <span className="text-xl">#{pokemons?.[0].id}</span>
                   {pokemons.length > 1 && (
@@ -178,7 +189,7 @@ const Main = (): JSX.Element => {
                 </div>
               </div>
 
-              <div className="md:col-span-3 md:row-span-2">
+              <div className="md:col-span-2 md:row-span-2">
                 <img
                   className="relative z-[2] max-h-[500px] w-full object-contain p-4 max-md:p-0"
                   src={
@@ -189,8 +200,8 @@ const Main = (): JSX.Element => {
                 />
               </div>
 
-              <div className="md:grid md:grid-cols-4">
-                <div className="flex flex-col gap-6 md:col-span-3">
+              <div className="mt-4 md:grid md:grid-cols-3">
+                <div className="flex flex-col gap-6 md:col-span-2">
                   {pokemonStats?.map((stat) => (
                     <div className="space-y-1" key={stat.stat.name}>
                       <StatIcon
@@ -198,40 +209,57 @@ const Main = (): JSX.Element => {
                         icon={stat.stat.name}
                         statValue={stat.base_stat}
                       />
-                      <StatBar
+                      {/* <StatBar
                         value={stat.base_stat}
                         rangeColor={getColorRange(stat.base_stat)}
+                      /> */}
+                      <Progress
+                        className="w-3/4"
+                        value={(stat.base_stat / stats.MAX_STAT_VALUE) * 100}
                       />
                     </div>
                   ))}
+                  <span>
+                    Total:{" "}
+                    {pokemonStats?.reduce(
+                      (acc, stat) => (acc += stat.base_stat),
+                      0,
+                    )}
+                  </span>
                 </div>
-                <div className="flex flex-col md:flex-col-reverse md:justify-end">
+                <div className="flex flex-col space-y-4 space-y-reverse md:col-span-1 md:flex-col-reverse md:justify-end">
                   <div>
                     <ul>
-                      {pokemonAbilities?.map(
-                        ({ ability, is_hidden: isHidden }) => (
-                          <div key={ability.name}>
-                            <li>
-                              {firstLetterToUpperCase(ability.name)}
-                              {isHidden && " (hidden ability)"}
-                            </li>
-                            <AbilityDetails url={ability.url} />
-                          </div>
-                        ),
-                      )}
+                      <Accordion type="multiple">
+                        {pokemonAbilities?.map(
+                          ({ ability, is_hidden: isHidden }) => (
+                            <AccordionItem value={ability.name}>
+                              <AccordionTrigger>
+                                <div className="flex flex-col items-start">
+                                  {firstLetterToUpperCase(ability.name)}
+                                  {isHidden && (
+                                    <span className="text-sm">
+                                      (hidden ability)
+                                    </span>
+                                  )}
+                                </div>
+                              </AccordionTrigger>
+                              <AccordionContent>
+                                <AbilityDetails url={ability.url} />
+                              </AccordionContent>
+                            </AccordionItem>
+                          ),
+                        )}
+                      </Accordion>
                     </ul>
                   </div>
-                  <div>
-                    <h2>
-                      <Ruler />
-                      {pokemonHeight / 10} m
-                    </h2>
+                  <div className="flex flex-row gap-4">
+                    <Ruler />
+                    {pokemonHeight / 10} m
                   </div>
-                  <div>
-                    <h2>
-                      <Weight />
-                      {pokemonWeight / 10} kg
-                    </h2>
+                  <div className="flex flex-row gap-4">
+                    <Weight />
+                    {pokemonWeight / 10} kg
                   </div>
                 </div>
               </div>
