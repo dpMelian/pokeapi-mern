@@ -18,7 +18,7 @@ const SearchInput = ({
 
   return (
     <form
-      className="mx-auto my-0 flex justify-center rounded-md border-2 border-solid border-black dark:border-primary"
+      className="mx-16 my-0 mt-4 flex max-w-lg justify-center rounded-full border-2 border-solid border-black dark:border-primary"
       onSubmit={(e) => {
         if (inputValue === "") return
         e.preventDefault()
@@ -27,7 +27,7 @@ const SearchInput = ({
     >
       <div className="flex w-full items-center">
         <input
-          className="h-8 w-full border-r-2 border-solid border-black font-sans text-base dark:border-primary"
+          className="h-8 w-full rounded-l-full border-r-2 border-solid border-black px-4 font-sans text-base dark:border-none"
           type="text"
           name="search"
           id="search"
