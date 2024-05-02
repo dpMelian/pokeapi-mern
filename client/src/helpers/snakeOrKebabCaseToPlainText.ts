@@ -2,7 +2,7 @@
  * @param {Object} object - The object containing the string to transform and the capitalize option
  * @param {string} object.str - The string to transform, can contain snake or kebab case
  * @param {boolean} [object.capitalize=false] - Whether the result should be title case ("Title Case")
- * @returns
+ * @returns {string} - The resulting string
  */
 export const snakeOrKebabCaseToPlainText = ({
   str,
