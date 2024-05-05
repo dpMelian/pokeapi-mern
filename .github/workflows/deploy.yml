@@ -10,13 +10,13 @@ jobs:
 
     steps:
       - name: Deploy client to production
-        uses: johnbeynon/render-deploy-action@v0.0.8
-        with:
-          service-id: ${{ secrets.MY_RENDER_SERVICE_ID }}
-          api-key: ${{ secrets.MY_RENDER_API_KEY }}
+        env:
+          deploy_url_front: ${{ secrets.RENDER_DEPLOY_HOOK_URL_FRONT }}
+        run: |
+          curl "$deploy_url_front"
 
       - name: Deploy server to production
-        uses: johnbeynon/render-deploy-action@v0.0.8
-        with:
-          service-id: ${{ secrets.MY_RENDER_SERVICE_ID_SERVER }}
-          api-key: ${{ secrets.MY_RENDER_API_KEY }}
+        env:
+          deploy_url_back: ${{ secrets.RENDER_DEPLOY_HOOK_URL_BACK }}
+        run: |
+          curl "$deploy_url_back"
