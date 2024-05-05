@@ -1,7 +1,7 @@
 import axios from "axios"
 import { useQuery } from "react-query"
 import { POKE_API_BASE_URL } from "../constants/baseUrls"
-import { PokemonSpecies } from "@/types/pokemonSpecies"
+import { PokemonSpecies } from "@/types/pokemon/pokemonSpecies"
 import { isStringURL } from "@/helpers/isStringURL"
 
 const useGetPokemonSpecies = (identifier: string | number) => {
