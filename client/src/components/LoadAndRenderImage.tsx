@@ -4,7 +4,7 @@ import Skeleton from "@mui/material/Skeleton"
 import useGetPokemons from "@/hooks/useGetPokemons"
 import { type Pokemon } from "../interfaces/pokemon"
 import useGetPokemonSpecies from "@/hooks/useGetPokemonSpecies"
-import { PokemonSpecies } from "@/types/pokemonSpecies"
+import { PokemonSpecies } from "@/types/pokemon/pokemonSpecies"
 
 interface Props {
   identifier: string

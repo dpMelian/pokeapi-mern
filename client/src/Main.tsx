@@ -1,10 +1,9 @@
 import { IconStar, IconStarFilled } from "@tabler/icons-react"
 import { Ruler, Weight } from "lucide-react"
 import { useState } from "react"
-import Skeleton from "@mui/material/Skeleton"
 
 import AbilityDetails from "./components/AbilityDetails"
-import EvolutionChainTab from "./components/EvolutionChainTab"
+import EvolutionChain from "./components/EvolutionChain"
 import Footer from "./components/Footer"
 import Header from "./components/Header"
 import SearchInput from "./components/SearchInput"
@@ -21,7 +20,7 @@ import { Badge } from "./components/ui/badge"
 import { cn } from "./helpers/cn"
 import { firstLetterToUpperCase } from "./helpers/firstLetterToUpperCase"
 import { getColorRange } from "./helpers/getColorRange"
-import { PokemonSpecies } from "./types/pokemonSpecies"
+import { PokemonSpecies } from "./types/pokemon/pokemonSpecies"
 import { Progress } from "./components/ui/progress"
 import { stats } from "./constants/stats"
 import { type Pokemon } from "./interfaces/pokemon"
@@ -40,6 +39,8 @@ import useAddFavoritePokemon from "./hooks/useAddFavoritePokemon"
 import useGetPokemons from "./hooks/useGetPokemons"
 import useGetPokemonSpecies from "./hooks/useGetPokemonSpecies"
 import { typeIcons } from "./constants/typeIcons"
+import { Separator } from "./components/ui/separator"
+import { Skeleton } from "./components/ui/skeleton"
 
 // import useGetTrainerFavorite from "./hooks/useGetTrainerFavorite"
 
@@ -87,27 +88,6 @@ const Main = (): JSX.Element => {
     return <p>Pokémon {searchValue} not found</p>
   }
 
-  if (!isError && isLoading) {
-    return (
-      <>
-        <Skeleton
-          variant="rounded"
-          width={"60%"}
-          height={"24rem"}
-          animation="wave"
-          className="mx-auto mb-4 mt-8"
-        />
-        <Skeleton
-          variant="rounded"
-          width={"60%"}
-          height={"32rem"}
-          animation="wave"
-          className="mx-auto my-0"
-        />
-      </>
-    )
-  }
-
   const {
     abilities: pokemonAbilities,
     height: pokemonHeight,
@@ -120,24 +100,24 @@ const Main = (): JSX.Element => {
   } = pokemons?.[selectedVariant] ?? {}
 
   return (
-    <div
+    <main
       className={cn(
         "flex h-full flex-col justify-between bg-primary transition-all ease-in-out dark:bg-slate-700 dark:text-primary md:h-screen",
         `${TYPES_PASTEL[pokemonTypes?.[0].type.name]}`,
       )}
     >
       <Header />
-      {!isPokemonsLoading && (
+      {!isLoading && pokemons?.length > 0 && (
         <>
           <SearchInput
             handleOnSubmit={handleOnSubmit}
             setSearchValue={setSearchValue}
           />
-          <main className="mb-auto flex w-full flex-col px-16 pt-4 md:flex-row">
+          <div className="flex w-full flex-col px-16 py-4 md:flex-row">
             <div className="w-full md:grid md:grid-cols-3">
               <div className="space-y-4 md:col-span-1">
                 <div>
-                  {pokemons?.[selectedVariant].types.map(({ type }, index) => (
+                  {pokemons[selectedVariant]?.types.map(({ type }, index) => (
                     <Badge
                       className={cn(
                         `bg-${type.name} items-center gap-1 text-sm`,
@@ -177,7 +157,10 @@ const Main = (): JSX.Element => {
                               varieties
                             </SelectLabel>
                             {pokemons.map((pokemon, index) => (
-                              <SelectItem value={pokemon.name}>
+                              <SelectItem
+                                key={pokemon.name}
+                                value={pokemon.name}
+                              >
                                 {firstLetterToUpperCase(pokemons?.[index].name)}
                               </SelectItem>
                             ))}
@@ -232,8 +215,11 @@ const Main = (): JSX.Element => {
                     <ul>
                       <Accordion type="multiple">
                         {pokemonAbilities?.map(
-                          ({ ability, is_hidden: isHidden }) => (
-                            <AccordionItem value={ability.name}>
+                          ({ ability, is_hidden: isHidden }, index) => (
+                            <AccordionItem
+                              key={ability.name + index}
+                              value={ability.name}
+                            >
                               <AccordionTrigger>
                                 <div className="flex flex-col items-start">
                                   {firstLetterToUpperCase(ability.name)}
@@ -264,12 +250,68 @@ const Main = (): JSX.Element => {
                 </div>
               </div>
             </div>
-            {/* TODO: add evolution chain section */}
-          </main>
+          </div>
+          <Separator />
+          <div className="px-16 py-4 md:mb-auto">
+            <h2>Evolutions</h2>
+            {pokemonSpecies && (
+              <EvolutionChain
+                pokemonSpecies={pokemonSpecies}
+                setSearchValue={setSearchValue}
+              />
+            )}
+          </div>
+        </>
+      )}
+      {isLoading && (
+        <>
+          <Skeleton className="mx-16 mt-4 h-8 rounded-full md:w-[500px]" />
+          <div className="space-y-4 px-16 py-4">
+            <div className="gap-4 md:grid md:grid-cols-3">
+              <div className="space-y-4 md:col-span-1">
+                <Skeleton className="h-6 w-14 rounded-full" />
+                <div className="flex gap-2">
+                  <Skeleton className="h-14 w-96 rounded-full" />
+                  <Skeleton className="h-9 w-14 self-end rounded-full" />
+                </div>
+              </div>
+              <div className="md:col-span-2 md:row-span-2">
+                <Skeleton className="mx-auto md:h-96 md:w-96" />
+              </div>
+              <div className="mt-4 md:grid md:grid-cols-3">
+                <div className="space-y-6 md:col-span-2">
+                  <Skeleton className="h-4 w-14" />
+                  <Skeleton className="h-4 w-52" />
+                  <Skeleton className="h-4 w-14" />
+                  <Skeleton className="h-4 w-52" />
+                  <Skeleton className="h-4 w-14" />
+                  <Skeleton className="h-4 w-52" />
+                  <Skeleton className="h-4 w-14" />
+                  <Skeleton className="h-4 w-52" />
+                  <Skeleton className="h-4 w-14" />
+                  <Skeleton className="h-4 w-52" />
+                  <Skeleton className="h-4 w-14" />
+                  <Skeleton className="h-4 w-52" />
+                  <Skeleton className="h-4 w-16" />
+                </div>
+                <div className="space-y-6 md:col-span-1">
+                  <Skeleton className="h-6 w-32" />
+                  <Skeleton className="h-6 w-32" />
+                  <Skeleton className="h-16 w-32" />
+                  <Skeleton className="h-16 w-32" />
+                </div>
+              </div>
+            </div>
+          </div>
+          <Separator />
+          <div className="space-y-4 px-16 py-4 md:mb-auto">
+            <Skeleton className="h-6 w-32" />
+            <Skeleton className="h-64 w-64" />
+          </div>
         </>
       )}
       <Footer />
-    </div>
+    </main>
   )
 }
 
