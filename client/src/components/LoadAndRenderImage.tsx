@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import Skeleton from "@mui/material/Skeleton"
 
 import useGetPokemons from "@/hooks/useGetPokemons"
-import { type Pokemon } from "../interfaces/pokemon"
+import { type Pokemon } from "../types/pokemon/pokemon"
 import useGetPokemonSpecies from "@/hooks/useGetPokemonSpecies"
 import { PokemonSpecies } from "@/types/pokemon/pokemonSpecies"
 

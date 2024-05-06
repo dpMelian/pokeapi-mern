@@ -1,5 +1,5 @@
 import { entries } from "@/types/keyValueType"
-import { EvolutionDetails } from "@/interfaces/evolutionChain"
+import { EvolutionDetails } from "@/types/evolution/evolutionChain"
 
 export const getEvolutionDetails = (
   evolutionDetails: EvolutionDetails[] | null | undefined,

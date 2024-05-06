@@ -1,4 +1,4 @@
-import { type Chain } from "../interfaces/evolutionChain"
+import { type Chain } from "../types/evolution/evolutionChain"
 
 const getEvolutionChainSpeciesNames = (
   evolutionChain: Chain,

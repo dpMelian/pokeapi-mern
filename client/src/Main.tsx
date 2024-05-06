@@ -23,7 +23,7 @@ import { getColorRange } from "./helpers/getColorRange"
 import { PokemonSpecies } from "./types/pokemon/pokemonSpecies"
 import { Progress } from "./components/ui/progress"
 import { stats } from "./constants/stats"
-import { type Pokemon } from "./interfaces/pokemon"
+import { type Pokemon } from "./types/pokemon/pokemon"
 import { TYPES_PASTEL } from "./constants/pokemonTypesPastel"
 import {
   Select,

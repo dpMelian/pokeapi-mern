@@ -4,7 +4,10 @@ import getEvolutionChainSpeciesNames from "../helpers/getEvolutionChainSpeciesNa
 import LoadAndRenderImage from "./LoadAndRenderImage"
 import useGetEvolutionChain from "../hooks/useGetEvolutionChain"
 
-import { type Chain, type EvolutionChain } from "../interfaces/evolutionChain"
+import {
+  type Chain,
+  type EvolutionChain,
+} from "../types/evolution/evolutionChain"
 import { Card, CardContent } from "./ui/card"
 import { firstLetterToUpperCase } from "@/helpers/firstLetterToUpperCase"
 import { getEvolutionDetails } from "@/helpers/getEvolutionDetails"

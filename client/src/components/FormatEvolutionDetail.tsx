@@ -1,5 +1,5 @@
 import useGetItem from "@/hooks/useGetItem"
-import { EvolutionDetails } from "@/interfaces/evolutionChain"
+import { EvolutionDetails } from "@/types/evolution/evolutionChain"
 import { NamedAPIResource } from "@/types/utility/commonModels"
 import { firstLetterToUpperCase } from "../helpers/firstLetterToUpperCase"
 import { snakeOrKebabCaseToPlainText } from "../helpers/snakeOrKebabCaseToPlainText"

@@ -1,4 +1,4 @@
-import { Chain, EvolutionDetails } from "@/interfaces/evolutionChain"
+import { Chain, EvolutionDetails } from "@/types/evolution/evolutionChain"
 
 type EvolutionLineElement = {
   name: string
