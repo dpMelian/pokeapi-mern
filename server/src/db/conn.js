@@ -1,11 +1,11 @@
 import mongoose from "mongoose"
-const database = "mongodb://127.0.0.1:27017/pokeapi-db"
+const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_URI}/?retryWrites=true&w=majority&appName=${process.env.DB_APP_NAME}`
 
 var _db
 
 export const connectToServer = () => {
   mongoose
-    .connect(database, {
+    .connect(uri, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     })
