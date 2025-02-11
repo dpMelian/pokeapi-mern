@@ -5,7 +5,9 @@ type Props = {
 }
 
 const AbilityDetails = ({ url }: Props) => {
-  const { data: selectedAbilityDetails } = useGetAbilityDetails(url)
+  const { data: selectedAbilityDetails, isLoading } = useGetAbilityDetails(url)
+
+  if (isLoading) return <p>Loading...</p>
 
   return (
     <>
