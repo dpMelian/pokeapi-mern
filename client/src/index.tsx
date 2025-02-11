@@ -35,15 +35,15 @@ const queryClient = new QueryClient()
 const root = ReactDOM.createRoot(document.getElementById("root"))
 root.render(
   <QueryClientProvider client={queryClient}>
-    <ThemeProvider theme={MUI_THEME}>
-      <DarkModeContextProvider>
-        <ThemeProviderWrapper>
-          <React.StrictMode>
-            <RouterProvider router={router} />
-          </React.StrictMode>
-        </ThemeProviderWrapper>
-      </DarkModeContextProvider>
-    </ThemeProvider>
+    {/* <ThemeProvider theme={MUI_THEME}> */}
+    <DarkModeContextProvider>
+      <ThemeProviderWrapper>
+        <React.StrictMode>
+          <RouterProvider router={router} />
+        </React.StrictMode>
+      </ThemeProviderWrapper>
+    </DarkModeContextProvider>
+    {/* </ThemeProvider> */}
   </QueryClientProvider>,
 )
 

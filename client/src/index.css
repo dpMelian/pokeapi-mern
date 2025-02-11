@@ -1,9 +1,111 @@
-@import url("https://fonts.googleapis.com/css2?family=Kadwa:wght@700&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Noto+Serif+Khojki&family=Roboto&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Space+Grotesk:wght@300..700&display=swap")
+layer(base);
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+@plugin 'tailwindcss-animate';
+
+@custom-variant dark (&:is(.dark *));
+
+@theme {
+  --font-headings: Space Grotesk;
+  --font-content: Inter;
+
+  --color-normal: #a8a878;
+  --color-fire: #f08030;
+  --color-water: #6890f0;
+  --color-grass: #78c850;
+  --color-electric: #f8d030;
+  --color-ice: #98d8d8;
+  --color-fighting: #c03028;
+  --color-poison: #a040a0;
+  --color-ground: #e0c068;
+  --color-flying: #a890f0;
+  --color-psychic: #f85888;
+  --color-bug: #a8b820;
+  --color-rock: #b8a038;
+  --color-ghost: #705898;
+  --color-dark: #705848;
+  --color-dragon: #7038f8;
+  --color-steel: #b8b8d0;
+  --color-fairy: #f0b6bc;
+  --color-normal_pastel: #c2c1b6;
+  --color-fire_pastel: #f5cebd;
+  --color-water_pastel: #9db9e6;
+  --color-grass_pastel: #aed5b8;
+  --color-electric_pastel: #f9ecc9;
+  --color-ice_pastel: #b3e3e3;
+  --color-fighting_pastel: #d8a7a2;
+  --color-poison_pastel: #c1aec1;
+  --color-ground_pastel: #eaddbd;
+  --color-flying_pastel: #bec2e9;
+  --color-psychic_pastel: #fac4d1;
+  --color-bug_pastel: #c2c8ad;
+  --color-rock_pastel: #c9c2ae;
+  --color-ghost_pastel: #a9a1b3;
+  --color-dark_pastel: #a9a3a0;
+  --color-dragon_pastel: #b0a7f0;
+  --color-steel_pastel: #ccced9;
+  --color-fairy_pastel: #f6d3d6;
+  --color-default: #f8f7e5;
+  --color-primary: #ffffff;
+
+  --color-secondary-100: #fed1d1;
+  --color-secondary-200: #fda4a4;
+  --color-secondary-300: #fd7676;
+  --color-secondary-400: #fc4949;
+  --color-secondary-600: #c91616;
+  --color-secondary-700: #971010;
+  --color-secondary-800: #640b0b;
+  --color-secondary-900: #320505;
+  --color-secondary: #fb1b1b;
+
+  --color-primary--darker: #dfdfdf;
+  --color-secondary--darker: #000000;
+  --color-accent: #3c5aa6;
+  --color-main: #fb1b1b;
+  --color-overlay: rgba(0, 0, 0, 0.8);
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+  --color-bg: #e3dff2;
+  --color-text: #000;
+  --color-border: #000;
+  --color-dark-bg: #272733;
+  --color-dark-text: #eeefe9;
+  --color-dark-border: #000;
+  --color-secondary-black: #212121;
+
+  --radius-base: 5px;
+
+  --shadow-light: 4px 4px 0px 0px #000;
+  --shadow-dark: 4px 4px 0px 0px #000;
+
+  --translate-box-shadow-x: 4px;
+  --translate-box-shadow-y: 4px;
+  --translate-reverse-box-shadow-x: -4px;
+  --translate-reverse-box-shadow-y: -4px;
+
+  --font-weight-base: 500;
+  --font-weight-heading: 700;
+}
+
+/*
+  The default border color has changed to `currentColor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentColor);
+  }
+}
 
 @layer base {
   :root {
@@ -82,17 +184,27 @@
   h1 {
     @apply text-3xl;
     @apply my-2;
+    @apply font-headings;
   }
   h2 {
     @apply text-2xl;
     @apply my-2;
+    @apply font-headings;
   }
   h3 {
     @apply text-xl;
     @apply my-2;
+    @apply font-headings;
   }
   p {
     @apply my-4;
+  }
+}
+
+@layer base {
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
   }
 }
 
@@ -102,7 +214,7 @@ body {
   flex-direction: column;
   min-height: 100vh;
   margin: 0;
-  font-family: "Kadwa";
+  font-family: "Inter";
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
