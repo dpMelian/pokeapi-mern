@@ -8,7 +8,7 @@ import Footer from "./components/Footer"
 import Header from "./components/Header"
 import SearchInput from "./components/SearchInput"
 import StatBar from "./components/StatBar"
-import StatIcon from "./components/StatIcon"
+import Stat from "./components/Stat"
 
 import {
   Accordion,
@@ -38,7 +38,7 @@ import {
 import useAddFavoritePokemon from "./hooks/useAddFavoritePokemon"
 import useGetPokemons from "./hooks/useGetPokemons"
 import useGetPokemonSpecies from "./hooks/useGetPokemonSpecies"
-import { typeIcons } from "./constants/typeIcons"
+import { TYPE_ICONS } from "./constants/typeIcons"
 import { Separator } from "./components/ui/separator"
 import { Skeleton } from "./components/ui/skeleton"
 
@@ -102,7 +102,7 @@ const Main = (): JSX.Element => {
   return (
     <main
       className={cn(
-        "flex h-full flex-col justify-between bg-primary transition-all ease-in-out dark:bg-slate-700 dark:text-primary md:h-screen",
+        "bg-primary dark:text-primary flex h-full flex-col justify-between transition-all ease-in-out dark:bg-slate-700",
         `${TYPES_PASTEL[pokemonTypes?.[0].type.name]}`,
       )}
     >
@@ -126,15 +126,15 @@ const Main = (): JSX.Element => {
                       )}
                       key={`${pokemons[selectedVariant].id}-${type.name}`}
                     >
-                      {typeIcons[type.name.toUpperCase()]}
+                      {TYPE_ICONS[type.name.toUpperCase()]}
                       {firstLetterToUpperCase(type.name)}
                     </Badge>
                   ))}
                 </div>
                 <div>
-                  <span className="text-4xl md:text-6xl">
+                  <h1 className="text-4xl font-semibold md:text-6xl">
                     {firstLetterToUpperCase(pokemonSpecies?.name)}
-                  </span>
+                  </h1>
                   <span className="text-xl">#{pokemons?.[0].id}</span>
                   {pokemons.length > 1 && (
                     <div className="my-4">
@@ -174,7 +174,7 @@ const Main = (): JSX.Element => {
 
               <div className="md:col-span-2 md:row-span-2">
                 <img
-                  className="relative z-[2] max-h-[500px] w-full object-contain p-4 max-md:p-0"
+                  className="relative z-2 max-h-[500px] w-full object-contain p-4 max-md:p-0"
                   src={
                     pokemonSprites?.other["official-artwork"].front_default ??
                     pokemonSprites?.other.dream_world.front_default
@@ -187,7 +187,7 @@ const Main = (): JSX.Element => {
                 <div className="flex flex-col gap-6 md:col-span-2">
                   {pokemonStats?.map((stat) => (
                     <div className="space-y-1" key={stat.stat.name}>
-                      <StatIcon
+                      <Stat
                         name={stat.stat.name}
                         icon={stat.stat.name}
                         statValue={stat.base_stat}
@@ -213,7 +213,10 @@ const Main = (): JSX.Element => {
                 <div className="flex flex-col space-y-4 space-y-reverse md:col-span-1 md:flex-col-reverse md:justify-end">
                   <div>
                     <ul>
-                      <Accordion type="multiple">
+                      <Accordion
+                        className="flex flex-col gap-5"
+                        type="multiple"
+                      >
                         {pokemonAbilities?.map(
                           ({ ability, is_hidden: isHidden }, index) => (
                             <AccordionItem
@@ -240,12 +243,10 @@ const Main = (): JSX.Element => {
                     </ul>
                   </div>
                   <div className="flex flex-row gap-4">
-                    <Ruler />
-                    {pokemonHeight / 10} m
+                    Height: {pokemonHeight / 10} m
                   </div>
                   <div className="flex flex-row gap-4">
-                    <Weight />
-                    {pokemonWeight / 10} kg
+                    Weight: {pokemonWeight / 10} kg
                   </div>
                 </div>
               </div>
@@ -261,18 +262,19 @@ const Main = (): JSX.Element => {
               />
             )}
           </div>
+          <Footer />
         </>
       )}
       {isLoading && (
         <>
-          <Skeleton className="mx-16 mt-4 h-8 rounded-full md:w-[500px]" />
+          <Skeleton className="mx-16 mt-4 h-8 md:w-[500px]" />
           <div className="space-y-4 px-16 py-4">
             <div className="gap-4 md:grid md:grid-cols-3">
               <div className="space-y-4 md:col-span-1">
-                <Skeleton className="h-6 w-14 rounded-full" />
+                <Skeleton className="h-6 w-14" />
                 <div className="flex gap-2">
-                  <Skeleton className="h-14 w-96 rounded-full" />
-                  <Skeleton className="h-9 w-14 self-end rounded-full" />
+                  <Skeleton className="h-14 w-96" />
+                  <Skeleton className="h-9 w-14 self-end" />
                 </div>
               </div>
               <div className="md:col-span-2 md:row-span-2">
@@ -310,7 +312,6 @@ const Main = (): JSX.Element => {
           </div>
         </>
       )}
-      <Footer />
     </main>
   )
 }

@@ -1,10 +1,12 @@
-import React, { useState } from "react"
 import { IconMail, IconLock, IconEye, IconEyeOff } from "@tabler/icons-react"
+import React, { useState } from "react"
 
+import { Button } from "@/components/ui/button"
+import { cn } from "../helpers/cn"
+import { Input } from "@/components/ui/input"
+import Footer from "../components/Footer"
 import Header from "../components/Header"
 import useLogin from "../hooks/useLogin"
-import Footer from "../components/Footer"
-import { cn } from "../helpers/cn"
 
 const Login = (): JSX.Element => {
   const login = useLogin()
@@ -80,7 +82,7 @@ const Login = (): JSX.Element => {
         >
           <label htmlFor="email">Email</label>
           <div className="relative">
-            <input
+            <Input
               className={cn(
                 "box-border h-12 w-full rounded-md border-2 border-solid pl-10 dark:bg-slate-700",
                 emailInputErrorMessage.length > 0
@@ -102,7 +104,7 @@ const Login = (): JSX.Element => {
           )}
           <label htmlFor="password">Password</label>
           <div className="relative">
-            <input
+            <Input
               className={cn(
                 "box-border h-12 w-full rounded-md border-2 border-solid pl-10 dark:bg-slate-700",
                 passwordInputErrorMessage.length > 0
@@ -134,15 +136,14 @@ const Login = (): JSX.Element => {
               />
             )}
           </div>
+
           {passwordInputErrorMessage.length > 0 && (
             <span>{passwordInputErrorMessage}</span>
           )}
-          <button
-            className="mt-8 box-border h-12 w-full cursor-pointer rounded-md border-2 border-solid border-black bg-secondary dark:border-primary dark:bg-slate-900"
-            type="submit"
-          >
+
+          <Button type="submit">
             <span className="font-sans text-lg dark:text-primary">Log in</span>
-          </button>
+          </Button>
         </form>
         {messageText.message.length > 0 && (
           <p

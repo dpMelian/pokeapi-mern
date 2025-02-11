@@ -4,6 +4,7 @@ import { Link } from "react-router-dom"
 import DarkModeToggle from "./DarkModeToggle"
 import useGetLoggedTrainerName from "../hooks/useGetLoggedTrainerName"
 import useLogout from "../hooks/useLogout"
+import { Button } from "./ui/button"
 
 const Header = (): JSX.Element => {
   const { data } = useGetLoggedTrainerName()
@@ -17,10 +18,10 @@ const Header = (): JSX.Element => {
   }, [data])
 
   return (
-    <nav className="flex border-[0] border-b-2 border-solid border-black bg-white/30 shadow-lg transition-all ease-in-out dark:border-primary dark:bg-slate-900">
+    <nav className="flex border-0 border-b-2 border-solid border-black bg-white/30 shadow-lg transition-all ease-in-out dark:border-primary dark:bg-slate-900">
       <div className="my-0 flex w-full justify-between px-16 py-4">
         <Link className="text-black no-underline dark:text-primary" to="/">
-          <h1 className="m-0">PokéAPI MERN project</h1>
+          <h1 className="m-0 font-semibold">PokéAPI MERN project</h1>
         </Link>
         {showHelloMessage && data != null && (
           <>
@@ -48,14 +49,18 @@ const Header = (): JSX.Element => {
               className="text-black no-underline dark:text-primary"
               to="/login"
             >
-              <h2 className="m-0">Log In</h2>
+              <Button>
+                <h2 className="m-0 font-semibold">Log In</h2>
+              </Button>
             </Link>
           )}
           <Link
             className="text-black no-underline dark:text-primary"
             to="/sign-up"
           >
-            <h2 className="m-0">Sign Up</h2>
+            <Button>
+              <h2 className="m-0 font-semibold">Sign Up</h2>
+            </Button>
           </Link>
         </div>
       </div>
