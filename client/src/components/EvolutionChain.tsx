@@ -4,14 +4,15 @@ import getEvolutionChainSpeciesNames from "../helpers/getEvolutionChainSpeciesNa
 import LoadAndRenderImage from "./LoadAndRenderImage"
 import useGetEvolutionChain from "../hooks/useGetEvolutionChain"
 
-import { type Chain, type EvolutionChain } from "../interfaces/evolutionChain"
+import { Button } from "./ui/button"
 import { Card, CardContent } from "./ui/card"
-import { firstLetterToUpperCase } from "@/helpers/firstLetterToUpperCase"
-import { getEvolutionDetails } from "@/helpers/getEvolutionDetails"
-import { PokemonSpecies } from "@/types/pokemon/pokemonSpecies"
-import { getEvolutionLine } from "@/helpers/getEvolutionLine"
-import { FormatEvolutionDetail } from "@/components/FormatEvolutionDetail"
 import { entries } from "@/types/keyValueType"
+import { firstLetterToUpperCase } from "@/helpers/firstLetterToUpperCase"
+import { FormatEvolutionDetail } from "@/components/FormatEvolutionDetail"
+import { getEvolutionDetails } from "@/helpers/getEvolutionDetails"
+import { getEvolutionLine } from "@/helpers/getEvolutionLine"
+import { PokemonSpecies } from "@/types/pokemon/pokemonSpecies"
+import { type Chain, type EvolutionChain } from "../interfaces/evolutionChain"
 
 type Props = {
   pokemonSpecies: PokemonSpecies
@@ -76,6 +77,12 @@ const EvolutionChain = ({ pokemonSpecies, setSearchValue }: Props) => {
                       <div className="py-2 text-center text-sm">
                         {firstLetterToUpperCase(baseEvolution.name)}
                       </div>
+                      <Button
+                        className="w-full"
+                        onClick={() => setSearchValue(baseEvolution.name)}
+                      >
+                        View
+                      </Button>
                     </CardContent>
                   </Card>
                 </div>
@@ -106,6 +113,12 @@ const EvolutionChain = ({ pokemonSpecies, setSearchValue }: Props) => {
                       <div className="py-2 text-center text-sm">
                         {firstLetterToUpperCase(evolution.name)}
                       </div>
+                      <Button
+                        className="w-full"
+                        onClick={() => setSearchValue(evolution.name)}
+                      >
+                        View
+                      </Button>
                     </CardContent>
                   </Card>
                 </div>
@@ -141,6 +154,17 @@ const EvolutionChain = ({ pokemonSpecies, setSearchValue }: Props) => {
                             evolution.next[0].species.name,
                           )}
                         </div>
+                        <Button
+                          className="w-full"
+                          disabled={!evolution.next?.[0].species.name}
+                          onClick={() => {
+                            if (evolution.next?.[0].species.name) {
+                              setSearchValue(evolution.next?.[0].species.name)
+                            }
+                          }}
+                        >
+                          View
+                        </Button>
                       </CardContent>
                     </Card>
                   </div>
