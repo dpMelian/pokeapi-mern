@@ -15,7 +15,7 @@ const buttonVariants = cva(
         noShadow:
           "text-text bg-white/30 border-2 border-border dark:border-darkBorder",
         neutral:
-          "bg-white dark:bg-secondaryBlack text-text dark:text-darkText border-2 border-border dark:border-darkBorder shadow-light dark:shadow-dark hover:translate-x-box-shadow-x hover:translate-y-box-shadow-y hover:shadow-none dark:hover:shadow-none",
+          "bg-white dark:bg-secondary-black text-text dark:text-darkText border-2 border-border dark:border-darkBorder shadow-light dark:shadow-dark hover:translate-x-box-shadow-x hover:translate-y-box-shadow-y hover:shadow-none dark:hover:shadow-none",
         reverse:
           "text-text bg-white/30 border-2 border-border dark:border-darkBorder hover:translate-x-reverse-box-shadow-x hover:translate-y-reverse-box-shadow-y hover:shadow-light dark:hover:shadow-dark",
       },
