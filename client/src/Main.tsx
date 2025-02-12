@@ -1,5 +1,4 @@
 import { IconStar, IconStarFilled } from "@tabler/icons-react"
-import { Ruler, Weight } from "lucide-react"
 import { useState } from "react"
 
 import AbilityDetails from "./components/AbilityDetails"
@@ -102,7 +101,7 @@ const Main = (): JSX.Element => {
   return (
     <main
       className={cn(
-        "bg-primary dark:text-primary flex h-full flex-col justify-between transition-all ease-in-out dark:bg-slate-700",
+        "bg-primary dark:text-primary flex h-screen flex-col justify-between transition-all ease-in-out dark:bg-slate-700",
         `${TYPES_PASTEL[pokemonTypes?.[0].type.name]}`,
       )}
     >
@@ -262,7 +261,6 @@ const Main = (): JSX.Element => {
               />
             )}
           </div>
-          <Footer />
         </>
       )}
       {isLoading && (
@@ -312,6 +310,7 @@ const Main = (): JSX.Element => {
           </div>
         </>
       )}
+      <Footer />
     </main>
   )
 }
