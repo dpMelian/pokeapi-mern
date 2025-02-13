@@ -1,5 +1,8 @@
-import React, { useState } from "react"
 import { Dices, Search } from "lucide-react"
+import React, { useState } from "react"
+
+import { Button } from "./ui/button"
+import { Input } from "./ui/input"
 
 interface Props {
   handleOnSubmit: (searchInputValue: string) => void
@@ -18,32 +21,29 @@ const SearchInput = ({
 
   return (
     <form
-      className="mx-16 my-0 mt-4 flex max-w-lg justify-center rounded-full border-2 border-solid border-black dark:border-primary"
+      className="mx-16 my-0 mt-4 flex max-w-lg justify-center"
       onSubmit={(e) => {
         if (inputValue === "") return
         e.preventDefault()
         handleOnSubmit(inputValue)
       }}
     >
-      <div className="flex w-full items-center">
-        <input
-          className="h-8 w-full rounded-l-full border-r-2 border-solid border-black px-4 font-sans text-base dark:border-none"
+      <div className="flex w-full items-center gap-2">
+        <Input
           type="text"
           name="search"
           id="search"
           placeholder="Search..."
           onInput={handleOnInput}
         />
-        <button
-          className="box-content h-8 w-auto border-r-2 border-solid border-black px-2 leading-8 dark:border-white"
+        <Button
           onClick={() => handleOnSubmit}
           aria-label="Search"
           title="Search Pokémon"
         >
           <Search />
-        </button>
-        <button
-          className="box-content h-8 w-auto px-2 leading-8"
+        </Button>
+        <Button
           onClick={() =>
             setSearchValue(Math.floor(Math.random() * (1010 - 1) + 1))
           }
@@ -51,7 +51,7 @@ const SearchInput = ({
           title="Search random Pokémon"
         >
           <Dices />
-        </button>
+        </Button>
       </div>
     </form>
   )

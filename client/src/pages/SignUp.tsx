@@ -1,5 +1,3 @@
-import React, { useState } from "react"
-import styled from "styled-components"
 import {
   IconUser,
   IconMail,
@@ -8,10 +6,15 @@ import {
   IconEyeOff,
   IconLoader2,
 } from "@tabler/icons-react"
+import React, { useState } from "react"
+import styled from "styled-components"
+
+import { Button } from "@/components/ui/button"
+import { cn } from "../helpers/cn"
+import { Input } from "@/components/ui/input"
+import Footer from "../components/Footer"
 import Header from "../components/Header"
 import useCreateTrainer from "../hooks/useCreateTrainer"
-import Footer from "../components/Footer"
-import { cn } from "../helpers/cn"
 
 const Spinner = styled(IconLoader2)`
   margin: 0 auto;
@@ -127,7 +130,7 @@ const SignUp = (): JSX.Element => {
         >
           <label htmlFor="name">Name</label>
           <div className="relative">
-            <input
+            <Input
               className={cn(
                 "box-border h-12 w-full rounded-md border-2 border-solid pl-10 dark:bg-slate-700",
                 nameInputErrorMessage.length > 0
@@ -150,7 +153,7 @@ const SignUp = (): JSX.Element => {
           )}
           <label htmlFor="email">Email</label>
           <div className="relative">
-            <input
+            <Input
               className={cn(
                 "box-border h-12 w-full rounded-md border-2 border-solid pl-10 dark:bg-slate-700",
                 emailInputErrorMessage.length > 0
@@ -172,7 +175,7 @@ const SignUp = (): JSX.Element => {
           )}
           <label htmlFor="password">Password</label>
           <div className="relative">
-            <input
+            <Input
               className={cn(
                 "box-border h-12 w-full rounded-md border-2 border-solid pl-10 dark:bg-slate-700",
                 passwordInputErrorMessage.length > 0
@@ -208,14 +211,11 @@ const SignUp = (): JSX.Element => {
           {passwordInputErrorMessage.length > 0 && (
             <span>{passwordInputErrorMessage}</span>
           )}
-          <button
-            className="mt-8 box-border h-12 w-full cursor-pointer rounded-md border-2 border-solid border-black bg-secondary dark:border-primary dark:bg-slate-900"
-            type="submit"
-          >
+          <Button type="submit">
             <span className="font-sans text-lg dark:text-primary">
               Create account
             </span>
-          </button>
+          </Button>
         </form>
         {createTrainer.isLoading && <Spinner />}
         {messageText.message.length > 0 && (

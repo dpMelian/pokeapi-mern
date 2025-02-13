@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react"
-import Skeleton from "@mui/material/Skeleton"
 
-import useGetPokemons from "@/hooks/useGetPokemons"
-import { type Pokemon } from "../interfaces/pokemon"
-import useGetPokemonSpecies from "@/hooks/useGetPokemonSpecies"
 import { PokemonSpecies } from "@/types/pokemon/pokemonSpecies"
+import { Skeleton } from "./ui/skeleton"
+import { type Pokemon } from "../interfaces/pokemon"
+import useGetPokemons from "@/hooks/useGetPokemons"
+import useGetPokemonSpecies from "@/hooks/useGetPokemonSpecies"
 
 interface Props {
   identifier: string
@@ -38,12 +38,7 @@ const LoadAndRenderImage = ({ identifier }: Props) => {
   return (
     <>
       {(isPokemonSpeciesLoading || isPokemonsLoading) && (
-        <Skeleton
-          variant="rectangular"
-          height={"150px"}
-          width={"150px"}
-          animation="wave"
-        />
+        <Skeleton className="size-[150px]" />
       )}
       {!(isPokemonSpeciesLoading || isPokemonsLoading) && (
         <img
