@@ -53,7 +53,7 @@ const Main = (): JSX.Element => {
 
   const {
     data: pokemonSpecies,
-    isLoading,
+    isLoading: isPokemonSpeciesLoading,
     isError,
   } = useGetPokemonSpecies(searchValue) as unknown as {
     data: PokemonSpecies
@@ -106,7 +106,7 @@ const Main = (): JSX.Element => {
       )}
     >
       <Header />
-      {!isLoading && pokemons?.length > 0 && (
+      {!isPokemonsLoading && pokemons?.length > 0 && (
         <>
           <SearchInput
             handleOnSubmit={handleOnSubmit}
@@ -131,10 +131,12 @@ const Main = (): JSX.Element => {
                   ))}
                 </div>
                 <div>
-                  <h1 className="text-4xl font-semibold md:text-6xl">
-                    {firstLetterToUpperCase(pokemonSpecies?.name)}
-                  </h1>
-                  <span className="text-xl">#{pokemons?.[0].id}</span>
+                  <div className="flex items-end gap-2">
+                    <h1 className="text-4xl font-semibold md:text-6xl">
+                      {firstLetterToUpperCase(pokemonSpecies?.name)}
+                    </h1>
+                    <span className="mb-2 text-xl">#{pokemons?.[0].id}</span>
+                  </div>
                   {pokemons.length > 1 && (
                     <div className="my-4">
                       <Select
@@ -191,10 +193,6 @@ const Main = (): JSX.Element => {
                         icon={stat.stat.name}
                         statValue={stat.base_stat}
                       />
-                      {/* <StatBar
-                        value={stat.base_stat}
-                        rangeColor={getColorRange(stat.base_stat)}
-                      /> */}
                       <Progress
                         className="w-3/4"
                         value={(stat.base_stat / stats.MAX_STAT_VALUE) * 100}
@@ -211,6 +209,7 @@ const Main = (): JSX.Element => {
                 </div>
                 <div className="flex flex-col space-y-4 space-y-reverse md:col-span-1 md:flex-col-reverse md:justify-end">
                   <div>
+                    <h2 className="font-semibold">Abilities</h2>
                     <ul>
                       <Accordion
                         className="flex flex-col gap-5"
@@ -263,13 +262,19 @@ const Main = (): JSX.Element => {
           </div>
         </>
       )}
-      {isLoading && (
+      {(isPokemonSpeciesLoading || isPokemonsLoading) && (
         <>
-          <Skeleton className="mx-16 mt-4 h-8 md:w-[500px]" />
+          <div className="mx-16 my-0 mt-4 flex max-w-lg justify-center">
+            <div className="flex w-full items-center gap-2">
+              <Skeleton className="h-10 grow" />
+              <Skeleton className="h-10 w-[60px]" />
+              <Skeleton className="h-10 w-[60px]" />
+            </div>
+          </div>
           <div className="space-y-4 px-16 py-4">
             <div className="gap-4 md:grid md:grid-cols-3">
               <div className="space-y-4 md:col-span-1">
-                <Skeleton className="h-6 w-14" />
+                <Skeleton className="h-8 w-20" />
                 <div className="flex gap-2">
                   <Skeleton className="h-14 w-96" />
                   <Skeleton className="h-9 w-14 self-end" />
