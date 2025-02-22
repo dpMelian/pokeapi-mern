@@ -5,14 +5,10 @@ import { Button } from "./ui/button"
 import { Input } from "./ui/input"
 
 interface Props {
-  handleOnSubmit: (searchInputValue: string) => void
-  setSearchValue: React.Dispatch<React.SetStateAction<string | number>>
+  handleNewSearch: (newSearchValue: string | number) => void
 }
 
-const SearchInput = ({
-  handleOnSubmit,
-  setSearchValue,
-}: Props): JSX.Element => {
+const SearchInput = ({ handleNewSearch }: Props): JSX.Element => {
   const [inputValue, setInputValue] = useState("")
 
   const handleOnInput = (e: React.ChangeEvent<HTMLInputElement>): void => {
@@ -25,7 +21,7 @@ const SearchInput = ({
       onSubmit={(e) => {
         if (inputValue === "") return
         e.preventDefault()
-        handleOnSubmit(inputValue)
+        handleNewSearch(inputValue)
       }}
     >
       <div className="flex w-full items-center gap-2">
@@ -37,7 +33,7 @@ const SearchInput = ({
           onInput={handleOnInput}
         />
         <Button
-          onClick={() => handleOnSubmit}
+          onClick={() => handleNewSearch(inputValue)}
           aria-label="Search"
           title="Search Pokémon"
         >
@@ -45,7 +41,7 @@ const SearchInput = ({
         </Button>
         <Button
           onClick={() =>
-            setSearchValue(Math.floor(Math.random() * (1010 - 1) + 1))
+            handleNewSearch(Math.floor(Math.random() * (1010 - 1) + 1))
           }
           aria-label="Random"
           title="Search random Pokémon"
