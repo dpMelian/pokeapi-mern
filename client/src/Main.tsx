@@ -1,13 +1,5 @@
-import { IconStar, IconStarFilled } from "@tabler/icons-react"
 import { useState } from "react"
-
-import AbilityDetails from "./components/AbilityDetails"
-import EvolutionChain from "./components/EvolutionChain"
-import Footer from "./components/Footer"
-import Header from "./components/Header"
-import SearchInput from "./components/SearchInput"
-import StatBar from "./components/StatBar"
-import Stat from "./components/Stat"
+import { Volume2 } from "lucide-react"
 
 import {
   Accordion,
@@ -16,14 +8,8 @@ import {
   AccordionTrigger,
 } from "./components/ui/accordion"
 import { Badge } from "./components/ui/badge"
-import { cn } from "./helpers/cn"
-import { firstLetterToUpperCase } from "./helpers/firstLetterToUpperCase"
-import { getColorRange } from "./helpers/getColorRange"
-import { PokemonSpecies } from "./types/pokemon/pokemonSpecies"
+import { Button } from "./components/ui/button"
 import { Progress } from "./components/ui/progress"
-import { stats } from "./constants/stats"
-import { type Pokemon } from "./interfaces/pokemon"
-import { TYPES_PASTEL } from "./constants/pokemonTypesPastel"
 import {
   Select,
   SelectContent,
@@ -33,13 +19,27 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import { Separator } from "./components/ui/separator"
+import { Skeleton } from "./components/ui/skeleton"
+import { Slider } from "./components/ui/slider"
+import AbilityDetails from "./components/AbilityDetails"
+import EvolutionChain from "./components/EvolutionChain"
+import Footer from "./components/Footer"
+import Header from "./components/Header"
+import SearchInput from "./components/SearchInput"
+import Stat from "./components/Stat"
+
+import { cn } from "./helpers/cn"
+import { firstLetterToUpperCase } from "./helpers/firstLetterToUpperCase"
+import { PokemonSpecies } from "./types/pokemon/pokemonSpecies"
+import { stats } from "./constants/stats"
+import { Pokemon } from "./types/pokemon/pokemon"
+import { TYPES_PASTEL } from "./constants/pokemonTypesPastel"
 
 import useAddFavoritePokemon from "./hooks/useAddFavoritePokemon"
 import useGetPokemons from "./hooks/useGetPokemons"
 import useGetPokemonSpecies from "./hooks/useGetPokemonSpecies"
 import { TYPE_ICONS } from "./constants/typeIcons"
-import { Separator } from "./components/ui/separator"
-import { Skeleton } from "./components/ui/skeleton"
 
 // import useGetTrainerFavorite from "./hooks/useGetTrainerFavorite"
 
@@ -47,9 +47,10 @@ const Main = (): JSX.Element => {
   const [searchValue, setSearchValue] = useState(
     Math.floor(Math.random() * (1010 - 1) + 1) as string | number,
   )
-
   const [isPokemonFavorited, setIsPokemonFavorited] = useState(false)
+  const [isAudioPlaying, setIsAudioPlaying] = useState(false)
   const [selectedVariant, setSelectedVariant] = useState(0)
+  const [sliderValue, setSliderValue] = useState([30])
 
   const {
     data: pokemonSpecies,
@@ -78,11 +79,6 @@ const Main = (): JSX.Element => {
     "Height",
   ]
 
-  const handleOnSubmit = (searchInputValue: string): void => {
-    setSelectedVariant(0)
-    setSearchValue(searchInputValue.toLowerCase())
-  }
-
   if (isError) {
     return <p>Pokémon {searchValue} not found</p>
   }
@@ -98,6 +94,14 @@ const Main = (): JSX.Element => {
     weight: pokemonWeight,
   } = pokemons?.[selectedVariant] ?? {}
 
+  const audio = new Audio(pokemons?.[selectedVariant]?.cries.latest)
+  audio.addEventListener("ended", () => setIsAudioPlaying(false))
+
+  const handleNewSearch = (newSearchValue: string | number) => {
+    setSearchValue(newSearchValue)
+    setSelectedVariant(0)
+  }
+
   return (
     <main
       className={cn(
@@ -108,10 +112,7 @@ const Main = (): JSX.Element => {
       <Header />
       {!isPokemonsLoading && pokemons?.length > 0 && (
         <>
-          <SearchInput
-            handleOnSubmit={handleOnSubmit}
-            setSearchValue={setSearchValue}
-          />
+          <SearchInput handleNewSearch={handleNewSearch} />
           <div className="flex w-full flex-col px-16 py-4 md:flex-row">
             <div className="w-full md:grid md:grid-cols-3">
               <div className="space-y-4 md:col-span-1">
@@ -135,6 +136,7 @@ const Main = (): JSX.Element => {
                     <h1 className="text-4xl font-semibold md:text-6xl">
                       {firstLetterToUpperCase(pokemonSpecies?.name)}
                     </h1>
+
                     <span className="mb-2 text-xl">#{pokemons?.[0].id}</span>
                   </div>
                   {pokemons.length > 1 && (
@@ -175,7 +177,10 @@ const Main = (): JSX.Element => {
 
               <div className="md:col-span-2 md:row-span-2">
                 <img
-                  className="relative z-2 max-h-[500px] w-full object-contain p-4 max-md:p-0"
+                  className={cn(
+                    isAudioPlaying && "animate-wiggle animate-infinite",
+                    "relative z-2 max-h-[500px] w-full object-contain p-4 max-md:p-0",
+                  )}
                   src={
                     pokemonSprites?.other["official-artwork"].front_default ??
                     pokemonSprites?.other.dream_world.front_default
@@ -185,6 +190,30 @@ const Main = (): JSX.Element => {
               </div>
 
               <div className="mt-4 md:grid md:grid-cols-3">
+                <div className="col-span-2 flex w-3/4 gap-6 space-y-4">
+                  <Button
+                    aria-label="Play cry sound"
+                    onClick={() => {
+                      audio.pause()
+                      audio.currentTime = 0
+                      audio.volume = sliderValue[0] / 100
+                      audio.play()
+                      setIsAudioPlaying(true)
+                    }}
+                    title="Play cry sound"
+                  >
+                    <Volume2 />
+                  </Button>
+
+                  <Slider
+                    aria-label="Volume"
+                    className="w-full"
+                    max={100}
+                    onValueChange={setSliderValue}
+                    step={10}
+                    value={sliderValue}
+                  />
+                </div>
                 <div className="flex flex-col gap-6 md:col-span-2">
                   {pokemonStats?.map((stat) => (
                     <div className="space-y-1" key={stat.stat.name}>
