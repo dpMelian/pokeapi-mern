@@ -1,8 +1,12 @@
-export interface Pokemon {
+export type Pokemon = {
   abilities: Array<{
     ability: { name: string; url: string }
     is_hidden: boolean
   }>
+  cries: {
+    latest: string
+    legacy: string
+  }
   height: number
   name: string
   id: number
