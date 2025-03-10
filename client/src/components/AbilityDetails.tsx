@@ -1,3 +1,5 @@
+import { useTranslation } from "react-i18next"
+
 import { useGetAbilityDetails } from "../hooks/useGetAbilityDetails"
 
 type Props = {
@@ -5,9 +7,11 @@ type Props = {
 }
 
 const AbilityDetails = ({ url }: Props) => {
+  const { t } = useTranslation()
+
   const { data: selectedAbilityDetails, isLoading } = useGetAbilityDetails(url)
 
-  if (isLoading) return <p>Loading...</p>
+  if (isLoading) return <p>{t("loading")}...</p>
 
   return (
     <>

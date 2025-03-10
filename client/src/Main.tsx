@@ -1,4 +1,5 @@
 import { useState } from "react"
+import { useTranslation } from "react-i18next"
 import { Volume2 } from "lucide-react"
 
 import {
@@ -62,6 +63,8 @@ const Main = (): JSX.Element => {
     isError: boolean
   }
 
+  const { t } = useTranslation()
+
   const { data: pokemons, isLoading: isPokemonsLoading } = useGetPokemons(
     pokemonSpecies?.varieties.map(({ pokemon }) => pokemon.name) ?? [],
   ) as unknown as { data: Pokemon[]; isLoading: boolean }
@@ -80,7 +83,13 @@ const Main = (): JSX.Element => {
   ]
 
   if (isError) {
-    return <p>Pokémon {searchValue} not found</p>
+    return (
+      <p>
+        {t("pokemon-not-found", {
+          searchValue,
+        })}
+      </p>
+    )
   }
 
   const {
